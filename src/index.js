@@ -8,22 +8,22 @@ import {
 import { createBrowserHistory } from "history";
 import { CssBaseline } from '@material-ui/core';
 import pageRoutes from './router';
-import AppBarSys from './Componets/AppBar/appBarMaat';
+import MiniDrawerMaat from './Componets/AppBar/appBarMaat';
+import IsAuthenticated from './Componets/Functions/Login/LocalStorage/isAuthenticated';
+import FooterSite from './Componets/Footer/Footer';
 
+const isAuth = IsAuthenticated();
 const hist = createBrowserHistory();
 const pathname = hist.location.pathname;
 
-if (pathname === '/') {
-  hist.replace('/maatdigital/home');
-  hist.push('/maatdigital/home');
-  window.location.reload();
-};
+const home = () => hist.replace('/maatdi-gital/home') || hist.push('/maatdigital/home')|| window.location.reload();
+const login = () => hist.replace('/maatdigital/login') || hist.push('/maatdigital/login') || window.location.reload();
 
-function FilterRoutes(value) {
-    if (pathname === (value.path)) {
-        return value
-    }
-};
+if (pathname === '/') {
+  ((isAuth) ? home() : login() )
+}
+
+const FilterRoutes = (arrayRoutes) => ((pathname === arrayRoutes.path) ? (hist.push(arrayRoutes.path) || arrayRoutes) : null)
 
 const rotasPaginas = pageRoutes.map( x => x).filter(FilterRoutes);
 
@@ -39,16 +39,16 @@ const Main = () => (
             path={dados.path}
           />
         )
-      })}
+      })}      
     </Switch>
   </BrowserRouter>
 );
 
 ReactDOM.render(
   <React.Fragment>
-    <CssBaseline />
-      <AppBarSys />
-      <Main /> 
+    <CssBaseline />    
+      <MiniDrawerMaat Main={<Main />}/>         
+      <FooterSite />
   </React.Fragment>,
   document.getElementById('root')
 );

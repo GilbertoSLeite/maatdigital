@@ -1,222 +1,166 @@
-import React from "react";
+import React from 'react';
+import clsx from 'clsx';
+import PropTypes from 'prop-types';
+import pageRoutes from '../../router';
 import { 
-    AppBar,
-    fade,
-    Hidden,
-    IconButton,
-    makeStyles, 
-    Menu, 
-    MenuItem, 
-    TextField, 
-    Toolbar,
-    Typography
-    } from "@material-ui/core";
-import { HomeOutlined, Search } from "@material-ui/icons";
-import { Autocomplete } from "@material-ui/lab";
-import pageRoutes from "../../router";
+  AppBar, 
+  CssBaseline, 
+  Divider, 
+  Drawer, 
+  IconButton, 
+  List, 
+  ListItem, 
+  ListItemIcon, 
+  ListItemText, 
+  makeStyles, 
+  Toolbar,
+  Typography,
+  useTheme
+  } from '@material-ui/core';
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  Menu 
+  } from '@material-ui/icons';
 
-let rotas = pageRoutes.map(x => x);
+const drawerWidth = 240;
+const rotasPaginas = pageRoutes.map( x => x)
 
 const useStyles = makeStyles((theme) => ({
-    grow: {
-        flexGrow: 1,
-
+  root: {
+    display: 'flex',
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    backgroundColor: '#4a8099'
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  menuButton: {
+    marginRight: 36,
+  },
+  hide: {
+    display: 'none',
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+  },
+  drawerOpen: {
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  drawerClose: {
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    overflowX: 'hidden',
+    width: theme.spacing(7) + 1,
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing(9) + 1,
     },
-    AppBar: {
-        backgroundColor: '#5890a6',
-    },
-    menuButton: {
-        marginRight: theme.spacing(2),
-    },
-    title: {
-        display: 'none',
-        [theme.breakpoints.up('sm')]: {
-            display: 'block',
-        },
-    },
-    search: {
-        position: 'relative',
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.common.white, 0.15),
-        '&:hover': {
-            backgroundColor: fade(theme.palette.common.white, 0.25),
-        },
-        marginRight: theme.spacing(2),
-        marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing(3),
-            width: 'auto',
-        },
-    },
-    Search: {
-        padding: theme.spacing(0, 2),
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    input: {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from Search
-        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            width: '40ch',
-        },
-    },
-    sectionDesktop: {
-        display: 'none',
-        [theme.breakpoints.up('md')]: {
-            display: 'flex',
-        },
-    },
-    sectionMobile: {
-        display: 'flex',
-        [theme.breakpoints.up('md')]: {
-            display: 'none',
-        },
-    },
-    iconAppBAr: {
-        width: '50px'
-    },
-    paperMenu: {
-        border: '1px solid #d3d4d5',
-    },
-    tipografiaAppBar: {
-        marginLeft: '5%'
-    },
-    tipografiaAppBarUser: {
-        marginLeft: '5%',
-        fontSize: 10
-    },
-    menuAppbar: {
-        color: '#ffff'
-    }
+  },
+  toolbar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+  },
 }));
 
-export default function AppBarSys() {
-    const classes = useStyles();
-    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+export default function MiniDrawerMaat(props) {
+  const classes = useStyles();
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
+  const {Main} = props;
 
-    const searchPage = (value) => {
-        window.location.href = value;   
-    };
+  const handleDrawerOpen = () => setOpen(true)
 
-    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);    
-    
-    const handleMobileMenuClose = () => {
-        setMobileMoreAnchorEl(null);
-    };
+  const handleDrawerClose = () => setOpen(false)
 
-    const mobileMenuId = 'menu-mobile';
-    const renderMobileMenu = ( 
-        <Menu
-            anchorEl={mobileMoreAnchorEl}
-            anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right'
-            }}
-            id={mobileMenuId}
-            keepMounted
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right'
-            }}
-            open={isMobileMenuOpen}
-            onClose={handleMobileMenuClose}
-        >
-            <MenuItem>
-                <IconButton
-                    aria-label='Home'
-                    color='inherit'
-                    href='/maatdigital/home'
-                >
-                    <HomeOutlined fontSize='small' />
-                    <Typography
-                        align='center'
-                        variant='button'
-                        gutterBottom
-                        display='inline'
-                        className={classes.tipografiaAppBar}
-                    >
-                        Home
-                    </Typography>
-                </IconButton>
-            </MenuItem>
-        </Menu>
-    )
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar
+        position="fixed"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: open,
+        })}
+      >
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            className={clsx(classes.menuButton, {
+              [classes.hide]: open,
+            })}
+          >
+            <Menu />
+          </IconButton>
+          <Typography variant="h6" noWrap>
+            MAAT DIGITAL
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        variant="permanent"
+        className={clsx(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
+        })}
+        classes={{
+          paper: clsx({
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open,
+          }),
+        }}
+      >
+        <div className={classes.toolbar}>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'rtl' ? <ChevronRight /> : <ChevronLeft />}
+          </IconButton>
+        </div>
+        <Divider />
+        <List>
+          {rotasPaginas.map((data, key) => (
+            <ListItem button component='a' href={data.path} key={key} divider dense>
+              <ListItemIcon><data.icon/></ListItemIcon>
+              <ListItemText primary={data.name}/>
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        {Main}
+      </main>
+    </div>
+  );
+}
 
-    return(
-        <React.Fragment>
-            <div className={classes.grow}>
-                <AppBar
-                    className={classes.AppBar}
-                    position='static'
-                >
-                    <Toolbar>
-                        <Hidden
-                            smUp
-                        >
-                            <IconButton 
-                                arial-label='show menu'
-                                arial-aria-controls={mobileMenuId}
-                            >
-                            </IconButton>
-                        </Hidden>
-                        <div 
-                            className={classes.search}
-                        >
-                            <div
-                                className={classes.search}
-                            >
-                                <Search />
-                            </div>
-                            <Autocomplete 
-                                aria-label='search'
-                                id='search'
-                                autoComplete
-                                getOptionLabel={
-                                    (o) => o.name
-                                }
-                                onChange={(e,v) => searchPage(!v ? '' : v.path)}
-                                options={rotas}
-                                renderInput={(params) => 
-                                    <TextField 
-                                        {...params}
-                                        className={classes.input}
-                                        placeholder='Pesquisar'
-                                        margin='dense'
-                                        fullWidth
-                                    />}
-                            />
-                        </div>
-                        <div className={classes.grow} />
-                        <div className={classes.sectionDesktop}>
-                            <IconButton
-                            aria-label="Home"
-                            color="inherit"
-                            href='/maatdigital/home'>
-                                <HomeOutlined fontSize='small' />
-                                <Typography
-                                    align='center'
-                                    variant='button'
-                                    gutterBottom
-                                    display='inline'
-                                    className={classes.tipografiaAppBar}
-                                >
-                                    Home
-                                </Typography>
-                            </IconButton>
-                        </div>
-                    </Toolbar>
-                </AppBar>
-                {renderMobileMenu}
-            </div>
-        </React.Fragment>
-    )
-    
+MiniDrawerMaat.propTypes = {
+    Main: PropTypes.object.isRequired,
 }
