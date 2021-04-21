@@ -13,9 +13,10 @@ import {
     Tooltip,
     Typography
     } from "@material-ui/core";
-import maat from '../../Files/logo/maat_digital.png';
+import maat from '../../files/logo/maat_digital.png';
 import { Close, LockOutlined, Visibility, VisibilityOff } from "@material-ui/icons";
-import SnackMAAT from "../../Componets/Snackbar/snackbar";
+import SnackMAAT from "../../componets/snackbar/snackbar";
+import Acessing from "../../functions/logins/accessing";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -72,7 +73,7 @@ export default function Login(){
 
     const handleCloseSnack = () => {
         setSnackOpen(false)
-    }
+    };
 
     function HandleClose() {
         return (<IconButton
@@ -85,6 +86,8 @@ export default function Login(){
         </IconButton>
         );
     };
+
+    const accessingSystem = async () =>  await Acessing(user, password) ?  window.location.href = '/maatdigital/home' :  alert('Nada') 
 
     return(
         <React.Fragment>
@@ -163,6 +166,7 @@ export default function Login(){
                             aria-labelledby='Botão Acessar' 
                             fullWidth variant='outlined' 
                             className={classes.submit}
+                            onClick={accessingSystem}
                         >
                             ACESSAR
                         </Button>

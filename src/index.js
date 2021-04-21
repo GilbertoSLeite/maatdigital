@@ -8,37 +8,38 @@ import {
 import { createBrowserHistory } from "history";
 import { CssBaseline } from '@material-ui/core';
 import pageRoutes from './router';
-import MiniDrawerMaat from './Componets/AppBar/appBarMaat';
-import IsAuthenticated from './Componets/Functions/Login/LocalStorage/isAuthenticated';
-import FooterSite from './Componets/Footer/Footer';
+import MiniDrawerMaat from './componets/appBar/appBarMaat';
+import IsAuthenticated from './functions/localstorage/isAuthenticated';
+import FooterSite from './componets/footer/Footer';
+import Login from './pages/login/login';
 
 const isAuth = IsAuthenticated();
 const hist = createBrowserHistory();
 const pathname = hist.location.pathname;
 
-const home = () => hist.replace('/maatdi-gital/home') || hist.push('/maatdigital/home')|| window.location.reload();
-const login = () => hist.replace('/maatdigital/login') || hist.push('/maatdigital/login') || window.location.reload();
-
 if (pathname === '/') {
-  ((isAuth) ? home() : login() )
+  ((isAuth) ? hist.replace('/maatdi-gital/home') || hist.push('/maatdigital/home') || window.location.reload() : hist.replace('/maatdigital/acessar') || hist.push('/maatdigital/acessar') || window.location.reload() )
 }
 
-const FilterRoutes = (arrayRoutes) => ((pathname === arrayRoutes.path) ? (hist.push(arrayRoutes.path) || arrayRoutes) : null)
+const FilterRoutes = (arrayRoutes) => ((pathname === arrayRoutes.path) ? (hist.push(arrayRoutes.path) || hist.replace(arrayRoutes.path)  || arrayRoutes) : [])
+
 
 const rotasPaginas = pageRoutes.map( x => x).filter(FilterRoutes);
 
 const Main = () => ( 
+  !isAuth ? <Login />  :
   <BrowserRouter>
     <Switch>
       {rotasPaginas.map((dados, chaves) => {
+        if((!dados.loginPage) && (dados.private)){
         return(
           <Route 
             key={chaves}
             exact
             children={<dados.children />}
             path={dados.path}
-          />
-        )
+          />              
+        )}
       })}      
     </Switch>
   </BrowserRouter>

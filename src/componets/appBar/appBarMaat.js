@@ -20,11 +20,18 @@ import {
 import { 
   ChevronLeft, 
   ChevronRight, 
+  ExitToApp, 
   Menu 
   } from '@material-ui/icons';
+import IsAuthenticated from '../../functions/localstorage/isAuthenticated';
+import Logout from '../../functions/localstorage/logout';
 
 const drawerWidth = 240;
-const rotasPaginas = pageRoutes.map( x => x)
+const isAuth = IsAuthenticated();
+const FilterPages = (arrayRoutes) => (isAuth ? PrivatePage(arrayRoutes) : LoginPage(arrayRoutes))
+const PrivatePage = (arrayRoutes)  => (!arrayRoutes.loginPage ? arrayRoutes : null)
+const LoginPage = (arrayRoutes) => (arrayRoutes.loginPage ? arrayRoutes : null)
+const rotasPaginas = pageRoutes.map( x => x).filter(FilterPages);
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -151,6 +158,10 @@ export default function MiniDrawerMaat(props) {
               <ListItemText primary={data.name}/>
             </ListItem>
           ))}
+          <ListItem button component='a' onClick={Logout} divider dense>
+            <ListItemIcon><ExitToApp/></ListItemIcon>
+            <ListItemText primary='Sair'/>
+          </ListItem>
         </List>
       </Drawer>
       <main className={classes.content}>
