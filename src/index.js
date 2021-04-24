@@ -39,7 +39,9 @@ const Main = () => (
             children={<dados.children />}
             path={dados.path}
           />              
-        )}
+        )}else {
+          return null
+        }
       })}      
     </Switch>
   </BrowserRouter>

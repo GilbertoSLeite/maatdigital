@@ -87,7 +87,7 @@ export default function Login(){
         );
     };
 
-    const accessingSystem = async () =>  await Acessing(user, password) ?  window.location.href = '/maatdigital/home' :  alert('Nada') 
+    const accessingSystem = async () =>  await Acessing(user, password) ?  window.location.href = '/maatdigital/home' :  setReturnTextSnack('Senha ou Usuário Errado!') 
 
     return(
         <React.Fragment>

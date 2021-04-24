@@ -1,9 +1,9 @@
 import React from "react";
 import {  Button, makeStyles, Paper } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
-import RegistreGraduation from "./registregraduation";
 import DialogCadastro from "../../../componets/dialog/dialogCadastro/dialogCadastro";
-import TableGraduation from "./tablegraduation";
+import TablePuslisher from "./tablePublisher";
+import RegisterPublisher from "./registerPublisher";
 
 const useStyles = makeStyles(() => ({
         button: {
@@ -12,7 +12,7 @@ const useStyles = makeStyles(() => ({
         },
     }));
 
-export default function TelaGraduacao() {
+export default function TelaEditora() {
     const classes = useStyles();
     const [statusTela, setStatusTelas] = React.useState(false);
     const [abrirDialog, setAbrirDialog] = React.useState(false);
@@ -25,7 +25,7 @@ export default function TelaGraduacao() {
         <div>
         {statusTela ? 
         <div>
-        <TableGraduation />
+        <TablePuslisher />
             <Paper 
                 elevation={8}
                 variant='elevation'
@@ -38,20 +38,20 @@ export default function TelaGraduacao() {
                     startIcon={<Add />}
                     fullWidth
                 >
-                    Inserir Graduação
+                    Inserir Editora
                 </Button>
         </Paper>
         {abrirDialog ? 
             <DialogCadastro
                 openDialog={abrirDialog}
                 closeDialog={handleFecharDialog} 
-                titleDialog={"Cadastro do Bairro"}  
-                telaDialog={<RegistreGraduation/>}
+                titleDialog={"Cadastro da Editora"}  
+                telaDialog={<RegisterPublisher/>}
             />: 
             null}
         </div> : 
         <div>
-        <TableGraduation />
+        <TablePuslisher />
             <Paper 
                 elevation={8}
                 variant='elevation'
@@ -64,7 +64,7 @@ export default function TelaGraduacao() {
                     startIcon={<Add />}
                     fullWidth
                 >
-                    Inserir Graduação
+                    Inserir Editora
                 </Button>
         </Paper>
         </div>}

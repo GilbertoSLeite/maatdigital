@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function RegistreGraduation() {
+export default function RegisterGraduation() {
     const classes = useStyles();
     const [graduacao, setGraduacao] = React.useState('')
     const [buttonDisable, setDisableButton] = React.useState(false);

@@ -24,21 +24,23 @@ export default function DDC() {
     }, []);
     
     function RetornarCodigoAC(identificado){
-        let codigoA = arrayAC.map(x => x).filter(function (array) {
+        function AC(array) {
             if(array.id === identificado){
                 return array
             };
-        });
+        }
+        let codigoA = arrayAC.map(x => x).filter(AC);
         codigoA = codigoA.map(x => x.codigo_classes)
         return codigoA
     };
 
     function RetornarAC(identificado){
-        let areaConhecimento = arrayAC.map(x => x).filter(function (array) {
+        function ReturnAC(array) {
             if(array.id === identificado){
                 return array
             };
-        });
+        }
+        let areaConhecimento = arrayAC.map(x => x).filter(ReturnAC);
         areaConhecimento = areaConhecimento.map(x => x.tipo_classes)
         return areaConhecimento
     };

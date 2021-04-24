@@ -28,10 +28,9 @@ const useStyles = makeStyles((theme) => ({
 const dataHoje = new Date()
 const dataFormatHoje = (dataHoje.getFullYear() +'-'+ (dataHoje.getMonth() < 10 ? '0' + (dataHoje.getMonth() +1) : (dataHoje.getMonth() +1)) +'-'+ (dataHoje.getDate() < 10 ? '0' + dataHoje.getDate() : dataHoje.getDate()) );
 
-export default function RegistrePublisher() {
+export default function RegisterPublisher() {
     const classes = useStyles();
     const [arrayPaises, setArrayPaises ] = React.useState([])
-    const [dataCadastro, setDataCadastro] = React.useState(dataFormatHoje)
     const [nomeEditora, setNomeEditora] = React.useState('')
     const [anoFundacao, setAnoFundacao] = React.useState('')
     const [paisSede, setPaisSede] = React.useState('')
@@ -60,7 +59,7 @@ export default function RegistrePublisher() {
         );
     };
 
-    const HandleSubmit = async () => await InsertPublisher(dataCadastro, nomeEditora, anoFundacao, paisSede, webSite) ? setOpen(true) || setTextSnackbar('Dados Inseridos com Sucesso') || setDisableButton(true) : setOpen(true) || setTextSnackbar('Dados Não Forma Inseridos - Verificar Console');
+    const HandleSubmit = async () => await InsertPublisher(dataFormatHoje, nomeEditora, anoFundacao, paisSede, webSite) ? setOpen(true) || setTextSnackbar('Dados Inseridos com Sucesso') || setDisableButton(true) : setOpen(true) || setTextSnackbar('Dados Não Forma Inseridos - Verificar Console');
 
     return(
         <React.Fragment>
@@ -92,7 +91,7 @@ export default function RegistrePublisher() {
                             helperText='Data de Cadastro da Editora'
                             variant='outlined'
                             margin='dense'
-                            value={dataCadastro}
+                            value={dataFormatHoje}
                             disabled
                             fullWidth
                         />

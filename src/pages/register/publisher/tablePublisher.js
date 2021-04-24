@@ -3,7 +3,7 @@ import React from "react";
 import DialogCadastro from "../../../componets/dialog/dialogCadastro/dialogCadastro";
 import SearchPaises from "../../../functions/searchData/countries/returnCountries";
 import SearchPublisher from "../../../functions/searchData/publisher/returnPublisher";
-import UpdateScreenPublisher from "./updatescreenpublisher";
+import UpdateScreenPublisher from "./updateScreenPublisher";
 
 export default function TablePuslisher() {
     const [arrayEditora, setArrayEditora] = React.useState([]);
@@ -43,11 +43,12 @@ export default function TablePuslisher() {
     }, []);
     
     function RetornarNomePais(identificado){
-        let nomePais = arrayPais.map(x => x).filter(function (array) {
+        function CountrieFilter(array) {
             if(array.id === identificado){
                 return array
             };
-        });
+        }
+        let nomePais = arrayPais.map(x => x).filter(CountrieFilter);
         nomePais = nomePais.map(x => x.nome)
         return nomePais
     };
@@ -221,7 +222,8 @@ export default function TablePuslisher() {
                     nomeEditoraIn={nomeEditora}
                     anoFundacaoIn={anoFundacao}
                     paisSedeIn={pais} 
-                    webSiteIn={webSite}                
+                    webSiteIn={webSite}    
+                    statusEditoraIn={statusEditora}            
                 />
             }
         /> :

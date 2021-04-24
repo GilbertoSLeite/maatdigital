@@ -1,6 +1,6 @@
 import Authenticated from "../localstorage/authenticated";
-import TokenAuthenticated from "../localstorage/tokenauthenticated";
-import UserAuthenticated from "../localstorage/userauthenticated";
+import TokenAuthenticated from "../localstorage/tokenAuthenticated";
+import UserAuthenticated from "../localstorage/userAuthenticated";
 
 let acess;
 export default async function Acessing(user, password) {

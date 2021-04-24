@@ -64,11 +64,12 @@ export default function UpdateScreenPublisher(props) {
     const HandleSubmit = async () => await UpdatePublisher(identificadorIn, dataCadastro, nomeEditora, anoFundacao, paisSede, webSite, newStatusEditor) ? setDisableButton(true) || setOpen(true) || setTextSnackbar('Dados Atualizados com Sucesso') : setOpen(true) || setTextSnackbar('Houve erro na inserção - Verificar console!')
         
     function RetornarNomePais(identificado){
-        let nomePais = arrayPaises.map(x => x).filter(function (array) {
+        function CountrieFilter(array) {
             if(array.id === identificado){
                 return array
             };
-        });
+        }
+        let nomePais = arrayPaises.map(x => x).filter(CountrieFilter);
         nomePais = nomePais.map(x => x.nome)
         return nomePais
     };

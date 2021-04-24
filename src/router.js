@@ -1,10 +1,11 @@
-import {  CollectionsBookmarkOutlined, HomeWork, LibraryBooksOutlined, PublicOutlined, SchoolOutlined, VpnKeyOutlined } from "@material-ui/icons";
+import {  CollectionsBookmarkOutlined, DescriptionOutlined, HomeWork, LibraryBooksOutlined, PublicOutlined, SchoolOutlined, VpnKeyOutlined } from "@material-ui/icons";
+import TelaAutor from "./pages/books/author/homeAuthor";
 import DDC from "./pages/books/ddc/ddc";
 import Paises from "./pages/countries/countries";
 import Home from "./pages/home/home";
 import Login from "./pages/login/login";
-import TelaGraduacao from "./pages/register/graduation/homegraduation";
-import TelaEditora from "./pages/register/publisher/homepublisher";
+import TelaGraduacao from "./pages/register/graduation/homeGraduation";
+import TelaEditora from "./pages/register/publisher/homePublisher";
 
 const pageRoutes = [
     {
@@ -52,6 +53,14 @@ const pageRoutes = [
         name: 'Editora',
         children: TelaEditora,
         icon: LibraryBooksOutlined,
+        private: true,
+        loginPage: false,  
+    },
+    {
+        path: '/maatdigital/autor',
+        name: 'Autor',
+        children: TelaAutor,
+        icon: DescriptionOutlined,
         private: true,
         loginPage: false,  
     },
