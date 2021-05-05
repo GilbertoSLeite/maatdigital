@@ -8,7 +8,7 @@ import ValidatingCPF from "../../../functions/validatingData/validatingCPF";
 import TextFieldCPF from "../../../componets/textField/textFieldCPF";
 import SnackMAAT from "../../../componets/snackbar/snackbar";
 import SearchGraduation from "../../../functions/searchData/graduation/returnGraduation";
-import UpdateGraduationOrganizer from "../../../functions/register/organizer/updateGraudationOrganizer";
+import UpdateOrganizer from "../../../functions/register/organizer/updateDataOrganizer";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ScreenUpdateAuthor(props) {
+export default function ScreenUpdateOrganizer(props) {
     const{
         identificadorIn,
         dataCadastroIn,
@@ -49,12 +49,12 @@ export default function ScreenUpdateAuthor(props) {
     const [firstName, setFirstName] = React.useState('')
     const [middleName , setMiddleName] = React.useState('')
     const [lastName, setLastName] = React.useState('')
-    const [paisOrganizer, setPaisOrganizer] = React.useState('')
-    const [graduacaoOrganizer, setGraduacaoOrganizer ] = React.useState([])
+    const [paisOrganizador, setPaisOrganizador] = React.useState('')
+    const [graduacaoOrganizador, setGraduacaoOrganizador ] = React.useState([])
     const [numCPF, setNumCPF] = React.useState('');
-    const [sexoOrganizer, setSexoOrganizer] = React.useState('')
-    const [racaOrganizer, setRacaOrganizer] = React.useState('')
-    const [newStatusOrganizer, setNewStatusOrganizer] = React.useState(false)
+    const [sexoOrganizador, setSexoOrganizador] = React.useState('')
+    const [racaOrganizador, setRacaAutor] = React.useState('')
+    const [newStatusOrganizador, setNewStatusOrganizador] = React.useState(false)
     const [buttonDisable, setDisableButton] = React.useState(false)
     const [open, setOpen] = React.useState(false)
     const [textSnackBar, setTextSnackbar] = React.useState('')
@@ -106,14 +106,14 @@ export default function ScreenUpdateAuthor(props) {
         return nomeGraduacao
     };
     
-    const HandleSubmit = async () => await UpdateGraduationOrganizer(identificadorIn, dataCadastroIn, ((firstName === '')? fNomeIn : firstName) , ((middleName === '')? mNomeIn : middleName) ,((lastName === '')? lNomeIn : lastName), ((paisOrganizer === '')? paisIn : paisOrganizer), (graduacaoOrganizer), ((numCPF === '')? cpfIn : numCPF), ((sexoOrganizer === '')? sexoIn : sexoOrganizer), ((racaOrganizer === '')? racaIn : racaOrganizer), ((newStatusOrganizer === '')? statusIn : newStatusOrganizer) ) ? setOpen(true) || setTextSnackbar('Dados Atualizado com Sucesso') || setDisableButton(true) : setOpen(true) || setTextSnackbar('Dados Não Foram Atualizados - Verificar Console'); 
-    
+    const HandleSubmit = async () => await UpdateOrganizer(identificadorIn, dataCadastroIn, ((firstName === '')? fNomeIn : firstName) , ((middleName === '')? mNomeIn : middleName) ,((lastName === '')? lNomeIn : lastName), ((paisOrganizador === '')? paisIn : paisOrganizador), (graduacaoOrganizador), ((numCPF === '')? cpfIn : numCPF), ((sexoOrganizador === '')? sexoIn : sexoOrganizador), ((racaOrganizador === '')? racaIn : racaOrganizador), ((newStatusOrganizador === '')? statusIn : newStatusOrganizador) ) ? setOpen(true) || setTextSnackbar('Dados Atualizado com Sucesso') || setDisableButton(true) : setOpen(true) || setTextSnackbar('Dados Não Foram Atualizados - Verificar Console'); 
+
     return(
         <React.Fragment>
         <CssBaseline />
         <div className={classes.root}>
         <Grid
-            id="GridCadastroAutor"
+            id="GridCadastroOrganizador"
             container
             spacing={2}
             direction="row"
@@ -170,7 +170,7 @@ export default function ScreenUpdateAuthor(props) {
                         margin='dense'
                         fullWidth
                         value={edicao ? null : fNomeIn}
-                        onChange={(e)=> setFirstName(e.target.value)}
+                        onChange={(e)=>setFirstName(e.target.value)}
                         disabled={edicao ? false : true}
                     />
                 </Paper>    
@@ -194,7 +194,7 @@ export default function ScreenUpdateAuthor(props) {
                         margin='dense'
                         fullWidth
                         value={edicao ? null : mNomeIn}
-                        onChange={(e)=> setMiddleName(e.target.value)}
+                        onChange={(e)=>setMiddleName(e.target.value)}
                         disabled={edicao ? false : true}
                     />
                 </Paper>    
@@ -218,7 +218,7 @@ export default function ScreenUpdateAuthor(props) {
                         margin='dense'
                         fullWidth
                         value={edicao ? null : lNomeIn}
-                        onChange={(e)=> setLastName(e.target.value)}
+                        onChange={(e)=>setLastName(e.target.value)}
                         disabled={edicao ? false : true}
                     />
                 </Paper>    
@@ -234,10 +234,9 @@ export default function ScreenUpdateAuthor(props) {
                     className={classes.paper}
                 >   
                     <Autocomplete
-                        inputValue={edicao ? '' : (RetornarNomePais(paisIn) === undefined ? '' : RetornarNomePais(paisIn))}
-                        getOptionSelected={(o,v) =>  (o.option === v.value)}
+                        inputValue={edicao ? (RetornarNomePais(paisOrganizador) === undefined ? '' : RetornarNomePais(paisOrganizador)) : (RetornarNomePais(paisIn) === undefined ? '' : RetornarNomePais(paisIn))}
                         getOptionLabel={(o) => o.nome}
-                        onChange={(e,v) => setPaisOrganizer(!v? '' : v.id)}
+                        onChange={(e,v) => setPaisOrganizador(!v? '' : v.id)}
                         options={arrayPaises} 
                         disabled={edicao ? false : true}
                         renderInput={(params) => 
@@ -266,7 +265,7 @@ export default function ScreenUpdateAuthor(props) {
                         multiple
                         inputValue={edicao ? '' : RetornarGraduacao(graduacaoIn)}
                         getOptionLabel={(o) => o.nome_graduacao}
-                        onChange={(e,v) => setGraduacaoOrganizer(!v? '' : v)}
+                        onChange={(e,v) => setGraduacaoOrganizador(!v? '' : v)}
                         options={arrayGraduacao} 
                         disabled={edicao ? false : true}
                         renderInput={(params) => 
@@ -330,7 +329,7 @@ export default function ScreenUpdateAuthor(props) {
                             aria-label='Sexo Autor'
                             name='sexo_pessoas'
                             defaultValue={sexoIn}
-                            onChange={(e) => setSexoOrganizer(e.target.value)}
+                            onChange={(e) => setSexoOrganizador(e.target.value)}
                         >
                             <FormControlLabel
                                 value='F'
@@ -376,7 +375,7 @@ export default function ScreenUpdateAuthor(props) {
                             aria-label='Raça do Organizador'
                             name='raca_pessoas'
                             defaultValue={racaIn}
-                            onChange={(e) => setRacaOrganizer(e.target.value)}
+                            onChange={(e) => setRacaAutor(e.target.value)}
                         >
                             <FormControlLabel 
                                 value="P" 
@@ -435,11 +434,10 @@ export default function ScreenUpdateAuthor(props) {
                     className={classes.paper}
                 >   
                     <Autocomplete
-                        inputValue={edicao ? '' : (statusIn ? 'Ativo' : 'Inativo')}
-                        getOptionSelected={(o,v) =>  (o.option === v.value)}
+                        inputValue={edicao ? (newStatusOrganizador ? 'Ativo' : '') : (statusIn ? 'Ativo' : 'Inativo')}
                         getOptionLabel={(o) => o.value}
-                        onChange={(e,v) => setNewStatusOrganizer(!v? '' : v.id)}
-                        options={statusAutor}                                 
+                        onChange={(e,v) => setNewStatusOrganizador(!v? '' : v.id)}
+                        options={statusOrganizador}                                 
                         disabled={edicao ? false : true}
                         renderInput={(params) => 
                             <TextField
@@ -489,7 +487,7 @@ export default function ScreenUpdateAuthor(props) {
     );
 };
 
-const statusAutor = [
+const statusOrganizador = [
     {
         "id": true,
         "value": 'Ativo'
@@ -500,7 +498,7 @@ const statusAutor = [
     }
 ];
 
-ScreenUpdateAuthor.propTypes = {
+ScreenUpdateOrganizer.propTypes = {
         fNomeIn: PropTypes.string.isRequired,
         mNomeIn: PropTypes.string.isRequired,
         lNomeIn: PropTypes.string.isRequired,

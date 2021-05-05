@@ -1,13 +1,13 @@
 import MaterialTable from "material-table"
 import React from "react"
 import DialogCadastro from "../../../componets/dialog/dialogCadastro/dialogCadastro"
-import SearchAuthor from "../../../functions/searchData/author/searchAuthor"
 import SearchPaises from "../../../functions/searchData/countries/returnCountries"
-import SearchGraduationAuthor from "../../../functions/searchData/graduation/returnGraduationAuthor"
-import ScreenUpdateAuthor from "./screenUpdateAuthor"
+import SearchGraduationOrganizer from "../../../functions/searchData/organizer/searchGraduationOrganizer"
+import SearchOrganizer from "../../../functions/searchData/organizer/searchOrganizer"
+import ScreenUpdateOrganizer from "./screenUpdateOrganizer"
 
-export default function TableAuthor() {
-    const [arrayAuthor, setArrayAuthor] = React.useState([])
+export default function TableOrganizer() {
+    const [arrayOrganizer, setArrayOrganizer] = React.useState([])
     const [arrayPais, setArrayPais] = React.useState([])
     const [upIdentificador, setUpIdentificaror] = React.useState('')
     const [upDataCadastro, setUpDataCadastro] = React.useState('')
@@ -20,14 +20,14 @@ export default function TableAuthor() {
     const [upSexo,setUpSexo] = React.useState('') 
     const [upRaca,setUpRaca] = React.useState('')  
     const [upStatus,setUpStatus] = React.useState('')
-    const [arrayGraduacaoAuthor, setArrayGraduacaoAuthor] = React.useState([])
+    const [arrayGraduacaoOrganizer, setArrayGraduacaoOrganizer] = React.useState([])
     const [abrirDialog, setAbrirDialog] = React.useState(false)
     const [loading, setLoading] = React.useState(false)
 
     React.useEffect(() => {
         setLoading(true)
-        const RetornarAuthor = async () => setArrayAuthor(await SearchAuthor())
-        RetornarAuthor()
+        const RetornaOrganizer = async () => setArrayOrganizer(await SearchOrganizer())
+        RetornaOrganizer()
         setLoading(false)
     },[])
 
@@ -40,7 +40,7 @@ export default function TableAuthor() {
 
     React.useEffect(() => {
         setLoading(true)
-        const RetornarGraduacao = async () => setArrayGraduacaoAuthor(await SearchGraduationAuthor())
+        const RetornarGraduacao = async () => setArrayGraduacaoOrganizer(await SearchGraduationOrganizer())
         RetornarGraduacao()
         setLoading(false)
     },[])
@@ -58,27 +58,27 @@ export default function TableAuthor() {
         return nomePais
     };
     
-    function RetornarGraduacao(idAutor){
-        const FilterAutor = (array) => array.autores_id === idAutor ? array : null
-        let graduacaoAutor = arrayGraduacaoAuthor.map(x=>x).filter(FilterAutor)
-        graduacaoAutor = graduacaoAutor.map(x => x.graduacoes_id)
-        return graduacaoAutor
+    function RetornarGraduacao(idOrganizer){
+        const FilterOrganize = (array) => array.organizador_id === idOrganizer ? array : null
+        let graduacaoOrganize = arrayGraduacaoOrganizer.map(x=>x).filter(FilterOrganize)
+        graduacaoOrganize = graduacaoOrganize.map(x => x.graduacoes_id)
+        return graduacaoOrganize
     };
     
-    const AtualizarAutor = (dadosAutor) => setAbrirDialog(true) || setUpIdentificaror(dadosAutor.id) || setUpDataCadastro(dadosAutor.data_cadastro) || setUpFName(dadosAutor.primeiro_nome_pessoa) || setUpMName(dadosAutor.segundo_nome_pessoa) || setUpLName(dadosAutor.ultimo_nome_pessoa) || setUpPais(dadosAutor.pais_autor_id) || setUpGraduacao(RetornarGraduacao(dadosAutor.id)) || setUpCPF(dadosAutor.numero_cpf) || setUpSexo(dadosAutor.sexo_pessoas) || setUpRaca(dadosAutor.raca_pessoas) || setUpStatus(dadosAutor.status)
+    const AtualizarOrganize = (dadosOrganizer) => setAbrirDialog(true) || setUpIdentificaror(dadosOrganizer.id) || setUpDataCadastro(dadosOrganizer.data_cadastro) || setUpFName(dadosOrganizer.primeiro_nome_pessoa) || setUpMName(dadosOrganizer.segundo_nome_pessoa) || setUpLName(dadosOrganizer.ultimo_nome_pessoa) || setUpPais(dadosOrganizer.pais_organizador_id) || setUpGraduacao(RetornarGraduacao(dadosOrganizer.id)) || setUpCPF(dadosOrganizer.numero_cpf) || setUpSexo(dadosOrganizer.sexo_pessoas) || setUpRaca(dadosOrganizer.raca_pessoas) || setUpStatus(dadosOrganizer.status)
             
     return(
         <React.Fragment>
         <MaterialTable
-                title='Tabela do Autor'
+                title='Tabela do Organizador'
                 isLoading={loading}
                 localization={{
                     toolbar: {
                         exportTitle: 'Exportar Dados',
                         showColumnsTitle: 'Mostrar as Colunas',
                         addRemoveColumns: 'Adicionar ou Remover Colunas',
-                        searchTooltip: 'Digite o Nome do Autor',
-                        searchPlaceholder: 'Digite o Nome do Autor',
+                        searchTooltip: 'Digite o Nome do Organizador',
+                        searchPlaceholder: 'Digite o Nome do Organizador',
                     },
                     pagination: {
                         labelRowsSelect: 'Dados',
@@ -121,7 +121,7 @@ export default function TableAuthor() {
                         title: 'Autor do Livro',
                         field: 'primeiro_nome_pessoa',
                         render: rowData => <div>{rowData.primeiro_nome_pessoa + ' ' + rowData.segundo_nome_pessoa + ' ' + rowData.ultimo_nome_pessoa}</div>,
-                        tooltip: 'Nome do Autor.',
+                        tooltip: 'Nome do Organizador.',
                         align: 'center',
                         filtering: true,
                         grouping: true,
@@ -137,9 +137,9 @@ export default function TableAuthor() {
                     }, 
                     {
                         title: 'Nacionalidade',
-                        render: rowData => <div>{RetornarNomePais(rowData.pais_autor_id)}</div>,
-                        field: 'pais_autor_id',
-                        tooltip: 'Informação referente ao País de Nacionalidade do Autor',
+                        render: rowData => <div>{RetornarNomePais(rowData.pais_organizador_id)}</div>,
+                        field: 'pais_organizador_id',
+                        tooltip: 'Informação referente ao País de Nacionalidade do Organizador',
                         align: 'center',
                         filtering: true,
                         grouping: true,
@@ -163,7 +163,7 @@ export default function TableAuthor() {
                     exportButton: true,
                     columnsButton: true,
                 }}
-                data={arrayAuthor}   
+                data={arrayOrganizer}   
                 actions={[
                     {
                       iconProps: {
@@ -171,7 +171,7 @@ export default function TableAuthor() {
                       },
                       icon: 'edit',
                       tooltip: 'Editar Autor do Livro',
-                      onClick: (event, rowData) => AtualizarAutor(rowData)
+                      onClick: (event, rowData) => AtualizarOrganize(rowData)
                     }
                 ]}  
         />
@@ -179,9 +179,9 @@ export default function TableAuthor() {
         <DialogCadastro
             openDialog={abrirDialog}
             closeDialog={handleFecharDialog}
-            titleDialog='Atualizar Autor'
+            titleDialog='Atualizar Organizador'
             telaDialog={
-                <ScreenUpdateAuthor
+                <ScreenUpdateOrganizer
                     identificadorIn={upIdentificador}
                     dataCadastroIn={upDataCadastro} 
                     fNomeIn={upFName}

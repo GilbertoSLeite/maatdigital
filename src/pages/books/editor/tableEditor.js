@@ -1,13 +1,13 @@
 import MaterialTable from "material-table"
 import React from "react"
 import DialogCadastro from "../../../componets/dialog/dialogCadastro/dialogCadastro"
-import SearchAuthor from "../../../functions/searchData/author/searchAuthor"
 import SearchPaises from "../../../functions/searchData/countries/returnCountries"
-import SearchGraduationAuthor from "../../../functions/searchData/graduation/returnGraduationAuthor"
-import ScreenUpdateAuthor from "./screenUpdateAuthor"
+import SearchEditor from "../../../functions/searchData/editor/searchEditor"
+import SearchGraduationEditor from "../../../functions/searchData/editor/searchGraduationEditor"
+import ScreenUpdateEditor from "./screenUpdateEditor"
 
-export default function TableAuthor() {
-    const [arrayAuthor, setArrayAuthor] = React.useState([])
+export default function TableEditor() {
+    const [arrayEditor, setArrayEditor] = React.useState([])
     const [arrayPais, setArrayPais] = React.useState([])
     const [upIdentificador, setUpIdentificaror] = React.useState('')
     const [upDataCadastro, setUpDataCadastro] = React.useState('')
@@ -20,14 +20,14 @@ export default function TableAuthor() {
     const [upSexo,setUpSexo] = React.useState('') 
     const [upRaca,setUpRaca] = React.useState('')  
     const [upStatus,setUpStatus] = React.useState('')
-    const [arrayGraduacaoAuthor, setArrayGraduacaoAuthor] = React.useState([])
+    const [arrayGraduacaoEditor, setArrayGraduacaoEditor] = React.useState([])
     const [abrirDialog, setAbrirDialog] = React.useState(false)
     const [loading, setLoading] = React.useState(false)
 
     React.useEffect(() => {
         setLoading(true)
-        const RetornarAuthor = async () => setArrayAuthor(await SearchAuthor())
-        RetornarAuthor()
+        const RetornaEditor = async () => setArrayEditor(await SearchEditor())
+        RetornaEditor()
         setLoading(false)
     },[])
 
@@ -40,7 +40,7 @@ export default function TableAuthor() {
 
     React.useEffect(() => {
         setLoading(true)
-        const RetornarGraduacao = async () => setArrayGraduacaoAuthor(await SearchGraduationAuthor())
+        const RetornarGraduacao = async () => setArrayGraduacaoEditor(await SearchGraduationEditor())
         RetornarGraduacao()
         setLoading(false)
     },[])
@@ -58,27 +58,27 @@ export default function TableAuthor() {
         return nomePais
     };
     
-    function RetornarGraduacao(idAutor){
-        const FilterAutor = (array) => array.autores_id === idAutor ? array : null
-        let graduacaoAutor = arrayGraduacaoAuthor.map(x=>x).filter(FilterAutor)
-        graduacaoAutor = graduacaoAutor.map(x => x.graduacoes_id)
-        return graduacaoAutor
+    function RetornarGraduacao(idEditor){
+        const FilterEditor = (array) => array.editor_id === idEditor ? array : null
+        let graduacaoEditor = arrayGraduacaoEditor.map(x=>x).filter(FilterEditor)
+        graduacaoEditor = graduacaoEditor.map(x => x.graduacoes_id)
+        return graduacaoEditor
     };
     
-    const AtualizarAutor = (dadosAutor) => setAbrirDialog(true) || setUpIdentificaror(dadosAutor.id) || setUpDataCadastro(dadosAutor.data_cadastro) || setUpFName(dadosAutor.primeiro_nome_pessoa) || setUpMName(dadosAutor.segundo_nome_pessoa) || setUpLName(dadosAutor.ultimo_nome_pessoa) || setUpPais(dadosAutor.pais_autor_id) || setUpGraduacao(RetornarGraduacao(dadosAutor.id)) || setUpCPF(dadosAutor.numero_cpf) || setUpSexo(dadosAutor.sexo_pessoas) || setUpRaca(dadosAutor.raca_pessoas) || setUpStatus(dadosAutor.status)
+    const AtualizarEditor = (dadosEditor) => setAbrirDialog(true) || setUpIdentificaror(dadosEditor.id) || setUpDataCadastro(dadosEditor.data_cadastro) || setUpFName(dadosEditor.primeiro_nome_pessoa) || setUpMName(dadosEditor.segundo_nome_pessoa) || setUpLName(dadosEditor.ultimo_nome_pessoa) || setUpPais(dadosEditor.pais_editor_id) || setUpGraduacao(RetornarGraduacao(dadosEditor.id)) || setUpCPF(dadosEditor.numero_cpf) || setUpSexo(dadosEditor.sexo_pessoas) || setUpRaca(dadosEditor.raca_pessoas) || setUpStatus(dadosEditor.status)
             
     return(
         <React.Fragment>
         <MaterialTable
-                title='Tabela do Autor'
+                title='Tabela do Editor'
                 isLoading={loading}
                 localization={{
                     toolbar: {
                         exportTitle: 'Exportar Dados',
                         showColumnsTitle: 'Mostrar as Colunas',
                         addRemoveColumns: 'Adicionar ou Remover Colunas',
-                        searchTooltip: 'Digite o Nome do Autor',
-                        searchPlaceholder: 'Digite o Nome do Autor',
+                        searchTooltip: 'Digite o Nome do Editor',
+                        searchPlaceholder: 'Digite o Nome do Editor',
                     },
                     pagination: {
                         labelRowsSelect: 'Dados',
@@ -118,10 +118,10 @@ export default function TableAuthor() {
                         }
                     },
                     {
-                        title: 'Autor do Livro',
+                        title: 'Editor do Livro',
                         field: 'primeiro_nome_pessoa',
                         render: rowData => <div>{rowData.primeiro_nome_pessoa + ' ' + rowData.segundo_nome_pessoa + ' ' + rowData.ultimo_nome_pessoa}</div>,
-                        tooltip: 'Nome do Autor.',
+                        tooltip: 'Nome do Editor.',
                         align: 'center',
                         filtering: true,
                         grouping: true,
@@ -137,9 +137,9 @@ export default function TableAuthor() {
                     }, 
                     {
                         title: 'Nacionalidade',
-                        render: rowData => <div>{RetornarNomePais(rowData.pais_autor_id)}</div>,
-                        field: 'pais_autor_id',
-                        tooltip: 'Informação referente ao País de Nacionalidade do Autor',
+                        render: rowData => <div>{RetornarNomePais(rowData.pais_editor_id)}</div>,
+                        field: 'pais_editor_id',
+                        tooltip: 'Informação referente ao País de Nacionalidade do Editor',
                         align: 'center',
                         filtering: true,
                         grouping: true,
@@ -163,7 +163,7 @@ export default function TableAuthor() {
                     exportButton: true,
                     columnsButton: true,
                 }}
-                data={arrayAuthor}   
+                data={arrayEditor}   
                 actions={[
                     {
                       iconProps: {
@@ -171,7 +171,7 @@ export default function TableAuthor() {
                       },
                       icon: 'edit',
                       tooltip: 'Editar Autor do Livro',
-                      onClick: (event, rowData) => AtualizarAutor(rowData)
+                      onClick: (event, rowData) => AtualizarEditor(rowData)
                     }
                 ]}  
         />
@@ -179,9 +179,9 @@ export default function TableAuthor() {
         <DialogCadastro
             openDialog={abrirDialog}
             closeDialog={handleFecharDialog}
-            titleDialog='Atualizar Autor'
+            titleDialog='Atualizar Editor'
             telaDialog={
-                <ScreenUpdateAuthor
+                <ScreenUpdateEditor
                     identificadorIn={upIdentificador}
                     dataCadastroIn={upDataCadastro} 
                     fNomeIn={upFName}

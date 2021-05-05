@@ -1,6 +1,5 @@
 import React from "react";
-import PropTypes from 'prop-types';
-import { Button, CssBaseline, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, IconButton, makeStyles, Paper, Radio, RadioGroup, Switch, TextField, Typography } from "@material-ui/core";
+import { Button, CssBaseline, FormControl, FormControlLabel, FormLabel, Grid, IconButton, makeStyles, Paper, Radio, RadioGroup, TextField } from "@material-ui/core";
 import SearchPaises from "../../../functions/searchData/countries/returnCountries";
 import { Close, Save } from "@material-ui/icons";
 import { Autocomplete } from "@material-ui/lab";
@@ -8,7 +7,7 @@ import ValidatingCPF from "../../../functions/validatingData/validatingCPF";
 import TextFieldCPF from "../../../componets/textField/textFieldCPF";
 import SnackMAAT from "../../../componets/snackbar/snackbar";
 import SearchGraduation from "../../../functions/searchData/graduation/returnGraduation";
-import UpdateGraduationOrganizer from "../../../functions/register/organizer/updateGraudationOrganizer";
+import InsertCoordinator from "../../../functions/register/coordinator/insertDataCoordinator";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,36 +28,24 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ScreenUpdateAuthor(props) {
-    const{
-        identificadorIn,
-        dataCadastroIn,
-        fNomeIn,
-        mNomeIn,
-        lNomeIn,
-        paisIn,
-        graduacaoIn,
-        cpfIn, 
-        sexoIn,
-        racaIn,
-        statusIn
-    } = props    
-    const classes = useStyles()
+const dataHoje = new Date()
+const dataFormatHoje = (dataHoje.getFullYear() +'-'+ (dataHoje.getMonth() < 10 ? '0' + (dataHoje.getMonth() +1) : (dataHoje.getMonth() +1)) +'-'+ (dataHoje.getDate() < 10 ? '0' + dataHoje.getDate() : dataHoje.getDate()) );
+
+export default function ScreenRegisterCoordinator() {
+    const classes = useStyles();
     const [arrayPaises, setArrayPaises] = React.useState([])
     const [arrayGraduacao, setArrayGraduacao] = React.useState([])
     const [firstName, setFirstName] = React.useState('')
     const [middleName , setMiddleName] = React.useState('')
     const [lastName, setLastName] = React.useState('')
-    const [paisOrganizer, setPaisOrganizer] = React.useState('')
-    const [graduacaoOrganizer, setGraduacaoOrganizer ] = React.useState([])
+    const [paisCoordinator, setPaisCoordinator] = React.useState('')
+    const [graduacaoCoordinator, setGraduacaoCoordinator ] = React.useState([])
     const [numCPF, setNumCPF] = React.useState('');
-    const [sexoOrganizer, setSexoOrganizer] = React.useState('')
-    const [racaOrganizer, setRacaOrganizer] = React.useState('')
-    const [newStatusOrganizer, setNewStatusOrganizer] = React.useState(false)
+    const [sexoCoordinator, setSexoCoordinator] = React.useState('')
+    const [racaCoordinator, setRacaCoordinator] = React.useState('')
     const [buttonDisable, setDisableButton] = React.useState(false)
     const [open, setOpen] = React.useState(false)
     const [textSnackBar, setTextSnackbar] = React.useState('')
-    const [edicao, setEdicao] = React.useState(false);
 
     React.useEffect(() => {
         const RetornarPaises = async () => setArrayPaises(await SearchPaises())
@@ -85,72 +72,21 @@ export default function ScreenUpdateAuthor(props) {
         );
     };
 
-    function RetornarNomePais(identificado){
-        function CountrieFilter(array) {
-            if(array.id === identificado){
-                return array
-            };
-        }
-        let nomePais = arrayPaises.map(x => x).filter(CountrieFilter);
-        nomePais = nomePais.map(x => x.nome)
-        return nomePais[0]
-    };
-
-    function RetornarGraduacao(identificado){
-        let nomeGraduacao = '';
-        for(let index = 0; index < identificado.length; index++){
-            const GraduationFilter = (array) => ((array.id === identificado[index]) ? array : null)
-            let arrayNomeGraduacao = arrayGraduacao.map(x => x).filter(GraduationFilter);
-            nomeGraduacao += arrayNomeGraduacao.map(x => x.nome_graduacao) + ' '
-        }
-        return nomeGraduacao
-    };
-    
-    const HandleSubmit = async () => await UpdateGraduationOrganizer(identificadorIn, dataCadastroIn, ((firstName === '')? fNomeIn : firstName) , ((middleName === '')? mNomeIn : middleName) ,((lastName === '')? lNomeIn : lastName), ((paisOrganizer === '')? paisIn : paisOrganizer), (graduacaoOrganizer), ((numCPF === '')? cpfIn : numCPF), ((sexoOrganizer === '')? sexoIn : sexoOrganizer), ((racaOrganizer === '')? racaIn : racaOrganizer), ((newStatusOrganizer === '')? statusIn : newStatusOrganizer) ) ? setOpen(true) || setTextSnackbar('Dados Atualizado com Sucesso') || setDisableButton(true) : setOpen(true) || setTextSnackbar('Dados Não Foram Atualizados - Verificar Console'); 
+    const HandleSubmit = async () => await InsertCoordinator(dataFormatHoje, firstName, middleName,lastName, paisCoordinator, graduacaoCoordinator, numCPF, sexoCoordinator, racaCoordinator) ? setOpen(true) || setTextSnackbar('Dados Inseridos com Sucesso') || setDisableButton(true) : setOpen(true) || setTextSnackbar('Dados Não Forma Inseridos - Verificar Console'); 
     
     return(
         <React.Fragment>
         <CssBaseline />
         <div className={classes.root}>
         <Grid
-            id="GridCadastroAutor"
+            id="GridCadastroCoordenador"
             container
             spacing={2}
             direction="row"
             justify="space-around"
             alignItems="stretch"
             className={classes.grid}
-        >    
-            <Grid 
-                item
-                xs={12}
-                sm={12}
-            >                         
-                <FormGroup>
-                    <Typography
-                        component='div'
-                        variant='h6'
-                    >
-                        <Grid
-                            component='label' 
-                            container 
-                            spacing={1}
-                        >
-                            <Grid item>
-                            <Switch 
-                                checked={edicao} 
-                                name="checkedC"
-                                size='medium'
-                                onChange={() => setEdicao(edicao ? false : true)}
-                            />
-                            </Grid>
-                            <Grid item>
-                                {edicao ? 'Modo Edição' : 'Modo Visualização'}
-                            </Grid>
-                        </Grid>
-                    </Typography>
-                </FormGroup>
-            </Grid>
+        >
             <Grid
                 item
                 xs={12}
@@ -162,16 +98,15 @@ export default function ScreenUpdateAuthor(props) {
                     className={classes.paper}
                 >
                     <TextField
-                        aria-labelledby='Nome do Organizador'
+                        aria-labelledby='Nome do Coordenador'
                         id='primeiro_nome_pessoa'
                         type='text'
-                        helperText='Nome do Organizador do Livro'
+                        label='Primeiro Nome'
+                        helperText='Nome do Coordenador do Livro'
                         variant='outlined'
                         margin='dense'
                         fullWidth
-                        value={edicao ? null : fNomeIn}
                         onChange={(e)=> setFirstName(e.target.value)}
-                        disabled={edicao ? false : true}
                     />
                 </Paper>    
             </Grid>
@@ -186,16 +121,15 @@ export default function ScreenUpdateAuthor(props) {
                     className={classes.paper}
                 >
                     <TextField
-                        aria-labelledby='Segundo Nome do Organizador'
+                        aria-labelledby='Segundo Nome do Coordenador'
                         id='segundo_nome_pessoa'
                         type='text'
-                        helperText='Segundo Nome do Organizador do Livro'
+                        label='Segundo Nome'
+                        helperText='Segundo Nome do Coordenador do Livro'
                         variant='outlined'
                         margin='dense'
                         fullWidth
-                        value={edicao ? null : mNomeIn}
                         onChange={(e)=> setMiddleName(e.target.value)}
-                        disabled={edicao ? false : true}
                     />
                 </Paper>    
             </Grid>
@@ -210,23 +144,45 @@ export default function ScreenUpdateAuthor(props) {
                     className={classes.paper}
                 >
                     <TextField
-                        aria-labelledby='Sobrenome do Organizador'
+                        aria-labelledby='Sobrenome do Coordenador'
                         id='ultimo_nome_pessoa'
                         type='text'
-                        helperText='Sobrenome do Organizador do Livro'
+                        label='Sobrenome Nome'
+                        helperText='Sobrenome do Coordenador do Livro'
                         variant='outlined'
                         margin='dense'
                         fullWidth
-                        value={edicao ? null : lNomeIn}
                         onChange={(e)=> setLastName(e.target.value)}
-                        disabled={edicao ? false : true}
                     />
                 </Paper>    
             </Grid>
             <Grid
                 item 
                 xs={12} 
-                sm={6}
+                sm={4}
+            >
+                <Paper
+                    elevation={8}
+                    variant='elevation'
+                    className={classes.paper}
+                >
+                    <TextField
+                        aria-labelledby='Data de Cadastro'
+                        id='data_cadastro'
+                        type='date'
+                        helperText='Data de Cadastro do Coordenador'
+                        variant='outlined'
+                        margin='dense'
+                        value={dataFormatHoje}
+                        disabled
+                        fullWidth
+                    />
+                </Paper> 
+            </Grid>
+            <Grid
+                item 
+                xs={12} 
+                sm={4}
             >
                 <Paper
                     elevation={8}
@@ -234,28 +190,26 @@ export default function ScreenUpdateAuthor(props) {
                     className={classes.paper}
                 >   
                     <Autocomplete
-                        inputValue={edicao ? '' : (RetornarNomePais(paisIn) === undefined ? '' : RetornarNomePais(paisIn))}
                         getOptionSelected={(o,v) =>  (o.option === v.value)}
                         getOptionLabel={(o) => o.nome}
-                        onChange={(e,v) => setPaisOrganizer(!v? '' : v.id)}
+                        onChange={(e,v) => setPaisCoordinator(!v? '' : v.id)}
                         options={arrayPaises} 
-                        disabled={edicao ? false : true}
                         renderInput={(params) => 
                             <TextField
                                 {...params}
                                 type='text'
-                                helperText='País de Nacionalidade do Organizador'
+                                helperText='País de Nacionalidade do Coordenador'
                                 variant='outlined'
                                 margin='dense'
                                 fullWidth
                             />}
-                    />                       
+                    />                    
                 </Paper>  
             </Grid>
             <Grid
                 item 
                 xs={12} 
-                sm={6}
+                sm={4}
             >
                 <Paper
                     elevation={8}
@@ -264,16 +218,14 @@ export default function ScreenUpdateAuthor(props) {
                 >   
                     <Autocomplete
                         multiple
-                        inputValue={edicao ? '' : RetornarGraduacao(graduacaoIn)}
                         getOptionLabel={(o) => o.nome_graduacao}
-                        onChange={(e,v) => setGraduacaoOrganizer(!v? '' : v)}
+                        onChange={(e,v) => setGraduacaoCoordinator(v === '' ? '' : v)}
                         options={arrayGraduacao} 
-                        disabled={edicao ? false : true}
                         renderInput={(params) => 
                             <TextField
                                 {...params}
                                 type='text'
-                                helperText='Graduação do Organizador'
+                                helperText='Graduação do Coordenador'
                                 variant='outlined'
                                 margin='dense'
                                 fullWidth
@@ -296,18 +248,16 @@ export default function ScreenUpdateAuthor(props) {
                         name='numero_cpf'
                         variant="outlined"
                         placeholder="Informe Número do CPF"
-                        helperText={(numCPF.length === 0 ? 'Número do CPF do Organizador' : (((numCPF.length > 0) && (numCPF.length < 11)) ? 'Informe o Número Completo do CPF' : ( ValidatingCPF(numCPF) ? 'Número do CPF do Organizador' : 'CPF Inválido' )))}
+                        helperText={(numCPF.length === 0 ? 'Número do CPF do Coordenador' : (((numCPF.length > 0) && (numCPF.length < 11)) ? 'Informe o Número Completo do CPF' : ( ValidatingCPF(numCPF) ? 'Número do CPF do Coordenador' : 'CPF Inválido' )))}
                         error={numCPF.length === 0 ? false : (ValidatingCPF(numCPF) ? false : true)}
                         size='small'
                         margin='dense' 
                         type='text'  
-                        value={edicao ? null : cpfIn}
                         onChange={(e) => setNumCPF(e.target.value)}
                         fullWidth                             
                         InputProps={{
                             inputComponent: TextFieldCPF,
                         }}
-                        disabled={edicao ? false : true}
                     />
                 </Paper>
             </Grid>
@@ -323,35 +273,32 @@ export default function ScreenUpdateAuthor(props) {
                 >
                     <FormControl component='fieldset'>
                         <FormLabel component='legend'>
-                            Sexo do Organizador
+                            Sexo do Coordenador
                         </FormLabel>
                         <RadioGroup 
                             row
                             aria-label='Sexo Autor'
                             name='sexo_pessoas'
-                            defaultValue={sexoIn}
-                            onChange={(e) => setSexoOrganizer(e.target.value)}
+                            defaultValue='M'
+                            onChange={(e) => setSexoCoordinator(e.target.value)}
                         >
                             <FormControlLabel
                                 value='F'
                                 control={<Radio />}
                                 label='Feminio'
-                                labelPlacement='bottom'                                
-                                disabled={edicao ? false : true}
+                                labelPlacement='bottom'
                             />
                             <FormControlLabel 
                                 value='M'
                                 control={<Radio />}
                                 label='Masculino'
-                                labelPlacement='bottom'                                
-                                disabled={edicao ? false : true}
+                                labelPlacement='bottom'
                             />
                             <FormControlLabel 
                                 value='O'
                                 control={<Radio />}
                                 label='Outros'
-                                labelPlacement='bottom'                                
-                                disabled={edicao ? false : true}
+                                labelPlacement='bottom'
                             />
                         </RadioGroup>
                     </FormControl>
@@ -369,90 +316,54 @@ export default function ScreenUpdateAuthor(props) {
                 >
                     <FormControl component='fieldset'>
                         <FormLabel component='legend'>
-                            Raça do Organizador
+                            Raça do Coordenador
                         </FormLabel>
                         <RadioGroup 
                             row
-                            aria-label='Raça do Organizador'
+                            aria-label='Raça do Coordenador'
                             name='raca_pessoas'
-                            defaultValue={racaIn}
-                            onChange={(e) => setRacaOrganizer(e.target.value)}
+                            defaultValue='P'
+                            onChange={(e) => setRacaCoordinator(e.target.value)}
                         >
                             <FormControlLabel 
                                 value="P" 
                                 control={<Radio />} 
                                 label="Preto" 
-                                labelPlacement="bottom"                                
-                                disabled={edicao ? false : true}
+                                labelPlacement="bottom"
                             />
                             <FormControlLabel 
-                                value="B" 
-                                control={<Radio />} 
-                                label="Branco" 
-                                labelPlacement="bottom"                                
-                                disabled={edicao ? false : true}
+                            value="B" 
+                            control={<Radio />} 
+                            label="Branco" 
+                            labelPlacement="bottom"
                             />
                             <FormControlLabel 
-                                value="D" 
-                                control={<Radio />} 
-                                label="Pardo" 
-                                labelPlacement="bottom"                                                                
-                                disabled={edicao ? false : true}
+                            value="D" 
+                            control={<Radio />} 
+                            label="Pardo" 
+                            labelPlacement="bottom"
                             />
                             <FormControlLabel 
-                                value="I" 
-                                control={<Radio />} 
-                                label="Indígena" 
-                                labelPlacement="bottom"                                
-                                disabled={edicao ? false : true}
+                            value="I" 
+                            control={<Radio />} 
+                            label="Indígena" 
+                            labelPlacement="bottom"
                             />
                             <FormControlLabel 
-                                value="A" 
-                                control={<Radio />} 
-                                label="Amarelo" 
-                                labelPlacement="bottom"                                
-                                disabled={edicao ? false : true}
+                            value="A" 
+                            control={<Radio />} 
+                            label="Amarelo" 
+                            labelPlacement="bottom"
                             />
                             <FormControlLabel 
-                                value="S" 
-                                control={<Radio />} 
-                                label="S. Informação" 
-                                labelPlacement="bottom"                                
-                                disabled={edicao ? false : true}
+                            value="S" 
+                            control={<Radio />} 
+                            label="S. Informação" 
+                            labelPlacement="bottom"
                             />
                         </RadioGroup>
                     </FormControl>
                 </Paper>
-            </Grid>
-            <Grid
-                item 
-                xs={12} 
-                sm={12}
-            >
-                <Paper
-                    elevation={8}
-                    variant='elevation'
-                    className={classes.paper}
-                >   
-                    <Autocomplete
-                        inputValue={edicao ? '' : (statusIn ? 'Ativo' : 'Inativo')}
-                        getOptionSelected={(o,v) =>  (o.option === v.value)}
-                        getOptionLabel={(o) => o.value}
-                        onChange={(e,v) => setNewStatusOrganizer(!v? '' : v.id)}
-                        options={statusAutor}                                 
-                        disabled={edicao ? false : true}
-                        renderInput={(params) => 
-                            <TextField
-                                {...params}
-                                type='text'
-                                helperText='Status do Cadastro do Organizador'
-                                variant='outlined'
-                                margin='dense'
-                                onClick={() => setEdicao(true)}
-                                fullWidth
-                            />}
-                    />                            
-                </Paper>   
             </Grid>
             <Grid
                 item
@@ -468,11 +379,11 @@ export default function ScreenUpdateAuthor(props) {
                         size='large'
                         variant='outlined'
                         startIcon={<Save/>}
-                        disabled={(edicao ? false : (!edicao ? true : buttonDisable)) }
+                        disabled={buttonDisable}
                         onClick={HandleSubmit}
                         fullWidth
                     >
-                        ATUALIZAR
+                        SALVAR
                     </Button>
                 </Paper>
             </Grid>
@@ -488,26 +399,3 @@ export default function ScreenUpdateAuthor(props) {
         </React.Fragment>
     );
 };
-
-const statusAutor = [
-    {
-        "id": true,
-        "value": 'Ativo'
-    }, 
-    {
-        "id": false,
-        "value": 'Inativo'
-    }
-];
-
-ScreenUpdateAuthor.propTypes = {
-        fNomeIn: PropTypes.string.isRequired,
-        mNomeIn: PropTypes.string.isRequired,
-        lNomeIn: PropTypes.string.isRequired,
-        paisIn: PropTypes.string.isRequired,
-        graduacaoIn: PropTypes.array.isRequired, 
-        cpfIn: PropTypes.string.isRequired, 
-        sexoIn: PropTypes.string.isRequired,
-        racaIn: PropTypes.string.isRequired,
-        statusIn: PropTypes.bool.isRequired
-    }

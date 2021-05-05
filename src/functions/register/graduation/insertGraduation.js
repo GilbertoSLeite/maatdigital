@@ -1,12 +1,13 @@
 let token = localStorage.getItem('@maatdigital/token');
 let situacao;
-export default async function InsertGraduation(graduacao){
+export default async function InsertGraduation(graduacao, siglaGraduacao){
     try {
         let myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("Authorization", token);
         let raw = JSON.stringify({
             "nome_graduacao": graduacao,
+            "sigla_graduacao": siglaGraduacao,
         });
 
         let requestOptions = {
@@ -17,10 +18,12 @@ export default async function InsertGraduation(graduacao){
         };
         const response = await fetch('/maatdigital/graduacao', requestOptions);
         const result = await response.json();
-        if(result.status){
+        console.log(result)
+        if(result.status === true){
             situacao = Boolean(true)
         }else {
             console.log(result);
+            console.error(result.tipo_error);
             situacao = Boolean(false)
         }
     } catch (error) {

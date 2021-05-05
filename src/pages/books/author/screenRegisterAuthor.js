@@ -39,7 +39,7 @@ export default function ScreenRegisterAuthor() {
     const [middleName , setMiddleName] = React.useState('')
     const [lastName, setLastName] = React.useState('')
     const [paisAutor, setPaisAutor] = React.useState('')
-    const [graduacaoAutor, setGraduacaoAutor ] = React.useState('')
+    const [graduacaoAutor, setGraduacaoAutor ] = React.useState([])
     const [numCPF, setNumCPF] = React.useState('');
     const [sexoAutor, setSexoAutor] = React.useState('M')
     const [racaAutor, setRacaAutor] = React.useState('P')
@@ -73,7 +73,7 @@ export default function ScreenRegisterAuthor() {
     };
 
     const HandleSubmit = async () => await InsertAuthor(dataFormatHoje, firstName, middleName,lastName, paisAutor, graduacaoAutor, numCPF, sexoAutor, racaAutor) ? setOpen(true) || setTextSnackbar('Dados Inseridos com Sucesso') || setDisableButton(true) : setOpen(true) || setTextSnackbar('Dados Não Forma Inseridos - Verificar Console'); 
-
+    
     return(
         <React.Fragment>
         <CssBaseline />
@@ -93,7 +93,7 @@ export default function ScreenRegisterAuthor() {
                 sm={4}
             >
                 <Paper 
-                    elevation
+                    elevation={8}
                     variant='elevation'
                     className={classes.paper}
                 >
@@ -116,7 +116,7 @@ export default function ScreenRegisterAuthor() {
                 sm={4}
             >
                 <Paper 
-                    elevation
+                    elevation={8}
                     variant='elevation'
                     className={classes.paper}
                 >
@@ -139,7 +139,7 @@ export default function ScreenRegisterAuthor() {
                 sm={4}
             >
                 <Paper 
-                    elevation
+                    elevation={8}
                     variant='elevation'
                     className={classes.paper}
                 >
@@ -217,9 +217,9 @@ export default function ScreenRegisterAuthor() {
                     className={classes.paper}
                 >   
                     <Autocomplete
-                        getOptionSelected={(o,v) =>  (o.option === v.value)}
+                        multiple
                         getOptionLabel={(o) => o.nome_graduacao}
-                        onChange={(e,v) => setGraduacaoAutor(!v? '' : v.id)}
+                        onChange={(e,v) => setGraduacaoAutor(v === '' ? '' : v)}
                         options={arrayGraduacao} 
                         renderInput={(params) => 
                             <TextField

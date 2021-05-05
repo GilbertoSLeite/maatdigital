@@ -1,18 +1,17 @@
-import InsertGraduationAuthor from "./insertGraudationAuthor";
+import InsertGraduationOrganizer from "./insertGraudationOrganizer";
 
 let token = localStorage.getItem('@maatdigital/token');
 let situacao = Boolean(false);
-let index = 0;
-export default async function InsertAuthor(
+export default async function InsertOrganizer(
     dataCadastro,
     firstName,
     middleName,
     lastName,
-    paisAutor,
-    graduacaoAutor,
+    paisOrganizer,
+    graduacaoOrganizer,
     numCPF,
-    sexoAutor,
-    racaAutor,
+    sexoOrganizer,
+    racaOrganizer,
 ){
     try {
         let myHeaders = new Headers();
@@ -23,10 +22,10 @@ export default async function InsertAuthor(
             "primeiro_nome_pessoa": firstName,
             "segundo_nome_pessoa": middleName,
             "ultimo_nome_pessoa": lastName,
-            "pais_autor_id": paisAutor,
+            "pais_organizador_id": paisOrganizer,
             "numero_cpf": numCPF,
-            "sexo_pessoas": sexoAutor,
-            "raca_pessoas": racaAutor,
+            "sexo_pessoas": sexoOrganizer,
+            "raca_pessoas": racaOrganizer,
             "status": Boolean(true),
         });
         let requestOptions = {
@@ -35,22 +34,21 @@ export default async function InsertAuthor(
             body: raw,
             redirect: 'follow'
         };
-        const response = await fetch('/maatdigital/autores', requestOptions);
+        const response = await fetch('/maatdigital/organizadores', requestOptions);
         const result = await response.json();
         if(result.status){
-            do {
-                const idGraduacao = graduacaoAutor[index].id;
-                const graduacao = await InsertGraduationAuthor(result.identificador_autor, idGraduacao) 
-                graduacao ? (index = index + 1) : (index = graduacaoAutor.length)
-                console.log('Index: ' + index)            
-            } while (index < graduacaoAutor.length);
+            for(let index = 0; index < graduacaoOrganizer.length;  index++){
+                const idGraduacao = graduacaoOrganizer[index].id;
+                const graduacao = await InsertGraduationOrganizer(result.identificador_organizador, idGraduacao) 
+                graduacao ? console.log('Index: ' + index)  : (index = graduacaoOrganizer.length)
+            }
             situacao = Boolean(true)
         }else {
             console.log(result);
             situacao = Boolean(false)
         }
     } catch (error) {
-        console.error('Ocorreu um erro em InsertAuthor: ' + error);
+        console.error('Ocorreu um erro em InsertOrganizer: ' + error);
     };
     return situacao
 };

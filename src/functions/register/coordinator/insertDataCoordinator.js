@@ -1,18 +1,17 @@
-import InsertGraduationAuthor from "./insertGraudationAuthor";
+import InsertGraduationCoordinator from "./insertGraudationCoordinator";
 
 let token = localStorage.getItem('@maatdigital/token');
 let situacao = Boolean(false);
-let index = 0;
-export default async function InsertAuthor(
+export default async function InsertCoordinator(
     dataCadastro,
     firstName,
     middleName,
     lastName,
-    paisAutor,
-    graduacaoAutor,
+    paisCoordinator,
+    graduacaoCoordinator,
     numCPF,
-    sexoAutor,
-    racaAutor,
+    sexoCoordinator,
+    racaCoordinator,
 ){
     try {
         let myHeaders = new Headers();
@@ -23,10 +22,10 @@ export default async function InsertAuthor(
             "primeiro_nome_pessoa": firstName,
             "segundo_nome_pessoa": middleName,
             "ultimo_nome_pessoa": lastName,
-            "pais_autor_id": paisAutor,
+            "pais_coordenador_id": paisCoordinator,
             "numero_cpf": numCPF,
-            "sexo_pessoas": sexoAutor,
-            "raca_pessoas": racaAutor,
+            "sexo_pessoas": sexoCoordinator,
+            "raca_pessoas": racaCoordinator,
             "status": Boolean(true),
         });
         let requestOptions = {
@@ -35,22 +34,21 @@ export default async function InsertAuthor(
             body: raw,
             redirect: 'follow'
         };
-        const response = await fetch('/maatdigital/autores', requestOptions);
+        const response = await fetch('/maatdigital/coordenadores', requestOptions);
         const result = await response.json();
         if(result.status){
-            do {
-                const idGraduacao = graduacaoAutor[index].id;
-                const graduacao = await InsertGraduationAuthor(result.identificador_autor, idGraduacao) 
-                graduacao ? (index = index + 1) : (index = graduacaoAutor.length)
-                console.log('Index: ' + index)            
-            } while (index < graduacaoAutor.length);
+            for(let index = 0; index < graduacaoCoordinator.length;  index++){
+                const idGraduacao = graduacaoCoordinator[index].id;
+                const graduacao = await InsertGraduationCoordinator(result.identificador_coordenador, idGraduacao) 
+                graduacao ? console.log('For Index: ' + index)  : (index = graduacaoCoordinator.length)
+            }
             situacao = Boolean(true)
         }else {
             console.log(result);
             situacao = Boolean(false)
         }
     } catch (error) {
-        console.error('Ocorreu um erro em InsertAuthor: ' + error);
+        console.error('Ocorreu um erro em InsertCoordinator: ' + error);
     };
     return situacao
 };

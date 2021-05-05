@@ -1,32 +1,33 @@
 let token = localStorage.getItem('@maatdigital/token');
-let situacao;
-export default async function UpdateBaseGraduation(id, graduacao, siglaGraduacao){
+let situacao = Boolean(false);
+export default async function InsertGraduationEditor(    
+    idEditor,
+    idGraduacaoEditor,
+){
     try {
         let myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("Authorization", token);
         let raw = JSON.stringify({
-            "nome_graduacao": graduacao,
-            "sigla_graduacao": siglaGraduacao,
+            "editor_id": idEditor,
+            "graduacoes_id": idGraduacaoEditor,
         });
-
         let requestOptions = {
-            method: 'PUT',
+            method: 'POST',
             headers: myHeaders,
             body: raw,
             redirect: 'follow'
         };
-        let url = '/maatdigital/graduacao/' + id;
-        const response = await fetch(url, requestOptions);
+        const response = await fetch('/maatdigital/graduacao_editores', requestOptions);
         const result = await response.json();
-        if(result.status){
+        if(result.status === true){
             situacao = Boolean(true)
         }else {
             console.log(result);
             situacao = Boolean(false)
         }
     } catch (error) {
-        console.error('Ocorreu um erro em InsertGraduation: ' + error);
+        console.error('Ocorreu um erro em InsertGraduationEditor: ' + error);
     };
     return situacao
 };

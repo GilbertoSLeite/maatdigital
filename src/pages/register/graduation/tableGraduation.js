@@ -9,6 +9,7 @@ export default function TableGraduation() {
     const [abrirDialog, setAbrirDialog] = React.useState(false);
     const [identificadorGraduacao, setIdentificadorGraduacao] = React.useState('');
     const [nomeGraduacao, setNomeGraduacao] = React.useState('');
+    const [siglaGraduacao, setSiglaGraduacao] = React.useState('');
     const [loading, setLoading] = React.useState(false);
 
     React.useEffect(() => {
@@ -20,7 +21,7 @@ export default function TableGraduation() {
 
     const handleFecharDialog = () => setAbrirDialog(false) || window.location.reload()
     
-    const AtualizandoGraduacao = (dadosGraduacao) => setIdentificadorGraduacao(dadosGraduacao.id) || setNomeGraduacao(dadosGraduacao.nome_graduacao) || setAbrirDialog(true)
+    const AtualizandoGraduacao = (dadosGraduacao) => setIdentificadorGraduacao(dadosGraduacao.id) || setNomeGraduacao(dadosGraduacao.nome_graduacao) || setSiglaGraduacao(dadosGraduacao.sigla_graduacao) || setAbrirDialog(true)
    
 
     return(
@@ -74,9 +75,26 @@ export default function TableGraduation() {
                         }
                     },
                     {
-                        title: 'Nome do Graduação',
+                        title: 'Nome da Graduação',
                         field: 'nome_graduacao',
                         tooltip: 'Informação referente a Graduação do Autor.',
+                        align: 'center',
+                        filtering: true,
+                        grouping: true,
+                        searchable: true,
+    	                editable: 'onUpdate',
+                        headerStyle: {
+                            fontWeight: 'bold'
+                        },
+                        cellStyle: {
+                            fontWeight: 'bold',
+                            color: '#2e5493',
+                        }
+                    },    
+                    {
+                        title: 'Sigla da Graduação',
+                        field: 'sigla_graduacao',
+                        tooltip: 'Informação referente a Sigla da Graduação do Autor.',
                         align: 'center',
                         filtering: true,
                         grouping: true,
@@ -121,7 +139,8 @@ export default function TableGraduation() {
             telaDialog={
                 <UpdateGraduation 
                     identificadorIn={identificadorGraduacao}
-                    nomeGraduacaoIn={nomeGraduacao}                    
+                    nomeGraduacaoIn={nomeGraduacao}    
+                    siglaGraduacaoIn={siglaGraduacao}                
                 />
             }
         /> :

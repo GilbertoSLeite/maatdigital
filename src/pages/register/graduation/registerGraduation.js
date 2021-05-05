@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 export default function RegisterGraduation() {
     const classes = useStyles();
     const [graduacao, setGraduacao] = React.useState('')
+    const [siglaGraduacao, setSiglaGraduacao] = React.useState('')
     const [buttonDisable, setDisableButton] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [textSnackBar, setTextSnackbar] = React.useState('');
@@ -45,7 +46,7 @@ export default function RegisterGraduation() {
         );
     };
 
-    const HandleSubmit = async () => await InsertGraduation(graduacao) ? setOpen(true) || setTextSnackbar('Dados Inseridos com Sucesso') || setDisableButton(true) : setOpen(true) || setTextSnackbar('Dados Não Forma Inseridos - Verificar Console');
+    const HandleSubmit = async () => await InsertGraduation(graduacao, siglaGraduacao) ? setOpen(true) || setTextSnackbar('Dados Inseridos com Sucesso') || setDisableButton(true) : setOpen(true) || setTextSnackbar('Dados Não Forma Inseridos - Verificar Console');
 
     return(
         <React.Fragment>
@@ -63,7 +64,7 @@ export default function RegisterGraduation() {
                 <Grid
                     item 
                     xs={12} 
-                    sm={12}
+                    sm={6}
                 >
                     <Tooltip 
                     arrow 
@@ -83,6 +84,34 @@ export default function RegisterGraduation() {
                                 variant='outlined'
                                 margin='dense'
                                 onChange={(e) => setGraduacao(e.target.value)}
+                                fullWidth
+                            />
+                        </Paper>    
+                    </Tooltip>
+                </Grid>
+                <Grid
+                    item 
+                    xs={12} 
+                    sm={6}
+                >
+                    <Tooltip 
+                    arrow 
+                    title='Digite a Sigla da Graudação que Será Vinculada ao Autor do Livro'
+                    >
+                        <Paper
+                            elevation={8}
+                            variant='elevation'
+                            className={classes.paper}
+                        >
+                            <TextField
+                                aria-labelledby='Sigla da Graduação'
+                                id='sigla_graduacao'
+                                type='text'
+                                label='Sigla da Graduação'
+                                helperText='Sigla da Graudação do Autor'
+                                variant='outlined'
+                                margin='dense'
+                                onChange={(e) => setSiglaGraduacao(e.target.value)}
                                 fullWidth
                             />
                         </Paper>    

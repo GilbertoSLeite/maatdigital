@@ -138,7 +138,7 @@ export default function DDC() {
                         editable: 'never',
                         filtering: true,
                         grouping: true,
-                        searchable: false,
+                        searchable: true,
                         headerStyle: {
                             fontWeight: 'bold'
                         },

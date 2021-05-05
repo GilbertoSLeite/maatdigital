@@ -25,9 +25,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function UpdateGraduation(props) {
-    const {identificadorIn, nomeGraduacaoIn} = props;
+    const {identificadorIn, nomeGraduacaoIn, siglaGraduacaoIn} = props;
     const classes = useStyles();
     const [graduacao, setGraduacao] = React.useState('')
+    const [siglaGraduacao, setSiglaGraduacao] = React.useState('')
     const [buttonDisable, setDisableButton] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [textSnackBar, setTextSnackbar] = React.useState('');
@@ -48,8 +49,8 @@ export default function UpdateGraduation(props) {
         );
     };
 
-    const HandleSubmit = async () => await UpdateBaseGraduation(identificadorIn, graduacao) ? setDisableButton(true) || setOpen(true) || setTextSnackbar('Dados Atualizados com Sucesso') : setOpen(true) || setTextSnackbar('Houve erro na inserção - Verificar console!')
-
+    const HandleSubmit = async () => await UpdateBaseGraduation(identificadorIn, (graduacao === '' ? nomeGraduacaoIn : graduacao), (siglaGraduacao === ''? siglaGraduacaoIn : siglaGraduacao)) ? setDisableButton(true) || setOpen(true) || setTextSnackbar('Dados Atualizados com Sucesso') : setOpen(true) || setTextSnackbar('Houve erro na inserção - Verificar console!')
+    console.log(siglaGraduacao)
     return(
         <React.Fragment>
             <CssBaseline />
@@ -66,7 +67,7 @@ export default function UpdateGraduation(props) {
                 <Grid
                     item 
                     xs={12} 
-                    sm={6}
+                    sm={4}
                 >
                     <Tooltip 
                     arrow 
@@ -81,7 +82,6 @@ export default function UpdateGraduation(props) {
                                 aria-labelledby='Código da Graduação'
                                 id='id'
                                 type='text'
-                                label='Identificador da Graduação'
                                 helperText='Identificador da Graudação do Autor'
                                 variant='outlined'
                                 margin='dense'
@@ -95,7 +95,7 @@ export default function UpdateGraduation(props) {
                 <Grid
                     item 
                     xs={12} 
-                    sm={6}
+                    sm={4}
                 >
                     <Tooltip 
                     arrow 
@@ -110,12 +110,40 @@ export default function UpdateGraduation(props) {
                                 aria-labelledby='Nome da Graduação'
                                 id='nome_graduacao'
                                 type='text'
-                                label='Nome da Graduação'
                                 helperText='Graudação do Autor'
                                 variant='outlined'
                                 margin='dense'
                                 value={edicao ? null : nomeGraduacaoIn}
                                 onChange={(e) => setGraduacao(e.target.value)}
+                                onClick={() => setEdicao(true)}
+                                fullWidth
+                            />
+                        </Paper>    
+                    </Tooltip>
+                </Grid>
+                <Grid
+                    item 
+                    xs={12} 
+                    sm={4}
+                >
+                    <Tooltip 
+                    arrow 
+                    title='Digite a Sigla Graudação que Será Vinculada ao Autor do Livro'
+                    >
+                        <Paper
+                            elevation={8}
+                            variant='elevation'
+                            className={classes.paper}
+                        >
+                            <TextField
+                                aria-labelledby='Sigla da Graduação'
+                                id='sigla_graduacao'
+                                type='text'
+                                helperText='Sigla da Graudação do Autor'
+                                variant='outlined'
+                                margin='dense'
+                                value={edicao ? null : siglaGraduacaoIn}
+                                onChange={(e) => setSiglaGraduacao(e.target.value)}
                                 onClick={() => setEdicao(true)}
                                 fullWidth
                             />
@@ -142,7 +170,7 @@ export default function UpdateGraduation(props) {
                             variant='outlined'
                             startIcon={<Save/>}
                             onClick={HandleSubmit}
-                            disabled={(graduacao === '' ? true : buttonDisable)}
+                            disabled={(((graduacao === '') && (siglaGraduacao === '')) ? true : buttonDisable)}
                             fullWidth
                         >
                             SALVAR
@@ -166,4 +194,5 @@ export default function UpdateGraduation(props) {
 UpdateGraduation.propTypes = {
     identificadorIn: PropTypes.string.isRequired,
     nomeGraduacaoIn: PropTypes.string.isRequired,
+    siglaGraduacaoIn: PropTypes.string.isRequired,
 };

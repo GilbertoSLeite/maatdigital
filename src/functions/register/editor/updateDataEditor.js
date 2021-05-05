@@ -1,21 +1,21 @@
-import UpdateGraduationAuthor from "./updateGraduationAuthor";
-import DeleteGraduationAuthor from "./deleteGraduationAuthor";
+import UpdateGraduationEditor from "./updateGraudationEditor";
+import DeleteGraduationEditor from "./deleteGraduationEditor";
 
 let token = localStorage.getItem('@maatdigital/token');
 let situacao = Boolean(false);
 
-export default async function UpdateAuthor(
+export default async function UpdateEditor(
     identificador,
     dataCadastro,
     firstName,
     middleName,
     lastName,
-    paisAutor,
-    graduacaoAutor,
+    paisEditor,
+    graduacaoEditor,
     numCPF,
-    sexoAutor,
-    racaAutor,
-    statusAutor,
+    sexoEditor,
+    racaEditor,
+    statusEditor,
 ){
     try {
         let myHeaders = new Headers();
@@ -26,11 +26,11 @@ export default async function UpdateAuthor(
             "primeiro_nome_pessoa": firstName,
             "segundo_nome_pessoa": middleName,
             "ultimo_nome_pessoa": lastName,
-            "pais_autor_id": paisAutor,
+            "pais_editor_id": paisEditor,
             "numero_cpf": numCPF,
-            "sexo_pessoas": sexoAutor,
-            "raca_pessoas": racaAutor,
-            "status":statusAutor,
+            "sexo_pessoas": sexoEditor,
+            "raca_pessoas": racaEditor,
+            "status":statusEditor,
         });
         let requestOptions = {
             method: 'PUT',
@@ -38,17 +38,16 @@ export default async function UpdateAuthor(
             body: raw,
             redirect: 'follow'
         };
-        let url = '/maatdigital/autores/'+ identificador
+        let url = '/maatdigital/editores/'+ identificador
         const response = await fetch(url, requestOptions);
         const result = await response.json();
         if(result.status === true){
-            console.log(graduacaoAutor.length)
-            if(graduacaoAutor.length > 0){
-            const isDelete = await DeleteGraduationAuthor(identificador);
+            if(graduacaoEditor.length > 0){
+            const isDelete = await DeleteGraduationEditor(identificador);
             if(isDelete){
-                for(let index = 0; index < graduacaoAutor.length; index++){
-                    const idGraduacao = graduacaoAutor[index].id;
-                    const graduacao = await UpdateGraduationAuthor(identificador, idGraduacao) 
+                for(let index = 0; index < graduacaoEditor.length; index++){
+                    const idGraduacao = graduacaoEditor[index].id;
+                    const graduacao = await UpdateGraduationEditor(identificador, idGraduacao) 
                     graduacao ? situacao =  Boolean(true) : situacao = Boolean(false)
                 }
             }
@@ -60,7 +59,7 @@ export default async function UpdateAuthor(
             situacao = Boolean(false)
         }
     } catch (error) {
-        console.error('Ocorreu um erro em UpdateAuthor: ' + error);
+        console.error('Ocorreu um erro em UpdateEditor: ' + error);
     };
     return situacao
 };
