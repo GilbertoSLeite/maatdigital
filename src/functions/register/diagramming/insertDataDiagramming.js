@@ -41,7 +41,7 @@ export default async function InsertDiagramming(
             for(let index = 0; index < graduacaoDiagramming.length;  index++){
                 const idGraduacao = graduacaoDiagramming[index].id;
                 const graduacao = await InsertGraduationDiagramming(result.identificador_diagramador, idGraduacao) 
-                graduacao ? console.log('For Index: ' + index)  : (index = graduacaoDiagramming.length)
+                !graduacao &&  (index = graduacaoDiagramming.length)
             }
             situacao = Boolean(true)
         }else {

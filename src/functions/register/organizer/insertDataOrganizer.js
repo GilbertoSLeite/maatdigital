@@ -41,7 +41,7 @@ export default async function InsertOrganizer(
             for(let index = 0; index < graduacaoOrganizer.length;  index++){
                 const idGraduacao = graduacaoOrganizer[index].id;
                 const graduacao = await InsertGraduationOrganizer(result.identificador_organizador, idGraduacao) 
-                graduacao ? console.log('Index: ' + index)  : (index = graduacaoOrganizer.length)
+                !graduacao && (index = graduacaoOrganizer.length)
             }
             situacao = Boolean(true)
         }else {

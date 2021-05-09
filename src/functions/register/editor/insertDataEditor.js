@@ -41,7 +41,7 @@ export default async function InsertEditor(
             for(let index = 0; index < graduacaoEditor.length;  index++){
                 const idGraduacao = graduacaoEditor[index].id;
                 const graduacao = await InsertGraduationEditor(result.identificador_editor, idGraduacao) 
-                graduacao ? console.log('For Index: ' + index)  : (index = graduacaoEditor.length)
+                !graduacao && (index = graduacaoEditor.length)
             }
             situacao = Boolean(true)
         }else {

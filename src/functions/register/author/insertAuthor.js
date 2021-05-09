@@ -3,7 +3,6 @@ import InsertGraduationAuthor from "./insertGraudationAuthor";
 
 let token = localStorage.getItem('@maatdigital/token');
 let situacao = Boolean(false);
-let index = 0;
 export default async function InsertAuthor(
     dataCadastro,
     firstName,
@@ -39,12 +38,11 @@ export default async function InsertAuthor(
         const response = await fetch('/maatdigital/autores', requestOptions);
         const result = await response.json();
         if(result.status){
-            do {
+            for(let index = 0; index < graduacaoAutor.length;  index++){
                 const idGraduacao = graduacaoAutor[index].id;
                 const graduacao = await InsertGraduationAuthor(result.identificador_autor, idGraduacao) 
-                graduacao ? (index = index + 1) : (index = graduacaoAutor.length)
-                console.log('Index: ' + index)            
-            } while (index < graduacaoAutor.length);
+                !graduacao && (index = graduacaoAutor.length)
+            };
             situacao = Boolean(true)
         }else {
             console.log(result);

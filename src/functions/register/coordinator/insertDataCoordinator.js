@@ -41,7 +41,7 @@ export default async function InsertCoordinator(
             for(let index = 0; index < graduacaoCoordinator.length;  index++){
                 const idGraduacao = graduacaoCoordinator[index].id;
                 const graduacao = await InsertGraduationCoordinator(result.identificador_coordenador, idGraduacao) 
-                graduacao ? console.log('For Index: ' + index)  : (index = graduacaoCoordinator.length)
+                !graduacao && (index = graduacaoCoordinator.length)
             }
             situacao = Boolean(true)
         }else {
