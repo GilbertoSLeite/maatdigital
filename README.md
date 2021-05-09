@@ -1,8 +1,8 @@
-# Projeto MAAT Digital
+# PROJETO MAAT Digital
 
 MAAT DIGITAL| BIBLIOTECA VIRTUAL é um projeto do Centro de Referência em Desenvolvimento e Humanidades (CRDH) da Universidade do Estado da Bahia (UNEB) que tem por objetivo reunir um acervo de livros digitais (E-Books) em uma biblioteca virtual, facilitando o acesso e compartilhamento de informações dentro das linhas de pesquisa do centro que são: Desenvolvimento e Humanidades. É um projeto de livre acesso, democrático e colaborativo, aberto a colaboração de todos. Licença Creative Commons.
 
-## Sobre o Projeto
+## SOBRE O PROJETO
 
 MAAT VIRTUAL | BIBLIOTECA DIGITAL
 UM PROJETO PARA O FUTURO
@@ -16,7 +16,7 @@ ODS: OBJETIVOS DO DESENVOLVIMENTO SUSTENTÁVEL
 16 - Paz, Justiça e Instituições Eficazes;
 17 - Parcerias e meios de implementação.
 
-### Descrição do Projeto
+### DESCRIÇÃO DO PROJETO
 
 O Projeto da MAAT Virtual | Biblioteca Digital é um projeto sintonizado com o momento econômico, social e cultural em que vivemos. Estamos deixando a sociedade industrial para ingressa na chamada Sociedade da aprendizagem e Economia do Conhecimento, como nos propõem Stiglitz (2017). Tem por objetivo formar equipes para atender aos desafios nacionais, difundir, preservar e produzir conhecimento para resolução dos grandes problemas educacionais, sociais, econômicos e culturais.
 
@@ -46,9 +46,9 @@ Este projeto atende aos 17 Objetivos Globais do Desenvolvimento Sustentável, es
 
 A BIBLIOTECA MAAT VIRTUAL é um projeto do Centro de Referência em Desenvolvimento e Humanidades da Universidade do Estado da Bahia (UNEB), centro multiusuário e transdisciplinar de pesquisa. É uma inovação e tecnologia social, maiores informações sobre o CRDH/UNEB podem ser obtidas no link abaixo.
 
-### O que é MAAT?
+### O QUE É MAAT?
 
 MAAT é uma Deusa Egípcia da verdade e da Justiça, da retidão e da ordem. É a Deusa responsável pela manutenção da ordem cósmica e social. É responsável pelo equilíbrio do universo é graças a ela que o mundo funciona em harmonia. Ela é a luz que traz Rá ao mundo. MAAT é associada tanto a Deusa como um princípio de determinação e Justiça.
 
-### Desenvolvedor
+### DESENVOLVEDOR
 Gilberto Leite - LS Consultoria & Sistemas LTDA.
