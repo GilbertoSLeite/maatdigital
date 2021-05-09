@@ -1,5 +1,4 @@
 let token = localStorage.getItem('@maatdigital/token');
-
 export default async function SearchDiagramming() {
     try {
         let myHeaders = new Headers();
@@ -10,8 +9,8 @@ export default async function SearchDiagramming() {
             method: 'GET',
             redirect: 'follow',
         };   
-        const response = await fetch('/maatdigital/diagramadores', requestOptions);                
-        return (response.ok && await response.json());
+        const response = await fetch('/maatdigital/diagramadores', requestOptions);
+        return await (response.ok && await response.json()); 
     } catch (error) {
         console.error('Error em SearchDiagramming: ' + error);
     };

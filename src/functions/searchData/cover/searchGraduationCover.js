@@ -1,5 +1,4 @@
 let token = localStorage.getItem('@maatdigital/token');
-
 export default async function SearchGraduationCover() {
     try {
         let myHeaders = new Headers();
@@ -11,7 +10,7 @@ export default async function SearchGraduationCover() {
             redirect: 'follow',
         };   
         const response = await fetch('/maatdigital/graduacao_resp_capas', requestOptions);
-        return (response.ok && await response.json()); 
+        return await (response.ok && await response.json());  
     } catch (error) {
         console.error('Error em SearchGraduationCover: ' + error);
     };

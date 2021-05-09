@@ -154,7 +154,7 @@ export default function MiniDrawerMaat(props) {
         <Divider />
         <List>
           {rotasPaginas.map((data, key) => (
-            <Tooltip aria-label='Balão dos Icones' arrow title={data.name}>
+            <Tooltip aria-label='Balão dos Icones' key={key} arrow title={data.name}>
               <ListItem button component='a' href={data.path} key={key} divider dense>
                 <ListItemIcon><data.icon/></ListItemIcon>
                 <ListItemText primary={data.name}/>

@@ -11,8 +11,7 @@ export default async function SearchSubClasse() {
             redirect: 'follow',
         };   
         const response = await fetch('/maatdigital/subclasses_conhecimento', requestOptions);
-        const result = (response.ok && await response.json());       
-        return await result
+        return await (response.ok && await response.json()); 
     } catch (error) {
         console.error('Error em SearchSubClasse: ' + error);
     };

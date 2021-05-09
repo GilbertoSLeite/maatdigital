@@ -11,8 +11,7 @@ export default async function SearchAreaConhecimento() {
             redirect: 'follow',
         };   
         const response = await fetch('/maatdigital/areaconhecimento', requestOptions);
-        const result = (response.ok && await response.json());        
-        return await result
+        return await (response.ok && await response.json()); 
     } catch (error) {
         console.error('Error em SearchAreaConhecimento: ' + error);
     };

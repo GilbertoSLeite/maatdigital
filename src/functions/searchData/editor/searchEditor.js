@@ -1,15 +1,16 @@
+let token = localStorage.getItem('@maatdigital/token');
 export default async function SearchEditor() {
     try {
         let myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", token);
         let requestOptions = {    
             headers: myHeaders,
             method: 'GET',
             redirect: 'follow',
         };   
         const response = await fetch('/maatdigital/editores', requestOptions);
-        const result = (response.ok && await response.json());        
-        return await result
+        return await (response.ok && await response.json()); 
     } catch (error) {
         console.error('Error em SearchEditor: ' + error);
     };

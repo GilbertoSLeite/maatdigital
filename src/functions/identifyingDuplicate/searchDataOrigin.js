@@ -1,8 +1,10 @@
 let primeiroUrl = '/maatdigital/'
+let token = localStorage.getItem('@maatdigital/token');
 export default async function SearchDataOrigin(table) {
     try {
         let myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", token);
         let requestOptions = {    
             headers: myHeaders,
             method: 'GET',
