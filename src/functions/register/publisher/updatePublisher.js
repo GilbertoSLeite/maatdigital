@@ -30,12 +30,7 @@ export default async function UpdatePublisher(
         let url = '/maatdigital/editoras/' + identificador;
         const response = await fetch(url, requestOptions);
         const result = await response.json();
-        if(result.status){
-            situacao = Boolean(true)
-        }else {
-            console.log(result);
-            situacao = Boolean(false)
-        }
+        (result.status ? (situacao = Boolean(true)) : (situacao = Boolean(false) || console.log(result)));
     } catch (error) {
         console.error('Ocorreu um erro em UpdateBasePublisher: ' + error);
     };

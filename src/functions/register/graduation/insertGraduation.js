@@ -1,3 +1,5 @@
+import DataStatus from "../../dataStatus/dataStatus";
+
 let token = localStorage.getItem('@maatdigital/token');
 let situacao;
 export default async function InsertGraduation(graduacao, siglaGraduacao){
@@ -23,7 +25,8 @@ export default async function InsertGraduation(graduacao, siglaGraduacao){
             situacao = Boolean(true)
         }else {
             console.log(result);
-            console.error(result.tipo_error);
+            const errorData = DataStatus(result);
+            console.error(errorData.getErrorMessage())
             situacao = Boolean(false)
         }
     } catch (error) {

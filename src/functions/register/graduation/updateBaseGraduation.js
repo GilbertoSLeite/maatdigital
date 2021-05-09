@@ -19,12 +19,7 @@ export default async function UpdateBaseGraduation(id, graduacao, siglaGraduacao
         let url = '/maatdigital/graduacao/' + id;
         const response = await fetch(url, requestOptions);
         const result = await response.json();
-        if(result.status){
-            situacao = Boolean(true)
-        }else {
-            console.log(result);
-            situacao = Boolean(false)
-        }
+        (result.status ? (situacao = Boolean(true)) : (situacao = Boolean(false) || console.log(result)));
     } catch (error) {
         console.error('Ocorreu um erro em InsertGraduation: ' + error);
     };
