@@ -1,71 +1,54 @@
-# Getting Started with Create React App
+# Projeto MAAT Digital
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+MAAT DIGITAL| BIBLIOTECA VIRTUAL é um projeto do Centro de Referência em Desenvolvimento e Humanidades (CRDH) da Universidade do Estado da Bahia (UNEB) que tem por objetivo reunir um acervo de livros digitais (E-Books) em uma biblioteca virtual, facilitando o acesso e compartilhamento de informações dentro das linhas de pesquisa do centro que são: Desenvolvimento e Humanidades. É um projeto de livre acesso, democrático e colaborativo, aberto a colaboração de todos. Licença Creative Commons.
 
-## Available Scripts
+## Sobre o Projeto
 
-In the project directory, you can run:
+MAAT VIRTUAL | BIBLIOTECA DIGITAL
+UM PROJETO PARA O FUTURO
+ODS: OBJETIVOS DO DESENVOLVIMENTO SUSTENTÁVEL
 
-### `npm start`
+4 - Educação de Qualidade;
+10 - Redução das Desigualdades; 
+11 - Cidades e comunidades Sustentáveis;
+12 - Consumo e Produção Responsáveis;
+13 - Ação contra a Mudança Global do Clima;
+16 - Paz, Justiça e Instituições Eficazes;
+17 - Parcerias e meios de implementação.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Descrição do Projeto
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+O Projeto da MAAT Virtual | Biblioteca Digital é um projeto sintonizado com o momento econômico, social e cultural em que vivemos. Estamos deixando a sociedade industrial para ingressa na chamada Sociedade da aprendizagem e Economia do Conhecimento, como nos propõem Stiglitz (2017). Tem por objetivo formar equipes para atender aos desafios nacionais, difundir, preservar e produzir conhecimento para resolução dos grandes problemas educacionais, sociais, econômicos e culturais.
 
-### `npm test`
+Com a transformação digital, a economia vem se desmaterializando e as pessoas nunca antes estiveram tão propícias a consumir bens imateriais. Livros, revista, cartilhas, apostilas, até mesmo filmes, estão sendo disponibilizados, especialmente, em sua versão digital, distribuídos pela rede mundial de computadores (internet).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+O projeto da MAAT nasceu para atender aos estudantes de pós-graduação e graduação da UNEB, mas, como o passar do tempo, outros atores passaram a se  interessar pela proposta, solicitando acesso ao acervo virtual. Com isso, as medidas estão sendo tomadas para melhorar o serviço, ampliando o acervo de livros digital (E-Books), teses e dissertações, TCCs, manuais, apostilas, cartilhas, toda forma de conteúdo digital que tenha valor acadêmico e social.
 
-### `npm run build`
+Com isso pretendemos dar visibilidade a produção de editoras universitárias, publicações de projetos e órgãos públicos,  autores e editores independentes que, na maioria das vezes, não têm condições de divulgar seu trabalho para o grande público. Como o CRDH/UNEB atinge a uma rede de milhares de pessoas, nossa expectativa é que esta biblioteca contribua muito neste sentido. 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+É também um objetivo deste projeto que os autores publiquem para divulgação através de possa MAAT Virtual, esta é uma possibilidade que vem sendo trabalhando, servir de plataforma de divulgação para novos autores.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Vale dizer que muitos jovens nos pedem a distribuição de material voltado para o ENEM, esta é uma possibilidade que estamos trabalhando para este ano de 2021. Ao chegar a estas comunidades a MAAT é uma porta aberta ao conhecimento. E o conhecimento é vital na luta contra a opressão e todas as formas de exclusão social.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Este projeto atende aos 17 Objetivos Globais do Desenvolvimento Sustentável, especialmente:
 
-### `npm run eject`
+04 - Educação de qualidade (o colocar a disposição das pessoas títulos selecionados por uma curadoria acadêmica-científica);
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+10 - Redução das desigualdades (Democratiza a informação e amplia o acesso das pessoas a conteúdos de qualidade);
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+12 - Consumo e produção responsáveis (O material é distribuído gratuitamente em pdf, podendo ser acessado por qualquer dispositivo eletrônico, sem gastos com papel e desmatamento de árvores);
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+13 - Ações contra a mudança global (Previne o desmatamento, além de difundir conhecimento sobre meio ambiente e sustentabilidade);
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+16 - Paz, Justiça e Instituições Eficazes (Difusão de conhecimento sobre direitos humanos, paz e justiça social).
 
-## Learn More
+### CRDH/UNEB
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+A BIBLIOTECA MAAT VIRTUAL é um projeto do Centro de Referência em Desenvolvimento e Humanidades da Universidade do Estado da Bahia (UNEB), centro multiusuário e transdisciplinar de pesquisa. É uma inovação e tecnologia social, maiores informações sobre o CRDH/UNEB podem ser obtidas no link abaixo.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### O que é MAAT?
 
-### Code Splitting
+MAAT é uma Deusa Egípcia da verdade e da Justiça, da retidão e da ordem. É a Deusa responsável pela manutenção da ordem cósmica e social. É responsável pelo equilíbrio do universo é graças a ela que o mundo funciona em harmonia. Ela é a luz que traz Rá ao mundo. MAAT é associada tanto a Deusa como um princípio de determinação e Justiça.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# maatdigital
+### Desenvolvedor
+Gilberto Leite - LS Consultoria & Sistemas LTDA.
