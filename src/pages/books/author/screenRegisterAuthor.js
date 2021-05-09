@@ -61,12 +61,13 @@ export default function ScreenRegisterAuthor() {
         RetornarGraduacao()
     },[]);
 
-    const CloseSnack = () => setOpen(false)
+    const CloseSnack = () => 
+        setOpen(false)
 
     const HandleClose = () => {
         return (
             <IconButton
-                aria-label='Close'
+                aria-label='Fechar'
                 color='inherit'
                 size='small'
                 onClick={CloseSnack}
@@ -76,18 +77,48 @@ export default function ScreenRegisterAuthor() {
         );
     };
 
+    async function RatedData(statusRated){
+        try {
+            if(statusRated){
+                setOpen(true)
+                setAlertSnack('warning')
+                setTextSnackbar('Já existe um ' + firstName + ' ' + middleName + ' ' + lastName + ' no Banco de Dados')
+            } else {
+                await HandleSubmit()
+            }            
+        } catch (error) {
+            console.error('Error na validação dos dados em RatedData ' + error);
+        };
+    };
+
     async function validatingData(){
         try {
             const ConcatenatingNames = ((firstName.toLowerCase().trim()) + (middleName.toLowerCase().trim()) + (lastName.toLowerCase().trim()))
             const ratedData = await IdentifyingDuplicate('autores', ConcatenatingNames) 
-            ratedData ? setOpen(true) || setAlertSnack('warning') || setTextSnackbar('Já existe um ' + firstName + ' ' + middleName + ' ' + lastName + ' no Banco de Dados')  : HandleSubmit()
+            await RatedData(ratedData)
         } catch (error) {
             console.error('Error ocorrido na validação dos dados em validatingData - ScreenRegisterCover ' + error)
         };        
     };
 
-    const HandleSubmit = async () => await InsertAuthor(dataFormatHoje, firstName, middleName,lastName, paisAutor, graduacaoAutor, numCPF, sexoAutor, racaAutor) ? setOpen(true) || setAlertSnack('success') || setTextSnackbar('Dados Inseridos com Sucesso') || setDisableButton(true) : setOpen(true) || setAlertSnack('error') || setTextSnackbar('Dados Não Forma Inseridos - Verificar Console'); 
-    
+    async function HandleSubmit(){
+        try {            
+            let isInsert = await InsertAuthor(dataFormatHoje, firstName, middleName,lastName, paisAutor, graduacaoAutor, numCPF, sexoAutor, racaAutor)
+            if(isInsert){
+                setOpen(true)
+                setAlertSnack('success')
+                setTextSnackbar('Dados Inseridos com Sucesso')
+                setDisableButton(true)
+            } else {
+                setOpen(true)
+                setAlertSnack('error')
+                setTextSnackbar('Dados Não Forma Inseridos - Verificar Console')
+            }            
+        } catch (error) {
+            console.error('Error na inserção de dados em HandleSubmit ' + error)
+        };
+    };
+
     return(
         <React.Fragment>
         <CssBaseline />
