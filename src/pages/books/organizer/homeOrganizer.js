@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, makeStyles, Paper } from "@material-ui/core";
-import DialogCadastro from "../../../componets/dialog/dialogCadastro/dialogCadastro";
+import DialogCadastro from "../../../components/dialog/dialogCadastro/dialogCadastro";
 import { Add } from "@material-ui/icons";
 import TableOrganizer from "./tableOrganizer";
 import ScreenRegisterOrganizer from "./screenRegisterOrganizer";

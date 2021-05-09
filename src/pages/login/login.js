@@ -15,7 +15,7 @@ import {
     } from "@material-ui/core";
 import maat from '../../files/logo/maat_digital.png';
 import { Close, LockOutlined, Visibility, VisibilityOff } from "@material-ui/icons";
-import SnackMAAT from "../../componets/snackbar/snackbar";
+import SnackMAAT from "../../components/snackbar/snackbar";
 import Acessing from "../../functions/logins/accessing";
 
 const useStyles = makeStyles((theme) => ({

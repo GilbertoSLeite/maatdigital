@@ -8,7 +8,7 @@ export default async function SearchPublisher() {
             redirect: 'follow',
         };   
         const response = await fetch('/maatdigital/editoras', requestOptions);
-        const result = (response.ok ? await response.json() : []);        
+        const result = (response.ok && await response.json());       
         return await result
     } catch (error) {
         console.error('Error em SearchPublisher: ' + error);

@@ -4,10 +4,11 @@ import SearchPaises from "../../../functions/searchData/countries/returnCountrie
 import { Close, Save } from "@material-ui/icons";
 import { Autocomplete } from "@material-ui/lab";
 import ValidatingCPF from "../../../functions/validatingData/validatingCPF";
-import TextFieldCPF from "../../../componets/textField/textFieldCPF";
-import SnackMAAT from "../../../componets/snackbar/snackbar";
+import TextFieldCPF from "../../../components/textField/textFieldCPF";
+import SnackMAAT from "../../../components/snackbar/snackbar";
 import SearchGraduation from "../../../functions/searchData/graduation/returnGraduation";
 import InsertOrganizer from "../../../functions/register/organizer/insertDataOrganizer";
+import IdentifyingDuplicate from "../../../functions/identifyingDuplicate/identifyingDuplicate";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,6 +47,7 @@ export default function ScreenRegisterOrganizer() {
     const [buttonDisable, setDisableButton] = React.useState(false)
     const [open, setOpen] = React.useState(false)
     const [textSnackBar, setTextSnackbar] = React.useState('')
+    const [alertSnack, setAlertSnack] = React.useState(null)
 
     React.useEffect(() => {
         const RetornarPaises = async () => setArrayPaises(await SearchPaises())
@@ -72,7 +74,17 @@ export default function ScreenRegisterOrganizer() {
         );
     };
 
-    const HandleSubmit = async () => await InsertOrganizer(dataFormatHoje, firstName, middleName,lastName, paisOrganizer, graduacaoOrganizer, numCPF, sexoOrganizer, racaOrganizer) ? setOpen(true) || setTextSnackbar('Dados Inseridos com Sucesso') || setDisableButton(true) : setOpen(true) || setTextSnackbar('Dados Não Forma Inseridos - Verificar Console'); 
+    async function validatingData(){
+        try {
+            const ConcatenatingNames = ((firstName.toLowerCase().trim()) + (middleName.toLowerCase().trim()) + (lastName.toLowerCase().trim()))
+            const ratedData = await IdentifyingDuplicate('organizadores', ConcatenatingNames) 
+            ratedData ? setOpen(true) || setAlertSnack('warning') || setTextSnackbar('Já existe um ' + firstName + ' ' + middleName + ' ' + lastName + ' no Banco de Dados')  : HandleSubmit()
+        } catch (error) {
+            console.error('Error ocorrido na validação dos dados em validatingData - ScreenRegisterOrganizer ' + error)
+        };        
+    };
+
+    const HandleSubmit = async () => await InsertOrganizer(dataFormatHoje, firstName, middleName,lastName, paisOrganizer, graduacaoOrganizer, numCPF, sexoOrganizer, racaOrganizer) ? setOpen(true) || setAlertSnack('success') || setTextSnackbar('Dados Inseridos com Sucesso') || setDisableButton(true) : setOpen(true) || setAlertSnack('error') || setTextSnackbar('Dados Não Forma Inseridos - Verificar Console'); 
     
     return(
         <React.Fragment>
@@ -380,7 +392,7 @@ export default function ScreenRegisterOrganizer() {
                         variant='outlined'
                         startIcon={<Save/>}
                         disabled={buttonDisable}
-                        onClick={HandleSubmit}
+                        onClick={validatingData}
                         fullWidth
                     >
                         SALVAR
@@ -395,6 +407,7 @@ export default function ScreenRegisterOrganizer() {
                 close={CloseSnack} 
                 textSnack={textSnackBar} 
                 handleClose={<HandleClose />} 
+                alert={alertSnack}
             />} 
         </React.Fragment>
     );

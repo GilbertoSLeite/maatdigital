@@ -1,6 +1,6 @@
 import MaterialTable from "material-table"
 import React from "react"
-import DialogCadastro from "../../../componets/dialog/dialogCadastro/dialogCadastro"
+import DialogCadastro from "../../../components/dialog/dialogCadastro/dialogCadastro"
 import SearchAuthor from "../../../functions/searchData/author/searchAuthor"
 import SearchPaises from "../../../functions/searchData/countries/returnCountries"
 import SearchGraduationAuthor from "../../../functions/searchData/graduation/returnGraduationAuthor"

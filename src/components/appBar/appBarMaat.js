@@ -14,6 +14,7 @@ import {
   ListItemText, 
   makeStyles, 
   Toolbar,
+  Tooltip,
   Typography,
   useTheme
   } from '@material-ui/core';
@@ -153,10 +154,12 @@ export default function MiniDrawerMaat(props) {
         <Divider />
         <List>
           {rotasPaginas.map((data, key) => (
-            <ListItem button component='a' href={data.path} key={key} divider dense>
-              <ListItemIcon><data.icon/></ListItemIcon>
-              <ListItemText primary={data.name}/>
-            </ListItem>
+            <Tooltip aria-label='Balão dos Icones' arrow title={data.name}>
+              <ListItem button component='a' href={data.path} key={key} divider dense>
+                <ListItemIcon><data.icon/></ListItemIcon>
+                <ListItemText primary={data.name}/>
+              </ListItem>
+            </Tooltip>
           ))}
           <ListItem button component='a' onClick={Logout} divider dense>
             <ListItemIcon><ExitToApp/></ListItemIcon>

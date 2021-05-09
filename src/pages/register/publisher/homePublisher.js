@@ -1,7 +1,7 @@
 import React from "react";
 import {  Button, makeStyles, Paper } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
-import DialogCadastro from "../../../componets/dialog/dialogCadastro/dialogCadastro";
+import DialogCadastro from "../../../components/dialog/dialogCadastro/dialogCadastro";
 import TablePuslisher from "./tablePublisher";
 import RegisterPublisher from "./registerPublisher";
 

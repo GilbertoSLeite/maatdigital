@@ -1,6 +1,6 @@
 import MaterialTable from "material-table";
 import React from "react";
-import DialogCadastro from "../../../componets/dialog/dialogCadastro/dialogCadastro";
+import DialogCadastro from "../../../components/dialog/dialogCadastro/dialogCadastro";
 import SearchGraduation from "../../../functions/searchData/graduation/returnGraduation";
 import UpdateGraduation from "./updateGraduation";
 

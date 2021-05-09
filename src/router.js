@@ -1,4 +1,4 @@
-import {  CollectionsBookmarkOutlined, DescriptionOutlined, EditAttributesOutlined, HomeWork, HowToRegOutlined, LibraryBooksOutlined, PublicOutlined, SchoolOutlined, SortByAlphaOutlined, VpnKeyOutlined } from "@material-ui/icons";
+import {  BrushOutlined, CollectionsBookmarkOutlined, DescriptionOutlined, EditAttributesOutlined, HomeWork, HowToRegOutlined, LibraryBooksOutlined, PublicOutlined, SchoolOutlined, SortByAlphaOutlined, VpnKeyOutlined } from "@material-ui/icons";
 import TelaAutor from "./pages/books/author/homeAuthor";
 import DDC from "./pages/books/ddc/ddc";
 import TelaOrganizador from "./pages/books/organizer/homeOrganizer";
@@ -9,6 +9,8 @@ import TelaGraduacao from "./pages/register/graduation/homeGraduation";
 import TelaEditora from "./pages/register/publisher/homePublisher";
 import TelaEditor from "./pages/books/editor/homeEditor"
 import TelaCoordenador from "./pages/books/coordinator/homeCoordinator";
+import TelaRespCapa from "./pages/books/cover/homeCover";
+import TelaDiagramador from "./pages/books/diagramming/homeDiagramming";
 
 const pageRoutes = [
     {
@@ -80,6 +82,22 @@ const pageRoutes = [
         name: 'Editor',
         children: TelaEditor,
         icon: EditAttributesOutlined,
+        private: true,
+        loginPage: false,  
+    },
+    {
+        path: '/maatdigital/respcapa',
+        name: 'Resp. pela Capa',
+        children: TelaRespCapa,
+        icon: CollectionsBookmarkOutlined,
+        private: true,
+        loginPage: false,  
+    },
+    {
+        path: '/maatdigital/diagramador',
+        name: 'Diagramador',
+        children: TelaDiagramador,
+        icon: BrushOutlined,
         private: true,
         loginPage: false,  
     },

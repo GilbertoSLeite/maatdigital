@@ -4,10 +4,11 @@ import SearchPaises from "../../../functions/searchData/countries/returnCountrie
 import { Close, Save } from "@material-ui/icons";
 import { Autocomplete } from "@material-ui/lab";
 import ValidatingCPF from "../../../functions/validatingData/validatingCPF";
-import TextFieldCPF from "../../../componets/textField/textFieldCPF";
-import SnackMAAT from "../../../componets/snackbar/snackbar";
+import TextFieldCPF from "../../../components/textField/textFieldCPF";
+import SnackMAAT from "../../../components/snackbar/snackbar";
 import SearchGraduation from "../../../functions/searchData/graduation/returnGraduation";
 import InsertCoordinator from "../../../functions/register/coordinator/insertDataCoordinator";
+import IdentifyingDuplicate from "../../../functions/identifyingDuplicate/identifyingDuplicate";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,10 +36,10 @@ export default function ScreenRegisterCoordinator() {
     const classes = useStyles();
     const [arrayPaises, setArrayPaises] = React.useState([])
     const [arrayGraduacao, setArrayGraduacao] = React.useState([])
-    const [firstName, setFirstName] = React.useState('')
-    const [middleName , setMiddleName] = React.useState('')
-    const [lastName, setLastName] = React.useState('')
-    const [paisCoordinator, setPaisCoordinator] = React.useState('')
+    const [firstName, setFirstName] = React.useState(null)
+    const [middleName , setMiddleName] = React.useState(null)
+    const [lastName, setLastName] = React.useState(null)
+    const [paisCoordinator, setPaisCoordinator] = React.useState(null)
     const [graduacaoCoordinator, setGraduacaoCoordinator ] = React.useState([])
     const [numCPF, setNumCPF] = React.useState('');
     const [sexoCoordinator, setSexoCoordinator] = React.useState('')
@@ -46,6 +47,7 @@ export default function ScreenRegisterCoordinator() {
     const [buttonDisable, setDisableButton] = React.useState(false)
     const [open, setOpen] = React.useState(false)
     const [textSnackBar, setTextSnackbar] = React.useState('')
+    const [alertSnack, setAlertSnack] = React.useState(null)
 
     React.useEffect(() => {
         const RetornarPaises = async () => setArrayPaises(await SearchPaises())
@@ -72,7 +74,17 @@ export default function ScreenRegisterCoordinator() {
         );
     };
 
-    const HandleSubmit = async () => await InsertCoordinator(dataFormatHoje, firstName, middleName,lastName, paisCoordinator, graduacaoCoordinator, numCPF, sexoCoordinator, racaCoordinator) ? setOpen(true) || setTextSnackbar('Dados Inseridos com Sucesso') || setDisableButton(true) : setOpen(true) || setTextSnackbar('Dados Não Forma Inseridos - Verificar Console'); 
+    async function validatingData(){
+        try {
+            const ConcatenatingNames = ((firstName.toLowerCase().trim()) + (middleName.toLowerCase().trim()) + (lastName.toLowerCase().trim()))
+            const ratedData = await IdentifyingDuplicate('coordenadores', ConcatenatingNames) 
+            ratedData ? setOpen(true) || setAlertSnack('warning') || setTextSnackbar('Já existe um ' + firstName + ' ' + middleName + ' ' + lastName + ' no Banco de Dados')  : HandleSubmit()
+        } catch (error) {
+            console.error('Error ocorrido na validação dos dados em validatingData - ScreenRegisterCoordinator ' + error)
+        };        
+    };
+
+    const HandleSubmit = async () => await InsertCoordinator(dataFormatHoje, firstName, middleName,lastName, paisCoordinator, graduacaoCoordinator, numCPF, sexoCoordinator, racaCoordinator) ? setOpen(true) || setAlertSnack('success') || setTextSnackbar('Dados Inseridos com Sucesso') || setDisableButton(true) : setOpen(true) || setAlertSnack('error') || setTextSnackbar('Dados Não Forma Inseridos - Verificar Console'); 
     
     return(
         <React.Fragment>
@@ -380,7 +392,7 @@ export default function ScreenRegisterCoordinator() {
                         variant='outlined'
                         startIcon={<Save/>}
                         disabled={buttonDisable}
-                        onClick={HandleSubmit}
+                        onClick={validatingData}
                         fullWidth
                     >
                         SALVAR
@@ -395,6 +407,7 @@ export default function ScreenRegisterCoordinator() {
                 close={CloseSnack} 
                 textSnack={textSnackBar} 
                 handleClose={<HandleClose />} 
+                alert={alertSnack}
             />} 
         </React.Fragment>
     );

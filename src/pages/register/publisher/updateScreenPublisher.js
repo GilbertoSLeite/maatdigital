@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import { Button, CssBaseline, Grid, IconButton, makeStyles, Paper, TextField, Tooltip } from "@material-ui/core";
-import SnackMAAT from "../../../componets/snackbar/snackbar";
+import SnackMAAT from "../../../components/snackbar/snackbar";
 import { Close, Save } from "@material-ui/icons";
 import SearchPaises from "../../../functions/searchData/countries/returnCountries";
 import UpdatePublisher from "../../../functions/register/publisher/updatePublisher";

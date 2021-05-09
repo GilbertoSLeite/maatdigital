@@ -5,8 +5,8 @@ import SearchPaises from "../../../functions/searchData/countries/returnCountrie
 import { Close, Save } from "@material-ui/icons";
 import { Autocomplete } from "@material-ui/lab";
 import ValidatingCPF from "../../../functions/validatingData/validatingCPF";
-import TextFieldCPF from "../../../componets/textField/textFieldCPF";
-import SnackMAAT from "../../../componets/snackbar/snackbar";
+import TextFieldCPF from "../../../components/textField/textFieldCPF";
+import SnackMAAT from "../../../components/snackbar/snackbar";
 import SearchGraduation from "../../../functions/searchData/graduation/returnGraduation";
 import UpdateGraduationOrganizer from "../../../functions/register/organizer/updateGraudationOrganizer";
 

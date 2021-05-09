@@ -8,8 +8,7 @@ export default async function SearchCoordinator() {
             redirect: 'follow',
         };   
         const response = await fetch('/maatdigital/coordenadores', requestOptions);
-        const result = (response.ok ? await response.json() : []);        
-        return await result
+        return (response.ok && await response.json());  
     } catch (error) {
         console.error('Error em SearchCoordinator: ' + error);
     };

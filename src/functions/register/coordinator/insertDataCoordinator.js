@@ -1,3 +1,4 @@
+import DataStatus from "../../dataStatus/dataStatus";
 import InsertGraduationCoordinator from "./insertGraudationCoordinator";
 
 let token = localStorage.getItem('@maatdigital/token');
@@ -45,10 +46,12 @@ export default async function InsertCoordinator(
             situacao = Boolean(true)
         }else {
             console.log(result);
-            situacao = Boolean(false)
+            const errorPost = DataStatus(result);
+            console.error(errorPost.getErrorMessage())
+            situacao = errorPost.getStatus()
         }
     } catch (error) {
-        console.error('Ocorreu um erro em InsertCoordinator: ' + error);
+        console.error('Ocorreu um erro em InsertCoordinator ' + error);
     };
     return situacao
 };

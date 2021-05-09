@@ -11,7 +11,7 @@ export default async function SearchGraduationOrganizer() {
             redirect: 'follow',
         };   
         const response = await fetch('/maatdigital/graduacao_organizadores', requestOptions);
-        const result = (response.ok ? await response.json() : []);        
+        const result = (response.ok && await response.json());        
         return await result
     } catch (error) {
         console.error('Error em SearchGraduationOrganizer: ' + error);

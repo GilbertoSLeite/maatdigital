@@ -2,7 +2,7 @@ import React from "react";
 import {  Button, makeStyles, Paper } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import RegisterGraduation from "./registerGraduation";
-import DialogCadastro from "../../../componets/dialog/dialogCadastro/dialogCadastro";
+import DialogCadastro from "../../../components/dialog/dialogCadastro/dialogCadastro";
 import TableGraduation from "./tableGraduation";
 
 const useStyles = makeStyles(() => ({

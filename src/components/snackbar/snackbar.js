@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 export default function SnackMAAT(props) {
 
-    const { open, close, textSnack, handleClose } = props;
+    const { open, close, textSnack, handleClose, alert } = props;
 
     return (
         <div>
@@ -23,7 +23,7 @@ export default function SnackMAAT(props) {
                 onClose={close}
             >
                 <Alert
-                    severity="success"
+                    severity={alert ? alert : 'success'}
                     action={handleClose}
                 >
                     {textSnack}
@@ -37,5 +37,6 @@ SnackMAAT.propTypes = {
     open: PropTypes.bool.isRequired,
     textSnack: PropTypes.string.isRequired,
     handleClose: PropTypes.object.isRequired,
-    close: PropTypes.func.isRequired
+    close: PropTypes.func.isRequired,
+    alert: PropTypes.string
 };

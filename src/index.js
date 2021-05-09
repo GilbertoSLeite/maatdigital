@@ -4,13 +4,13 @@ import {
   BrowserRouter,
   Route,
   Switch,
-} from "react-router-dom";
-import { createBrowserHistory } from "history";
+} from "react-router-dom"; 
+import { createBrowserHistory } from "history"; 
 import { CssBaseline } from '@material-ui/core';
 import pageRoutes from './router';
-import MiniDrawerMaat from './componets/appBar/appBarMaat';
+import MiniDrawerMaat from './components/appBar/appBarMaat';
 import IsAuthenticated from './functions/localstorage/isAuthenticated';
-import FooterSite from './componets/footer/Footer';
+import FooterSite from './components/footer/Footer';
 import Login from './pages/login/login';
 
 const isAuth = IsAuthenticated();

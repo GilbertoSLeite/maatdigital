@@ -4,10 +4,11 @@ import SearchPaises from "../../../functions/searchData/countries/returnCountrie
 import { Close, Save } from "@material-ui/icons";
 import { Autocomplete } from "@material-ui/lab";
 import ValidatingCPF from "../../../functions/validatingData/validatingCPF";
-import TextFieldCPF from "../../../componets/textField/textFieldCPF";
-import SnackMAAT from "../../../componets/snackbar/snackbar";
+import TextFieldCPF from "../../../components/textField/textFieldCPF";
+import SnackMAAT from "../../../components/snackbar/snackbar";
 import SearchGraduation from "../../../functions/searchData/graduation/returnGraduation";
 import InsertAuthor from "../../../functions/register/author/insertAuthor";
+import IdentifyingDuplicate from "../../../functions/identifyingDuplicate/identifyingDuplicate";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,14 +47,17 @@ export default function ScreenRegisterAuthor() {
     const [buttonDisable, setDisableButton] = React.useState(false)
     const [open, setOpen] = React.useState(false)
     const [textSnackBar, setTextSnackbar] = React.useState('')
+    const [alertSnack, setAlertSnack] = React.useState(null)
 
     React.useEffect(() => {
-        const RetornarPaises = async () => setArrayPaises(await SearchPaises())
+        const RetornarPaises = async () => 
+            setArrayPaises(await SearchPaises())
         RetornarPaises()
     },[]);
 
     React.useEffect(() => {
-        const RetornarGraduacao = async () => setArrayGraduacao(await SearchGraduation())
+        const RetornarGraduacao = async () => 
+            setArrayGraduacao(await SearchGraduation())
         RetornarGraduacao()
     },[]);
 
@@ -72,7 +76,17 @@ export default function ScreenRegisterAuthor() {
         );
     };
 
-    const HandleSubmit = async () => await InsertAuthor(dataFormatHoje, firstName, middleName,lastName, paisAutor, graduacaoAutor, numCPF, sexoAutor, racaAutor) ? setOpen(true) || setTextSnackbar('Dados Inseridos com Sucesso') || setDisableButton(true) : setOpen(true) || setTextSnackbar('Dados Não Forma Inseridos - Verificar Console'); 
+    async function validatingData(){
+        try {
+            const ConcatenatingNames = ((firstName.toLowerCase().trim()) + (middleName.toLowerCase().trim()) + (lastName.toLowerCase().trim()))
+            const ratedData = await IdentifyingDuplicate('autores', ConcatenatingNames) 
+            ratedData ? setOpen(true) || setAlertSnack('warning') || setTextSnackbar('Já existe um ' + firstName + ' ' + middleName + ' ' + lastName + ' no Banco de Dados')  : HandleSubmit()
+        } catch (error) {
+            console.error('Error ocorrido na validação dos dados em validatingData - ScreenRegisterCover ' + error)
+        };        
+    };
+
+    const HandleSubmit = async () => await InsertAuthor(dataFormatHoje, firstName, middleName,lastName, paisAutor, graduacaoAutor, numCPF, sexoAutor, racaAutor) ? setOpen(true) || setAlertSnack('success') || setTextSnackbar('Dados Inseridos com Sucesso') || setDisableButton(true) : setOpen(true) || setAlertSnack('error') || setTextSnackbar('Dados Não Forma Inseridos - Verificar Console'); 
     
     return(
         <React.Fragment>
@@ -380,7 +394,7 @@ export default function ScreenRegisterAuthor() {
                         variant='outlined'
                         startIcon={<Save/>}
                         disabled={buttonDisable}
-                        onClick={HandleSubmit}
+                        onClick={validatingData}
                         fullWidth
                     >
                         SALVAR
@@ -395,6 +409,7 @@ export default function ScreenRegisterAuthor() {
                 close={CloseSnack} 
                 textSnack={textSnackBar} 
                 handleClose={<HandleClose />} 
+                alert={alertSnack}
             />} 
         </React.Fragment>
     );

@@ -1,6 +1,7 @@
+import { Link } from "@material-ui/core";
 import MaterialTable from "material-table";
 import React from "react";
-import DialogCadastro from "../../../componets/dialog/dialogCadastro/dialogCadastro";
+import DialogCadastro from "../../../components/dialog/dialogCadastro/dialogCadastro";
 import SearchPaises from "../../../functions/searchData/countries/returnCountries";
 import SearchPublisher from "../../../functions/searchData/publisher/returnPublisher";
 import UpdateScreenPublisher from "./updateScreenPublisher";
@@ -173,6 +174,11 @@ export default function TablePuslisher() {
                     },     
                     {
                         title: 'Website da Fundação',
+                        render: rowData => <div>
+                            <Link to={rowData.website_editora} onClick={() => window.open(rowData.website_editora, 'blank_')}>
+                                {rowData.website_editora}
+                            </Link>
+                        </div>,
                         field: 'website_editora',
                         tooltip: 'Informação referente ao Website da Fundação da Editora',
                         align: 'center',

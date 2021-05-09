@@ -8,7 +8,7 @@ export default async function SearchEditor() {
             redirect: 'follow',
         };   
         const response = await fetch('/maatdigital/editores', requestOptions);
-        const result = (response.ok ? await response.json() : []);        
+        const result = (response.ok && await response.json());        
         return await result
     } catch (error) {
         console.error('Error em SearchEditor: ' + error);

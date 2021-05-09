@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, CssBaseline, Grid, IconButton, makeStyles, Paper, TextField, Tooltip } from "@material-ui/core";
-import SnackMAAT from "../../../componets/snackbar/snackbar";
+import SnackMAAT from "../../../components/snackbar/snackbar";
 import { Close, Save } from "@material-ui/icons";
 import InsertGraduation from "../../../functions/register/graduation/insertGraduation";
 

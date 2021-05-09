@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, makeStyles, Paper } from "@material-ui/core";
 import TableAuthor from "./tableAuthor";
-import DialogCadastro from "../../../componets/dialog/dialogCadastro/dialogCadastro";
+import DialogCadastro from "../../../components/dialog/dialogCadastro/dialogCadastro";
 import ScreenRegisterAuthor from "./screenRegisterAuthor";
 import { Add } from "@material-ui/icons";
 
@@ -21,9 +21,12 @@ export default  function TelaAutor() {
     const [statusTela, setStatusTelas] = React.useState(false);
     const [abrirDialog, setAbrirDialog] = React.useState(false);
 
-    const handleInsertUpdate = () => setStatusTelas(true) || setAbrirDialog(true)  
+    const handleInsertUpdate = () => 
+        setStatusTelas(true) || setAbrirDialog(true)  
 
-    const handleFecharDialog = () => setAbrirDialog(false) || window.location.reload()
+    const handleFecharDialog = () => 
+        setAbrirDialog(false) || window.location.reload()
+        
     return(
         <div>
         {statusTela ? 
