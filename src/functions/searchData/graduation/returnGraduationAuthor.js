@@ -12,6 +12,6 @@ export default async function SearchGraduationAuthor() {
         const response = await fetch('/maatdigital/graduacao_autores/', requestOptions);
         return await (response.ok && await response.json()); 
     } catch (error) {
-        console.error('Error em SearchGraduation: ' + error);
+        console.error('Error em SearchGraduationAuthor: ' + error);
     };
 };

@@ -93,7 +93,7 @@ export default function ScreenRegisterAuthor() {
 
     async function validatingData(){
         try {
-            const ConcatenatingNames = ((firstName.toLowerCase().trim()) + (middleName.toLowerCase().trim()) + (lastName.toLowerCase().trim()))
+            const ConcatenatingNames = ((firstName.toLowerCase().trim().replace(' ','')) + (middleName.toLowerCase().trim().replace(' ','')) + (lastName.toLowerCase().trim().replace(' ','')))
             const ratedData = await IdentifyingDuplicate('autores', ConcatenatingNames) 
             await RatedData(ratedData)
         } catch (error) {

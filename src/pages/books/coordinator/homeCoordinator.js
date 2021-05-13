@@ -44,14 +44,13 @@ export default  function TelaCoordenador() {
                 Inserir Coordenador
             </Button>
         </Paper>
-        {abrirDialog ? 
+        {abrirDialog &&
             <DialogCadastro
                 openDialog={abrirDialog}
                 closeDialog={handleFecharDialog} 
                 titleDialog={"Cadastro do Coordenador"}  
                 telaDialog={<ScreenRegisterCoordinator />}
-            />: 
-            null}
+            />}
         </div> : 
         <div>
         <TableCoordinator />

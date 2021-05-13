@@ -175,7 +175,7 @@ export default function TableCoordinator() {
                     }
                 ]}  
         />
-        {abrirDialog ? 
+        {abrirDialog &&
         <DialogCadastro
             openDialog={abrirDialog}
             closeDialog={handleFecharDialog}
@@ -195,8 +195,7 @@ export default function TableCoordinator() {
                     statusIn={upStatus}                
                 />
             }
-        /> :
-        null}
+        />}
         </React.Fragment>
     )
 }

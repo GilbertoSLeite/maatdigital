@@ -1,4 +1,4 @@
-let token = localStorage.getItem('@maatdigital/token');
+let token = localStorage.getItem('@maatdigital/token')
 export default async function SearchPublisher() {
     try {
         let myHeaders = new Headers();
