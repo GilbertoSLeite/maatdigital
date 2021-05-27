@@ -47,23 +47,17 @@ export default function TableCoordinator() {
 
     const handleFecharDialog = () => setAbrirDialog(false) || window.location.reload()
     
-    function RetornarNomePais(identificado){
-        function FilterCountrie(array) {
-            if(array.id === identificado){
-                return array
-            };
-        }
-        let nomePais = arrayPais.map(x => x).filter(FilterCountrie);
-        nomePais = nomePais.map(x => x.nome)
-        return nomePais
+    function RetornarNomePais(identificador){
+        const nomePais = arrayPais
+            .filter((paises) => (paises.id === identificador))
+        return nomePais[nomePais.length - 1]?.nome
     };
-    
-    function RetornarGraduacao(idEditor){
-        const FilterEditor = (array) => array.editor_id === idEditor ? array : null
-        let graduacaoEditor = arrayGraduacaoCoordinator.map(x=>x).filter(FilterEditor)
-        graduacaoEditor = graduacaoEditor.map(x => x.graduacoes_id)
-        return graduacaoEditor
-    };
+
+    function RetornarGraduacao(idCoordenador) {
+        const graduacaoCoordenador = arrayGraduacaoCoordinator
+            .filter((graduacao) => graduacao.coordenadores_id === idCoordenador)
+            return graduacaoCoordenador.map (x => x.graduacoes_id)
+    }
     
     const AtualizarCoordinator = (dadosCoordinator) => setAbrirDialog(true) || setUpIdentificaror(dadosCoordinator.id) || setUpDataCadastro(dadosCoordinator.data_cadastro) || setUpFName(dadosCoordinator.primeiro_nome_pessoa) || setUpMName(dadosCoordinator.segundo_nome_pessoa) || setUpLName(dadosCoordinator.ultimo_nome_pessoa) || setUpPais(dadosCoordinator.pais_coordenador_id) || setUpGraduacao(RetornarGraduacao(dadosCoordinator.id)) || setUpCPF(dadosCoordinator.numero_cpf) || setUpSexo(dadosCoordinator.sexo_pessoas) || setUpRaca(dadosCoordinator.raca_pessoas) || setUpStatus(dadosCoordinator.status)
             

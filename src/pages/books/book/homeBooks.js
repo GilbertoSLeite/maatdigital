@@ -8,7 +8,8 @@ import ScreenRegisterBook from './screenRegisterBook';
 const useStyles = makeStyles((theme) =>({
     button: {
         color: '#5890a6',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontSize: 'large'
     },
     paper: {
       padding: theme.spacing(2),
@@ -49,6 +50,7 @@ export default function TelaLivros(){
                         </Paper>
                         {abrirDialog &&
                             <DialogCadastro
+                                aria-label='Tela de Cadastro do Livro'
                                 openDialog={abrirDialog}
                                 closeDialog={handleFecharDialog}
                                 titleDialog='Cadastro do Livro'
@@ -64,6 +66,7 @@ export default function TelaLivros(){
                             className={classes.paper}
                         >
                             <Button
+                                aria-label='Inserir Livro'
                                 className={classes.button}
                                 onClick={handleInsertUpdate}
                                 size='large'

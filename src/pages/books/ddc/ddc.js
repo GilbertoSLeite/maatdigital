@@ -10,36 +10,27 @@ export default function DDC() {
 
     React.useEffect(() => {
         setLoading(true)
-        const RetornarSC = async () => setArrayDDC(await SearchSubClasse()) || setLoading(false)
+        const RetornarSC = async () => setArrayDDC(await SearchSubClasse())
         RetornarSC()
+        setLoading(false)
     }, []);
 
     React.useEffect(() => {
         setLoading(true)
-        async function RetornarAC() {
-            setArrayAC(await SearchAreaConhecimento())
-            setLoading(false)
-        };
+        const RetornarAC = async () => setArrayAC(await SearchAreaConhecimento()) 
         RetornarAC()
+        setLoading(false)
     }, []);
     
     function RetornarCodigoAC(identificado){
-        function AC(array) {
-            if(array.id === identificado){
-                return array
-            };
-        }
+        const AC = (array) => ((array.id === identificado) && array)
         let codigoA = arrayAC.map(x => x).filter(AC);
         codigoA = codigoA.map(x => x.codigo_classes)
         return codigoA
     };
 
     function RetornarAC(identificado){
-        function ReturnAC(array) {
-            if(array.id === identificado){
-                return array
-            };
-        }
+        const ReturnAC = (array) => ((array.id === identificado) && array)
         let areaConhecimento = arrayAC.map(x => x).filter(ReturnAC);
         areaConhecimento = areaConhecimento.map(x => x.tipo_classes)
         return areaConhecimento

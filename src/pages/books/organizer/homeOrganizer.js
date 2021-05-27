@@ -8,7 +8,8 @@ import ScreenRegisterOrganizer from "./screenRegisterOrganizer";
 const useStyles = makeStyles((theme) => ({
     button: {
         color: '#5890a6',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontSize: 'large'
     },
     paper: {
       padding: theme.spacing(2),

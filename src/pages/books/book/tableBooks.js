@@ -1,22 +1,59 @@
 import React from "react";
 import MaterialTable from "material-table";
 import SearchBook from "../../../functions/searchData/book/searchBook";
+import SearchSubClasse from "../../../functions/searchData/DDC/returnsubclasse";
+import DialogCadastro from "../../../components/dialog/dialogCadastro/dialogCadastro";
+import ScreenUpdateCoordinator from "../coordinator/screenUpdateCoordinator";
 
 export default function TableBooks(){
     const [arrayLivros, setArrayLivros] = React.useState([])
+    const [arrayClassificacao, setArrayClassificacao] = React.useState([])
+    const [upIdentificador, setUpIdentificador] = React.useState(null)
+    const [upTituloLivro, setUpTituloLivro] = React.useState(null)
+    const [upSubTituloLivro, setUpSubTituloLivro] = React.useState(null)
+    const [upClassificacao, setUpClassificacao] = React.useState(null)
+    const [upIsbnLivro, setUpIsbnLivro] = React.useState(null)
+    const [upLinkLivro, setUpLinkLivro] = React.useState(null)
+    const [upResumoLivro, setUpResumoLivro] = React.useState(null)
     const [loading, setLoading] = React.useState(false)
-    //const [abrirDialog, setAbrirDialog] = React.useState(false)
+    const [abrirDialog, setAbrirDialog] = React.useState(false)
 
-     React.useEffect(() => {
+    React.useEffect(() => {
         setLoading(true)
         const RetornarLivros = async () => setArrayLivros(await SearchBook())
         RetornarLivros()
         setLoading(false)
     },[])
 
-    //const handleFecharDialog = () => setAbrirDialog(false) || window.location.reload()
+    React.useEffect(() => {
+        setLoading(true)
+        const RetornarClassificacao = async () => setArrayClassificacao(await SearchSubClasse())
+        RetornarClassificacao()
+        setLoading(false)
+    },[])
+
+    const RetornarClassificacao = (idClassificacao) => {
+        const FilterClassificacao = (array) => array.id === idClassificacao ? array : null
+        let nomeClassificacao = arrayClassificacao.map(x=>x).filter(FilterClassificacao)
+        nomeClassificacao = nomeClassificacao.map(x => x.tipo_subclasses)
+        return nomeClassificacao
+    }
+
+    const handleFecharDialog = () => setAbrirDialog(false) || window.location.reload()
     
+    const AtualizarLivro = (dadosLivros) => {
+        setAbrirDialog(true)
+        setUpIdentificador(dadosLivros.id)
+        setUpTituloLivro(dadosLivros.titulo_livro)
+        setUpSubTituloLivro(dadosLivros.subtitulo_livro)
+        setUpClassificacao(dadosLivros.classificacao_id)
+        setUpIsbnLivro(dadosLivros.isbn_livro)
+        setUpLinkLivro(dadosLivros.link_livro)
+        setUpResumoLivro(dadosLivros.resumo_livro)
+    }
+
     return(
+        <React.Fragment>
         <MaterialTable 
             title='Livros Cadastrados'
             isLoading={loading}
@@ -42,7 +79,7 @@ export default function TableBooks(){
                         lastTooltip: 'Fim',
                     },
                     body: {
-                        emptyDataSourceMessage: 'Nenhuma Livro Encontrado.',
+                        emptyDataSourceMessage: 'Nenhum Livro Encontrado.',
                     },
                     header:{
                         actions: 'Editar'
@@ -106,6 +143,7 @@ export default function TableBooks(){
                     {
                         field: 'classificacao_id',
                         type: 'numeric',
+                        render: rowData => <div>{RetornarClassificacao(rowData.classificacao_id)}</div>,
                         title: 'Classificação',
                         tooltip: 'Informação do Tipo de Classificação Bibliográfica do Livro',
                         align: 'center',
@@ -139,10 +177,27 @@ export default function TableBooks(){
                       },
                       icon: 'edit',
                       tooltip: 'Editar o Livro',
-                      //onClick: (event, rowData) => AtualizarAutor(rowData)
+                      onClick: (event, rowData) => AtualizarLivro(rowData)
                     }
                 ]}  
         />
+        {abrirDialog && 
+            <DialogCadastro
+                openDialog={abrirDialog}
+                closeDialog={handleFecharDialog}
+                titleDialog='Atualizar Livro'
+                telaDialog={
+                    <ScreenUpdateCoordinator 
+                        identificadorIn={upIdentificador}
+                        tituloLivroIn={upTituloLivro}
+                        subTituloLivroIn={upSubTituloLivro}
+                        classificacaoIn={upClassificacao}
+                        isbnLivroIn={upIsbnLivro}
+                        linkLivroIn={upLinkLivro}
+                        resumoLivroIn={upResumoLivro}
+                    />
+                }
+            />}
+        </React.Fragment>
     )
-
 }

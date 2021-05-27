@@ -10,7 +10,7 @@ export default async function SearchAuthor() {
             redirect: 'follow',
         };   
         const response = await fetch('/maatdigital/autores', requestOptions);
-        return await (response.ok && await response.json()); 
+        return await (response.ok && response.json()); 
     } catch (error) {
         console.error('Error em SearchAuthor: ' + error);
     };

@@ -32,7 +32,8 @@ const useStyles = makeStyles((theme) => ({
     },
     button: {
         color: '#3d864a',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontSize: 'large'
     },
     avatar: {
         backgroundColor: '#4a8099',
