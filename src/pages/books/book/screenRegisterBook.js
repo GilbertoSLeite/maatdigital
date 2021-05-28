@@ -12,6 +12,8 @@ import SearchCoordinator from "../../../functions/searchData/coordinator/searchC
 import SearchCover from "../../../functions/searchData/cover/searchCover";
 import SearchDiagramming from "../../../functions/searchData/diagramming/searchDiagramming";
 import InsertBooks from "../../../functions/register/books/insertBooks";
+import SnackMAAT from "../../../components/snackbar/snackbar";
+import BooleanValidation from "../../../functions/register/books/booleanValidation";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -86,10 +88,37 @@ export default function ScreenRegisterBook(){
     const [openUpload, setOpenUpload] = React.useState(false)
     const [textSnackBar, setTextSnackbar] = React.useState('')
     const [alertSnack, setAlertSnack] = React.useState(null)
+    const [disableButton, setDisableButton] = React.useState(false)
 
-    async function HandleSubmit(){
-        console.log (await InsertBooks(imagemCapaLivro, tituloLivro, subTituloLivro, classLivro, isbnLivro, linkLivro, editoraLivro, organizadorLivro, editoresResp, coordenadoresLivros, respCapa, diagramadoresLivros, resumoLivro))
-    }
+    const dataInsert = {
+        "dataOrganizadorLivro": organizadorLivro, 
+        "dataEditoresResp": editoresResp, 
+        "dataCoordenadoresLivros": coordenadoresLivros, 
+        "dataDiagramadoresLivros": diagramadoresLivros, 
+        "dataCapaLivro": ((imagemCapaLivro !== undefined) ? imagemCapaLivro : []),
+        "dataRespCapaLivro": respCapa,
+        "dataTituloLivro": tituloLivro,
+        "dataSubTituloLivro": subTituloLivro, 
+        "dataClassLivro": classLivro, 
+        "dataEditoraLivro": editoraLivro,
+        "dataIsbnLivro": (isbnLivro && isbnLivro.replaceAll('-','')), 
+        "dataLinkLivro": linkLivro,  
+        "dataResumoLivro": resumoLivro, 
+    };
+    const trueInsert = () => {
+        setOpen(true);
+        setAlertSnack('success');
+        setTextSnackbar('Dados Inseridos com Sucesso');
+        setDisableButton(true);
+    };
+
+    const falseInsert = () => {
+        setOpen(true);
+        setAlertSnack('error');
+        setTextSnackbar('Dados Não Forma Inseridos - Verificar Console')          
+    };
+
+    const HandleSubmit = async() => BooleanValidation[await InsertBooks(dataInsert)] ? trueInsert() : falseInsert()
 
     const CloseSnack = () => setOpen(false)
 
@@ -187,11 +216,10 @@ export default function ScreenRegisterBook(){
                                 }}
                             showFileNamesInPreview={true}
                             showPreviews={true}
+                            showPreviewsInDropzone={true}
                             maxFileSize={50000000}
                             filesLimit={1}
                             dialogTitle='Imagem para Capa do Livro'
-                            showPreviews={true}
-                            showPreviewsInDropzone={true}
                             submitButtonText='Enviar Arquivo'
                             cancelButtonText='Cancelar Envio'
                             previewText='Veja o Arquivo'
@@ -528,6 +556,7 @@ export default function ScreenRegisterBook(){
                         variant='outlined'
                         startIcon={<Save/>}
                         onClick={HandleSubmit}
+                        disabled={disableButton}
                         fullWidth
                     >
                         SALVAR
@@ -536,6 +565,14 @@ export default function ScreenRegisterBook(){
             </Grid>
         </Grid>
         </div>
+        {open && 
+            <SnackMAAT
+                open={open} 
+                close={CloseSnack} 
+                textSnack={textSnackBar} 
+                handleClose={<HandleClose />} 
+                alert={alertSnack}
+            />} 
         </React.Fragment>
     );
 };

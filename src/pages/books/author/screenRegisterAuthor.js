@@ -434,7 +434,7 @@ export default function ScreenRegisterAuthor() {
             </Grid>
         </Grid>
         </div>
-        {!open ? null : 
+        {open && 
             <SnackMAAT
                 open={open} 
                 close={CloseSnack} 
