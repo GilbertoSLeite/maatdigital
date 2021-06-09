@@ -3,7 +3,7 @@ import { Button, makeStyles, Paper } from "@material-ui/core";
 import DialogCadastro from "../../../components/dialog/dialogCadastro/dialogCadastro";
 import { Add } from "@material-ui/icons";
 import TableCoordinator from "./tableCoordinator";
-import ScreenRegisterCoordinator from "./screenRegisterCoordinator";
+import ScreenUpdateCoordinator from "./screenUpdateCoordinator";
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -25,6 +25,7 @@ export default  function TelaCoordenador() {
     const handleInsertUpdate = () => setStatusTelas(true) || setAbrirDialog(true)  
 
     const handleFecharDialog = () => setAbrirDialog(false) || window.location.reload()
+    
     return(
         <div>
         {statusTela ? 
@@ -50,7 +51,7 @@ export default  function TelaCoordenador() {
                 openDialog={abrirDialog}
                 closeDialog={handleFecharDialog} 
                 titleDialog={"Cadastro do Coordenador"}  
-                telaDialog={<ScreenRegisterCoordinator />}
+                telaDialog={<ScreenUpdateCoordinator />}
             />}
         </div> : 
         <div>

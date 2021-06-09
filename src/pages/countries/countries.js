@@ -4,12 +4,10 @@ import SearchPaises from "../../functions/searchData/countries/returnCountries";
 
 export default function Paises(){
     const [arrayPaises, setArrayPaises] = React.useState([])
-    const [loading, setLoading ] = React.useState(false)
+    const [loading, setLoading] = React.useState(false)
 
     React.useEffect(() => {
-        setLoading(true)
-        const RetornarPaises = async () => setArrayPaises(await SearchPaises()) || setLoading(false)
-        RetornarPaises()
+        (async () => setLoading(true) || setArrayPaises(await SearchPaises()) || setLoading(false))();
     },[]);
     
     return(

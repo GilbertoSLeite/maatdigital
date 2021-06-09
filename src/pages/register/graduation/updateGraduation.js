@@ -33,6 +33,7 @@ export default function UpdateGraduation(props) {
     const [open, setOpen] = React.useState(false);
     const [textSnackBar, setTextSnackbar] = React.useState('');
     const [edicao, setEdicao] = React.useState(false);
+    const [alertSnack, setAlertSnack] = React.useState(null);
     
     const CloseSnack = () => setOpen(false)
 
@@ -49,8 +50,21 @@ export default function UpdateGraduation(props) {
         );
     };
 
-    const HandleSubmit = async () => await UpdateBaseGraduation(identificadorIn, (graduacao === '' ? nomeGraduacaoIn : graduacao), (siglaGraduacao === ''? siglaGraduacaoIn : siglaGraduacao)) ? setDisableButton(true) || setOpen(true) || setTextSnackbar('Dados Atualizados com Sucesso') : setOpen(true) || setTextSnackbar('Houve erro na inserção - Verificar console!')
-    console.log(siglaGraduacao)
+    const trueInsert = () => {
+        setOpen(true);
+        setAlertSnack('success');
+        setTextSnackbar('Dados Atualizados com Sucesso');
+        setDisableButton(true);
+    };
+
+    const falseInsert = () => {
+        setOpen(true);
+        setAlertSnack('error');
+        setTextSnackbar('Dados Não Foram Atualizados - Verificar Console')          
+    };
+
+    const HandleSubmit = async () => await UpdateBaseGraduation(identificadorIn, (graduacao === '' ? nomeGraduacaoIn : graduacao), (siglaGraduacao === ''? siglaGraduacaoIn : siglaGraduacao)) ? trueInsert() : falseInsert()
+
     return(
         <React.Fragment>
             <CssBaseline />
@@ -185,6 +199,7 @@ export default function UpdateGraduation(props) {
                     open={open} 
                     close={CloseSnack} 
                     textSnack={textSnackBar} 
+                    alert={alertSnack}
                     handleClose={<HandleClose />} 
                 />} 
         </React.Fragment>       

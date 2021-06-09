@@ -1,5 +1,5 @@
+import BooleanValidation from "../../booleanValidation/booleanValidation";
 let token = localStorage.getItem('@maatdigital/token');
-let situacao = Boolean(false);
 export default async function DeleteGraduationCoordinator(idEditor){
     try {
         let myHeaders = new Headers();
@@ -12,10 +12,11 @@ export default async function DeleteGraduationCoordinator(idEditor){
         };
         const url = '/maatdigital/graduacao_coordenadores/' + idEditor
         const response = await fetch(url, requestOptions);
-        const result = await response.json();
-        (result.status ? (situacao = Boolean(true)) : (situacao = Boolean(false) || console.log(result)));
+        const result = await (response.ok && response.json());        
+        (!BooleanValidation[result.status] && console.error(result))
+        return BooleanValidation[result.status]
     } catch (error) {
         console.error('Ocorreu um erro em DeleteGraduationCoordinator: ' + error);
+        return false
     };
-    return situacao
 };

@@ -1,9 +1,6 @@
+import BooleanValidation from "../../booleanValidation/booleanValidation";
 let token = localStorage.getItem('@maatdigital/token');
-let situacao = Boolean(false);
-export default async function InsertGraduationCoordinator(    
-    idCoordinator,
-    idGraduacaoCoordinator,
-){
+export default async function InsertGraduationCoordinator(idCoordinator,idGraduacaoCoordinator){
     try {
         let myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
@@ -19,10 +16,11 @@ export default async function InsertGraduationCoordinator(
             redirect: 'follow'
         };
         const response = await fetch('/maatdigital/graduacao_coordenadores', requestOptions);
-        const result = await response.json();
-        (result.status ? (situacao = Boolean(true)) : (situacao = Boolean(false) || console.log(result)));
+        const result = await (response.ok && response.json());        
+        (!BooleanValidation[result.status] && console.error(result))
+        return BooleanValidation[result.status]
     } catch (error) {
         console.error('Ocorreu um erro em InsertGraduationCoordinator: ' + error);
+        return false
     };
-    return situacao
 };

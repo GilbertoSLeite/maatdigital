@@ -20,38 +20,29 @@ export default function TablePuslisher() {
     const [loading, setLoading] = React.useState(false);
 
     React.useEffect(() => {
-        setLoading(true)
-        const RetornarEditora = async () => setArrayEditora(await SearchPublisher());
-        RetornarEditora();
-        setLoading(false);
+        (async () => setArrayEditora(await SearchPublisher()))();
+    },[]);
+
+    React.useEffect(() => {
+        (async () => setLoading(true) || setArrayPais(await SearchPaises()) || setLoading(false))();
     },[]);
 
     const handleFecharDialog = () => setAbrirDialog(false) || window.location.reload()
     
-    const AtualizandoEditora = (dadosEditora) =>    setIdentificadorEditora(dadosEditora.id)     || 
-                                                    setDataCadastro(dadosEditora.data_cadastro) ||
-                                                    setNomeEditora(dadosEditora.nome_editora) || 
-                                                    setAnoFundacao(dadosEditora.ano_fundacao)   ||
-                                                    setPais(dadosEditora.pais_sede_id)          ||
-                                                    setWebSite(dadosEditora.website_editora)    ||
-                                                    setStatusEditora(dadosEditora.status)       ||
-                                                    setAbrirDialog(true)
-   
-    React.useEffect(() => {
-        setLoading(true)
-        const RetornaPais = async () => setArrayPais(await SearchPaises()) || setLoading(false)
-        RetornaPais()
-    }, []);
+    const AtualizandoEditora = (dadosEditora) =>  {
+        setIdentificadorEditora(dadosEditora.id)
+        setDataCadastro(dadosEditora.data_cadastro)
+        setNomeEditora(dadosEditora.nome_editora)
+        setAnoFundacao(dadosEditora.ano_fundacao) 
+        setPais(dadosEditora.pais_sede_id)      
+        setWebSite(dadosEditora.website_editora)
+        setStatusEditora(dadosEditora.status)
+        setAbrirDialog(true)
+    };
     
     function RetornarNomePais(identificado){
-        function CountrieFilter(array) {
-            if(array.id === identificado){
-                return array
-            };
-        }
-        let nomePais = arrayPais.map(x => x).filter(CountrieFilter);
-        nomePais = nomePais.map(x => x.nome)
-        return nomePais
+        const paisesMundo = arrayPais.find(paises => (paises.id === identificado))
+        return ((paisesMundo !== undefined) && paisesMundo.nome)
     };
 
     return(

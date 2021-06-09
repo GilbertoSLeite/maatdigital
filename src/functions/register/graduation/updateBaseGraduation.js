@@ -1,5 +1,5 @@
+import BooleanValidation from "../../booleanValidation/booleanValidation";
 let token = localStorage.getItem('@maatdigital/token');
-let situacao;
 export default async function UpdateBaseGraduation(id, graduacao, siglaGraduacao){
     try {
         let myHeaders = new Headers();
@@ -18,10 +18,11 @@ export default async function UpdateBaseGraduation(id, graduacao, siglaGraduacao
         };
         let url = '/maatdigital/graduacao/' + id;
         const response = await fetch(url, requestOptions);
-        const result = await response.json();
-        (result.status ? (situacao = Boolean(true)) : (situacao = Boolean(false) || console.log(result)));
+        const result = await (response.ok && response.json());        
+        (!BooleanValidation[result.status] && console.log(result))
+        return BooleanValidation[result.status]
     } catch (error) {
         console.error('Ocorreu um erro em InsertGraduation: ' + error);
+        return false
     };
-    return situacao
 };

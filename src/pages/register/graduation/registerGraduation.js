@@ -3,6 +3,7 @@ import { Button, CssBaseline, Grid, IconButton, makeStyles, Paper, TextField, To
 import SnackMAAT from "../../../components/snackbar/snackbar";
 import { Close, Save } from "@material-ui/icons";
 import InsertGraduation from "../../../functions/register/graduation/insertGraduation";
+import SearchGraduation from "../../../functions/searchData/graduation/returnGraduation";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,11 +26,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RegisterGraduation() {
     const classes = useStyles();
+    const [arrayGraduacao, setArrayGraduacao] = React.useState([]);
     const [graduacao, setGraduacao] = React.useState('')
     const [siglaGraduacao, setSiglaGraduacao] = React.useState('')
     const [buttonDisable, setDisableButton] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [textSnackBar, setTextSnackbar] = React.useState('');
+    const [alertSnack, setAlertSnack] = React.useState(null);
+
+    React.useEffect(() => {
+        (async () => setArrayGraduacao(await SearchGraduation()))();
+    },[]);
     
     const CloseSnack = () => setOpen(false)
 
@@ -46,7 +53,31 @@ export default function RegisterGraduation() {
         );
     };
 
-    const HandleSubmit = async () => await InsertGraduation(graduacao, siglaGraduacao) ? setOpen(true) || setTextSnackbar('Dados Inseridos com Sucesso') || setDisableButton(true) : setOpen(true) || setTextSnackbar('Dados Não Forma Inseridos - Verificar Console');
+    const duplicateData = () => {
+        const validatingDuplicate = arrayGraduacao.find(graduacaoData => graduacaoData.nome_graduacao.toLowerCase().trim().replace(' ','') === graduacao.toLowerCase().trim().replace(' ',''))
+        return (!validatingDuplicate ? HandleSubmit(): findData())
+    };
+    
+    const trueInsert = () => {
+        setOpen(true);
+        setAlertSnack('success');
+        setTextSnackbar('Dados Inseridos com Sucesso');
+        setDisableButton(true);
+    };
+
+    const falseInsert = () => {
+        setOpen(true);
+        setAlertSnack('error');
+        setTextSnackbar('Dados Não Foram Inseridos - Verificar Console')          
+    };
+
+    const findData = () => {
+        setOpen(true);
+        setAlertSnack('warning');
+        setTextSnackbar('Já existe o cadastro da graduação ' + graduacao)
+    };
+
+    const HandleSubmit = async () => await InsertGraduation(graduacao, siglaGraduacao) ? trueInsert() : falseInsert()  
 
     return(
         <React.Fragment>
@@ -137,7 +168,7 @@ export default function RegisterGraduation() {
                             variant='outlined'
                             startIcon={<Save/>}
                             disabled={buttonDisable}
-                            onClick={HandleSubmit}
+                            onClick={duplicateData}
                             fullWidth
                         >
                             SALVAR
@@ -152,6 +183,7 @@ export default function RegisterGraduation() {
                     open={open} 
                     close={CloseSnack} 
                     textSnack={textSnackBar} 
+                    alert={alertSnack}
                     handleClose={<HandleClose />} 
                 />} 
         </React.Fragment>       

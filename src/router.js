@@ -1,6 +1,6 @@
 import {  BrushOutlined, CollectionsBookmarkOutlined, DescriptionOutlined, EditAttributesOutlined, HomeWork, HowToRegOutlined, LibraryBooksOutlined, MenuBookOutlined, PublicOutlined, SchoolOutlined, SortByAlphaOutlined, VpnKeyOutlined } from "@material-ui/icons";
 import TelaAutor from "./pages/books/author/homeAuthor";
-import DDC from "./pages/books/ddc/ddc";
+import AreaConhecimento from "./pages/books/areaConhecimento/areaConhecimento";
 import TelaOrganizador from "./pages/books/organizer/homeOrganizer";
 import Paises from "./pages/countries/countries";
 import Home from "./pages/home/home";
@@ -31,9 +31,9 @@ const pageRoutes = [
         loginPage: false,
     },
     {
-        path: '/maatdigital/ddc',
+        path: '/maatdigital/areaconhecimento',
         name: 'Organização',
-        children: DDC,
+        children: AreaConhecimento,
         icon: CollectionsBookmarkOutlined,
         private: true,
         loginPage: false,

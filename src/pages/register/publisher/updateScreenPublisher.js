@@ -39,11 +39,11 @@ export default function UpdateScreenPublisher(props) {
     const [buttonDisable, setDisableButton] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [textSnackBar, setTextSnackbar] = React.useState('');
+    const [alertSnack, setAlertSnack] = React.useState(null);
     const [edicao, setEdicao] = React.useState(false);
-    
+
     React.useEffect(() => {
-        const RetornarPaises = async () => setArrayPaises(await SearchPaises())
-        RetornarPaises()
+        (async () => setArrayPaises(await SearchPaises()))();
     },[]);
 
     const CloseSnack = () => setOpen(false)
@@ -60,19 +60,27 @@ export default function UpdateScreenPublisher(props) {
             </IconButton>
         );
     };
-    
-    const HandleSubmit = async () => await UpdatePublisher(identificadorIn, dataCadastro, nomeEditora, anoFundacao, paisSede, webSite, newStatusEditor) ? setDisableButton(true) || setOpen(true) || setTextSnackbar('Dados Atualizados com Sucesso') : setOpen(true) || setTextSnackbar('Houve erro na inserção - Verificar console!')
-        
-    function RetornarNomePais(identificado){
-        function CountrieFilter(array) {
-            if(array.id === identificado){
-                return array
-            };
-        }
-        let nomePais = arrayPaises.map(x => x).filter(CountrieFilter);
-        nomePais = nomePais.map(x => x.nome)
-        return nomePais
+
+    const trueInsert = () => {
+        setOpen(true);
+        setAlertSnack('success');
+        setTextSnackbar('Dados Inseridos com Sucesso');
+        setDisableButton(true);
     };
+
+    const falseInsert = () => {
+        setOpen(true);
+        setAlertSnack('error');
+        setTextSnackbar('Dados Não Foram Inseridos - Verificar Console')          
+    };
+    
+    const HandleSubmit = async () => await UpdatePublisher(identificadorIn, dataCadastro, nomeEditora, anoFundacao, paisSede, webSite, newStatusEditor) ? trueInsert()  : falseInsert();
+    
+    function RetornarNomePais(identificado){
+        const paisesMundo = arrayPaises.find(paises => (paises.id === identificado))
+        return ((paisesMundo !== undefined) && paisesMundo.nome)
+    };
+    
     return(
     <React.Fragment>
             <CssBaseline />
@@ -305,6 +313,7 @@ export default function UpdateScreenPublisher(props) {
                     open={open} 
                     close={CloseSnack} 
                     textSnack={textSnackBar} 
+                    alert={alertSnack}
                     handleClose={<HandleClose />} 
                 />} 
         </React.Fragment>      

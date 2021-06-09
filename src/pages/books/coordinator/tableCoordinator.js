@@ -25,41 +25,43 @@ export default function TableCoordinator() {
     const [loading, setLoading] = React.useState(false)
 
     React.useEffect(() => {
-        setLoading(true)
-        const RetornaEditor = async () => setArrayCoordinator(await SearchCoordinator())
-        RetornaEditor()
-        setLoading(false)
-    },[])
+        (async () => setLoading(true) || setArrayCoordinator(await SearchCoordinator()) || setLoading(false))();
+    },[]);
 
     React.useEffect(() => {
-        setLoading(true)
-        const RetornarPais = async () => setArrayPais(await SearchPaises())
-        RetornarPais()
-        setLoading(false)
-    },[])
+        (async () => setLoading(true) || setArrayPais(await SearchPaises()) || setLoading(false))();
+    },[]);
 
     React.useEffect(() => {
-        setLoading(true)
-        const RetornarGraduacao = async () => setArrayGraduacaoCoordinator(await SearchGraduationCoordinator())
-        RetornarGraduacao()
-        setLoading(false)
-    },[])
+        (async () => setLoading(true) || setArrayGraduacaoCoordinator(await SearchGraduationCoordinator()) || setLoading(false))();
+    },[]);
 
     const handleFecharDialog = () => setAbrirDialog(false) || window.location.reload()
     
     function RetornarNomePais(identificador){
-        const nomePais = arrayPais
-            .filter((paises) => (paises.id === identificador))
-        return nomePais[nomePais.length - 1]?.nome
+        const nomePais = arrayPais.find(paises => paises.id === identificador)
+        return (nomePais && nomePais.nome)
     };
 
     function RetornarGraduacao(idCoordenador) {
-        const graduacaoCoordenador = arrayGraduacaoCoordinator
-            .filter((graduacao) => graduacao.coordenadores_id === idCoordenador)
-            return graduacaoCoordenador.map (x => x.graduacoes_id)
-    }
+        const idGraduacaoCoord = arrayGraduacaoCoordinator.filter(graduacao => graduacao.coordenadores_id === idCoordenador)
+        return (idGraduacaoCoord && idGraduacaoCoord.map(x => x.graduacoes_id))
+    };
     
-    const AtualizarCoordinator = (dadosCoordinator) => setAbrirDialog(true) || setUpIdentificaror(dadosCoordinator.id) || setUpDataCadastro(dadosCoordinator.data_cadastro) || setUpFName(dadosCoordinator.primeiro_nome_pessoa) || setUpMName(dadosCoordinator.segundo_nome_pessoa) || setUpLName(dadosCoordinator.ultimo_nome_pessoa) || setUpPais(dadosCoordinator.pais_coordenador_id) || setUpGraduacao(RetornarGraduacao(dadosCoordinator.id)) || setUpCPF(dadosCoordinator.numero_cpf) || setUpSexo(dadosCoordinator.sexo_pessoas) || setUpRaca(dadosCoordinator.raca_pessoas) || setUpStatus(dadosCoordinator.status)
+    const AtualizarCoordinator = (dadosCoordinator) => {
+        setUpIdentificaror(dadosCoordinator.id)
+        setUpDataCadastro(dadosCoordinator.data_cadastro)
+        setUpFName(dadosCoordinator.primeiro_nome_pessoa)
+        setUpMName(dadosCoordinator.segundo_nome_pessoa)
+        setUpLName(dadosCoordinator.ultimo_nome_pessoa)
+        setUpPais(dadosCoordinator.pais_coordenador_id)
+        setUpGraduacao(RetornarGraduacao(dadosCoordinator.id))
+        setUpCPF(dadosCoordinator.numero_cpf)
+        setUpSexo(dadosCoordinator.sexo_pessoas)
+        setUpRaca(dadosCoordinator.raca_pessoas)
+        setUpStatus(dadosCoordinator.status)
+        setAbrirDialog(true)
+    }
             
     return(
         <React.Fragment>

@@ -1,46 +1,36 @@
 import React from "react";
 import MaterialTable from "material-table";
-import SearchSubClasse from "../../../functions/searchData/DDC/returnsubclasse";
-import SearchAreaConhecimento from "../../../functions/searchData/DDC/returnclasses";
+import SearchSubClasse from "../../../functions/searchData/areaConhecimento/returnsubclasse";
+import SearchAreaConhecimento from "../../../functions/searchData/areaConhecimento/returnclasses";
 
-export default function DDC() {
-    const [arrayDDC, setArrayDDC] = React.useState([])
-    const [arrayAC, setArrayAC] = React.useState([])
+export default function AreaConhecimento() {
+    const [arraySubClasse, setArraySubClasse] = React.useState([])
+    const [arrayAreaConhecimento, setArrayAreaConhecimento] = React.useState([])
     const [loading, setLoading] = React.useState(false)
 
     React.useEffect(() => {
-        setLoading(true)
-        const RetornarSC = async () => setArrayDDC(await SearchSubClasse())
-        RetornarSC()
-        setLoading(false)
-    }, []);
+        (async () => setLoading(true) || setArraySubClasse(await SearchSubClasse()) || setLoading(false))();
+    },[]);
 
     React.useEffect(() => {
-        setLoading(true)
-        const RetornarAC = async () => setArrayAC(await SearchAreaConhecimento()) 
-        RetornarAC()
-        setLoading(false)
-    }, []);
+        (async () => setLoading(true) || setArrayAreaConhecimento(await SearchAreaConhecimento()) || setLoading(false))();
+    },[]);
     
     function RetornarCodigoAC(identificado){
-        const AC = (array) => ((array.id === identificado) && array)
-        let codigoA = arrayAC.map(x => x).filter(AC);
-        codigoA = codigoA.map(x => x.codigo_classes)
-        return codigoA
+        const codAreaConhecimento = arrayAreaConhecimento.find(dataAreaConhecimento => (dataAreaConhecimento.id === identificado))
+        return ((codAreaConhecimento !== undefined) && codAreaConhecimento.codigo_classes)
     };
 
-    function RetornarAC(identificado){
-        const ReturnAC = (array) => ((array.id === identificado) && array)
-        let areaConhecimento = arrayAC.map(x => x).filter(ReturnAC);
-        areaConhecimento = areaConhecimento.map(x => x.tipo_classes)
-        return areaConhecimento
+    function RetornarAC(identificado){        
+        const codAreaConhecimento = arrayAreaConhecimento.find(dataAreaConhecimento => (dataAreaConhecimento.id === identificado))
+        return ((codAreaConhecimento !== undefined) && codAreaConhecimento.tipo_classes) 
     };
 
     return(
         <MaterialTable 
             title='Modelo de Classificação'
             isLoading={loading}
-            data={arrayDDC}
+            data={arraySubClasse}
             localization={{
                     toolbar: {
                         exportTitle: 'Exportar Dados',
@@ -86,7 +76,7 @@ export default function DDC() {
                         }
                 },
                 {
-                        title: 'Código Área de Conhecimento',
+                        title: 'Cód. Área de Conhecimento',
                         render: rowData => <div>{RetornarCodigoAC(rowData.area_conhecimento_id)}</div>,
                         field: 'area_conhecimento_id',
                         tooltip: 'Código Área de Conhecimento',

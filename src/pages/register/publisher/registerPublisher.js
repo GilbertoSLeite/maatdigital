@@ -5,6 +5,7 @@ import { Close, Save } from "@material-ui/icons";
 import InsertPublisher from "../../../functions/register/publisher/insertPublisher";
 import { Autocomplete } from "@material-ui/lab";
 import SearchPaises from "../../../functions/searchData/countries/returnCountries";
+import SearchPublisher from "../../../functions/searchData/publisher/returnPublisher";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -30,6 +31,7 @@ const dataFormatHoje = (dataHoje.getFullYear() +'-'+ (dataHoje.getMonth() < 10 ?
 
 export default function RegisterPublisher() {
     const classes = useStyles();
+    const [arrayEditora, setArrayEditora] = React.useState([]);
     const [arrayPaises, setArrayPaises ] = React.useState([])
     const [nomeEditora, setNomeEditora] = React.useState('')
     const [anoFundacao, setAnoFundacao] = React.useState('')
@@ -38,10 +40,14 @@ export default function RegisterPublisher() {
     const [buttonDisable, setDisableButton] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [textSnackBar, setTextSnackbar] = React.useState('');
+    const [alertSnack, setAlertSnack] = React.useState(null);
     
     React.useEffect(() => {
-        const RetornarPaises = async () => setArrayPaises(await SearchPaises())
-        RetornarPaises()
+        (async () => setArrayEditora(await SearchPublisher()))();
+    },[]);
+
+    React.useEffect(() => {
+        (async () => setArrayPaises(await SearchPaises()))();
     },[]);
 
     const CloseSnack = () => setOpen(false)
@@ -59,7 +65,31 @@ export default function RegisterPublisher() {
         );
     };
 
-    const HandleSubmit = async () => await InsertPublisher(dataFormatHoje, nomeEditora, anoFundacao, paisSede, webSite) ? setOpen(true) || setTextSnackbar('Dados Inseridos com Sucesso') || setDisableButton(true) : setOpen(true) || setTextSnackbar('Dados Não Forma Inseridos - Verificar Console');
+    const duplicateData = () => {
+        const validatingDuplicate = arrayEditora.find(editoraData => editoraData.nome_editora.toLowerCase().trim().replace(' ','') === nomeEditora.toLowerCase().trim().replace(' ',''))
+        return (!validatingDuplicate ? HandleSubmit(): findData())
+    };
+
+    const trueInsert = () => {
+        setOpen(true);
+        setAlertSnack('success');
+        setTextSnackbar('Dados Inseridos com Sucesso');
+        setDisableButton(true);
+    };
+
+    const falseInsert = () => {
+        setOpen(true);
+        setAlertSnack('error');
+        setTextSnackbar('Dados Não Foram Inseridos - Verificar Console')          
+    };
+
+    const findData = () => {
+        setOpen(true);
+        setAlertSnack('warning');
+        setTextSnackbar('Já existe o cadastro da editora ' + nomeEditora)          
+    };
+
+    const HandleSubmit = async () => await InsertPublisher(dataFormatHoje, nomeEditora, anoFundacao, paisSede, webSite) ? trueInsert()  : falseInsert();
 
     return(
         <React.Fragment>
@@ -235,7 +265,7 @@ export default function RegisterPublisher() {
                             variant='outlined'
                             startIcon={<Save/>}
                             disabled={buttonDisable}
-                            onClick={HandleSubmit}
+                            onClick={duplicateData}
                             fullWidth
                         >
                             SALVAR
@@ -250,6 +280,7 @@ export default function RegisterPublisher() {
                     open={open} 
                     close={CloseSnack} 
                     textSnack={textSnackBar} 
+                    alert={alertSnack}
                     handleClose={<HandleClose />} 
                 />} 
         </React.Fragment>       

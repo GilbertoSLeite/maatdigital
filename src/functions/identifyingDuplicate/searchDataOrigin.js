@@ -12,7 +12,7 @@ export default async function SearchDataOrigin(table) {
         };   
         let url = primeiroUrl + table
         const response = await fetch(url, requestOptions);
-        const result = (response.ok && await response.json());
+        const result = await (response.ok &&  response.json());
         const resultTratado = (result.map(x => x.primeiro_nome_pessoa.toLowerCase().trim().replace(' ','')) + result.map(x => x.segundo_nome_pessoa.toLowerCase().trim().replace(' ','')) + result.map(x => x.ultimo_nome_pessoa.toLowerCase().trim().replace(' ','')));
         return resultTratado
     } catch (error) {

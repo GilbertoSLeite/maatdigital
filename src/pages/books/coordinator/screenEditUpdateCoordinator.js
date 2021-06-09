@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, CssBaseline, FormControl, FormControlLabel, FormLabel, Grid, IconButton, makeStyles, Paper, Radio, RadioGroup, TextField } from "@material-ui/core";
+import PropTypes from 'prop-types';
+import { Button, CssBaseline, FormControl, FormControlLabel, FormLabel, Grid, IconButton, makeStyles, Paper, Radio, RadioGroup,TextField} from "@material-ui/core";
 import SearchPaises from "../../../functions/searchData/countries/returnCountries";
 import { Close, Save } from "@material-ui/icons";
 import { Autocomplete } from "@material-ui/lab";
@@ -7,8 +8,7 @@ import ValidatingCPF from "../../../functions/validatingData/validatingCPF";
 import TextFieldCPF from "../../../components/textField/textFieldCPF";
 import SnackMAAT from "../../../components/snackbar/snackbar";
 import SearchGraduation from "../../../functions/searchData/graduation/returnGraduation";
-import InsertCoordinator from "../../../functions/register/coordinator/insertDataCoordinator";
-import IdentifyingDuplicate from "../../../functions/identifyingDuplicate/identifyingDuplicate";
+import UpdateCoordinator from "../../../functions/register/coordinator/updateDataCoordinator";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,34 +29,31 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const dataHoje = new Date()
-const dataFormatHoje = (dataHoje.getFullYear() +'-'+ (dataHoje.getMonth() < 10 ? '0' + (dataHoje.getMonth() +1) : (dataHoje.getMonth() +1)) +'-'+ (dataHoje.getDate() < 10 ? '0' + dataHoje.getDate() : dataHoje.getDate()) );
-
-export default function ScreenRegisterCoordinator() {
-    const classes = useStyles();
+export default function ScreenUpdateEditCoordinator(props) {
+    const{identificadorIn, dataCadastroIn,fNomeIn, mNomeIn, lNomeIn, paisIn, graduacaoIn,cpfIn,sexoIn,racaIn,statusIn} = props
+    const classes = useStyles()
     const [arrayPaises, setArrayPaises] = React.useState([])
     const [arrayGraduacao, setArrayGraduacao] = React.useState([])
-    const [firstName, setFirstName] = React.useState(null)
-    const [middleName , setMiddleName] = React.useState(null)
-    const [lastName, setLastName] = React.useState(null)
-    const [paisCoordinator, setPaisCoordinator] = React.useState(null)
+    const [firstName, setFirstName] = React.useState('')
+    const [middleName , setMiddleName] = React.useState('')
+    const [lastName, setLastName] = React.useState('')
+    const [paisCoordinator, setPaisCoordinator] = React.useState('')
     const [graduacaoCoordinator, setGraduacaoCoordinator ] = React.useState([])
     const [numCPF, setNumCPF] = React.useState('');
     const [sexoCoordinator, setSexoCoordinator] = React.useState('')
     const [racaCoordinator, setRacaCoordinator] = React.useState('')
+    const [newStatusCoordinator, setNewStatusStatusCoordinator] = React.useState(false)
     const [buttonDisable, setDisableButton] = React.useState(false)
     const [open, setOpen] = React.useState(false)
     const [textSnackBar, setTextSnackbar] = React.useState('')
-    const [alertSnack, setAlertSnack] = React.useState(null)
+    const [alertSnack, setAlertSnack] = React.useState(null);
 
     React.useEffect(() => {
-        const RetornarPaises = async () => setArrayPaises(await SearchPaises())
-        RetornarPaises()
+        (async () => setArrayPaises(await SearchPaises()))()
     },[]);
 
     React.useEffect(() => {
-        const RetornarGraduacao = async () => setArrayGraduacao(await SearchGraduation())
-        RetornarGraduacao()
+        (async () => setArrayGraduacao(await SearchGraduation()))()
     },[]);
 
     const CloseSnack = () => setOpen(false)
@@ -74,17 +71,20 @@ export default function ScreenRegisterCoordinator() {
         );
     };
 
-    async function validatingData(){
-        try {
-            const ConcatenatingNames = ((firstName.toLowerCase().trim()) + (middleName.toLowerCase().trim()) + (lastName.toLowerCase().trim()))
-            const ratedData = await IdentifyingDuplicate('coordenadores', ConcatenatingNames) 
-            ratedData ? setOpen(true) || setAlertSnack('warning') || setTextSnackbar('Já existe um ' + firstName + ' ' + middleName + ' ' + lastName + ' no Banco de Dados')  : HandleSubmit()
-        } catch (error) {
-            console.error('Error ocorrido na validação dos dados em validatingData - ScreenRegisterCoordinator ' + error)
-        };        
+    const trueInsert = () => {
+        setOpen(true);
+        setAlertSnack('success');
+        setTextSnackbar('Dados Atualizados com Sucesso');
+        setDisableButton(true);
     };
 
-    const HandleSubmit = async () => await InsertCoordinator(dataFormatHoje, firstName, middleName,lastName, paisCoordinator, graduacaoCoordinator, numCPF, sexoCoordinator, racaCoordinator) ? setOpen(true) || setAlertSnack('success') || setTextSnackbar('Dados Inseridos com Sucesso') || setDisableButton(true) : setOpen(true) || setAlertSnack('error') || setTextSnackbar('Dados Não Forma Inseridos - Verificar Console'); 
+    const falseInsert = () => {
+        setOpen(true);
+        setAlertSnack('error');
+        setTextSnackbar('Dados Não Foram Atualizados - Verificar Console')          
+    };
+    
+    const HandleSubmit = async () => await UpdateCoordinator(identificadorIn, dataCadastroIn, ((firstName === '')? fNomeIn : firstName) , ((middleName === '')? mNomeIn : middleName) ,((lastName === '')? lNomeIn : lastName), ((paisCoordinator === '')? paisIn : paisCoordinator), (!graduacaoCoordinator ? graduacaoIn : graduacaoCoordinator), ((numCPF === '')? cpfIn : numCPF), ((sexoCoordinator === '')? sexoIn : sexoCoordinator), ((racaCoordinator === '')? racaIn : racaCoordinator), ((newStatusCoordinator === '')? statusIn : newStatusCoordinator) ) ? trueInsert() : falseInsert()
     
     return(
         <React.Fragment>
@@ -98,7 +98,7 @@ export default function ScreenRegisterCoordinator() {
             justify="space-around"
             alignItems="stretch"
             className={classes.grid}
-        >
+        >  
             <Grid
                 item
                 xs={12}
@@ -113,12 +113,12 @@ export default function ScreenRegisterCoordinator() {
                         aria-labelledby='Nome do Coordenador'
                         id='primeiro_nome_pessoa'
                         type='text'
-                        label='Primeiro Nome'
-                        helperText='Nome do Coordenador do Livro'
+                        helperText='Primeiro Nome do Coordenador do Livro'
                         variant='outlined'
                         margin='dense'
+                        defaultValue={fNomeIn}
                         fullWidth
-                        onChange={(e)=> setFirstName(e.target.value)}
+                        onChange={(e)=>setFirstName(e.target.value)}
                     />
                 </Paper>    
             </Grid>
@@ -136,12 +136,12 @@ export default function ScreenRegisterCoordinator() {
                         aria-labelledby='Segundo Nome do Coordenador'
                         id='segundo_nome_pessoa'
                         type='text'
-                        label='Segundo Nome'
                         helperText='Segundo Nome do Coordenador do Livro'
                         variant='outlined'
                         margin='dense'
+                        defaultValue={mNomeIn}
                         fullWidth
-                        onChange={(e)=> setMiddleName(e.target.value)}
+                        onChange={(e)=>setMiddleName(e.target.value)}
                     />
                 </Paper>    
             </Grid>
@@ -159,52 +159,28 @@ export default function ScreenRegisterCoordinator() {
                         aria-labelledby='Sobrenome do Coordenador'
                         id='ultimo_nome_pessoa'
                         type='text'
-                        label='Sobrenome Nome'
                         helperText='Sobrenome do Coordenador do Livro'
                         variant='outlined'
                         margin='dense'
+                        defaultValue={lNomeIn}
                         fullWidth
-                        onChange={(e)=> setLastName(e.target.value)}
+                        onChange={(e)=>setLastName(e.target.value)}
                     />
                 </Paper>    
             </Grid>
             <Grid
                 item 
                 xs={12} 
-                sm={4}
+                sm={6}
             >
                 <Paper
                     elevation={8}
                     variant='elevation'
                     className={classes.paper}
-                >
-                    <TextField
-                        aria-labelledby='Data de Cadastro'
-                        id='data_cadastro'
-                        type='date'
-                        helperText='Data de Cadastro do Coordenador'
-                        variant='outlined'
-                        margin='dense'
-                        value={dataFormatHoje}
-                        disabled
-                        fullWidth
-                    />
-                </Paper> 
-            </Grid>
-            <Grid
-                item 
-                xs={12} 
-                sm={4}
-            >
-                <Paper
-                    elevation={8}
-                    variant='elevation'
-                    className={classes.paper}
-                >   
+                > 
                     <Autocomplete
-                        getOptionSelected={(o,v) =>  (o.option === v.value)}
-                        getOptionLabel={(o) => o.nome}
-                        onChange={(e,v) => setPaisCoordinator(!v? '' : v.id)}
+                        getOptionLabel={(options) => options.nome}
+                        onChange={(event,value) => setPaisCoordinator(!value? '' : value.id)}
                         options={arrayPaises} 
                         renderInput={(params) => 
                             <TextField
@@ -215,23 +191,23 @@ export default function ScreenRegisterCoordinator() {
                                 margin='dense'
                                 fullWidth
                             />}
-                    />                    
+                    />                                          
                 </Paper>  
             </Grid>
             <Grid
                 item 
                 xs={12} 
-                sm={4}
+                sm={6}
             >
                 <Paper
                     elevation={8}
                     variant='elevation'
                     className={classes.paper}
-                >   
+                > 
                     <Autocomplete
                         multiple
-                        getOptionLabel={(o) => o.nome_graduacao}
-                        onChange={(e,v) => setGraduacaoCoordinator(v === '' ? '' : v)}
+                        getOptionLabel={(options) => options.nome_graduacao}
+                        onChange={(event,value) => setGraduacaoCoordinator(!value ? '' : value)}
                         options={arrayGraduacao} 
                         renderInput={(params) => 
                             <TextField
@@ -242,7 +218,7 @@ export default function ScreenRegisterCoordinator() {
                                 margin='dense'
                                 fullWidth
                             />}
-                    />                    
+                    />                 
                 </Paper>  
             </Grid>
             <Grid
@@ -264,7 +240,8 @@ export default function ScreenRegisterCoordinator() {
                         error={numCPF.length === 0 ? false : (ValidatingCPF(numCPF) ? false : true)}
                         size='small'
                         margin='dense' 
-                        type='text'  
+                        type='text' 
+                        defaultValue={cpfIn} 
                         onChange={(e) => setNumCPF(e.target.value)}
                         fullWidth                             
                         InputProps={{
@@ -291,26 +268,26 @@ export default function ScreenRegisterCoordinator() {
                             row
                             aria-label='Sexo Autor'
                             name='sexo_pessoas'
-                            defaultValue='M'
+                            defaultValue={sexoIn}
                             onChange={(e) => setSexoCoordinator(e.target.value)}
                         >
                             <FormControlLabel
                                 value='F'
                                 control={<Radio />}
                                 label='Feminio'
-                                labelPlacement='bottom'
+                                labelPlacement='bottom'          
                             />
                             <FormControlLabel 
                                 value='M'
                                 control={<Radio />}
                                 label='Masculino'
-                                labelPlacement='bottom'
+                                labelPlacement='bottom'          
                             />
                             <FormControlLabel 
                                 value='O'
                                 control={<Radio />}
                                 label='Outros'
-                                labelPlacement='bottom'
+                                labelPlacement='bottom'           
                             />
                         </RadioGroup>
                     </FormControl>
@@ -334,48 +311,74 @@ export default function ScreenRegisterCoordinator() {
                             row
                             aria-label='Raça do Coordenador'
                             name='raca_pessoas'
-                            defaultValue='P'
+                            defaultValue={racaIn}
                             onChange={(e) => setRacaCoordinator(e.target.value)}
                         >
                             <FormControlLabel 
                                 value="P" 
                                 control={<Radio />} 
                                 label="Preto" 
-                                labelPlacement="bottom"
+                                labelPlacement="bottom"            
                             />
                             <FormControlLabel 
-                            value="B" 
-                            control={<Radio />} 
-                            label="Branco" 
-                            labelPlacement="bottom"
+                                value="B" 
+                                control={<Radio />} 
+                                label="Branco" 
+                                labelPlacement="bottom"          
                             />
                             <FormControlLabel 
-                            value="D" 
-                            control={<Radio />} 
-                            label="Pardo" 
-                            labelPlacement="bottom"
+                                value="D" 
+                                control={<Radio />} 
+                                label="Pardo" 
+                                labelPlacement="bottom"          
                             />
                             <FormControlLabel 
-                            value="I" 
-                            control={<Radio />} 
-                            label="Indígena" 
-                            labelPlacement="bottom"
+                                value="I" 
+                                control={<Radio />} 
+                                label="Indígena" 
+                                labelPlacement="bottom"          
                             />
                             <FormControlLabel 
-                            value="A" 
-                            control={<Radio />} 
-                            label="Amarelo" 
-                            labelPlacement="bottom"
+                                value="A" 
+                                control={<Radio />} 
+                                label="Amarelo" 
+                                labelPlacement="bottom"            
                             />
                             <FormControlLabel 
-                            value="S" 
-                            control={<Radio />} 
-                            label="S. Informação" 
-                            labelPlacement="bottom"
+                                value="S" 
+                                control={<Radio />} 
+                                label="S. Informação" 
+                                labelPlacement="bottom"             
                             />
                         </RadioGroup>
                     </FormControl>
                 </Paper>
+            </Grid>
+            <Grid
+                item 
+                xs={12} 
+                sm={12}
+            >
+                <Paper
+                    elevation={8}
+                    variant='elevation'
+                    className={classes.paper}
+                >   
+                    <Autocomplete
+                        getOptionLabel={(options) => options.value}
+                        onChange={(event,value) => setNewStatusStatusCoordinator(!value? '' : value.id)}
+                        options={statusOrganizador}         
+                        renderInput={(params) => 
+                            <TextField
+                                {...params}
+                                type='text'
+                                helperText='Status do Cadastro do Coordenador'
+                                variant='outlined'
+                                margin='dense'
+                                fullWidth
+                            />}
+                    />                            
+                </Paper>   
             </Grid>
             <Grid
                 item
@@ -391,24 +394,47 @@ export default function ScreenRegisterCoordinator() {
                         size='large'
                         variant='outlined'
                         startIcon={<Save/>}
+                        onClick={HandleSubmit}
                         disabled={buttonDisable}
-                        onClick={validatingData}
                         fullWidth
                     >
-                        SALVAR
+                        ATUALIZAR
                     </Button>
                 </Paper>
             </Grid>
         </Grid>
         </div>
-        {!open ? null : 
+        {open && 
             <SnackMAAT
                 open={open} 
                 close={CloseSnack} 
                 textSnack={textSnackBar} 
-                handleClose={<HandleClose />} 
                 alert={alertSnack}
+                handleClose={<HandleClose />} 
             />} 
         </React.Fragment>
     );
 };
+
+const statusOrganizador = [
+    {
+        "id": true,
+        "value": 'Ativo'
+    }, 
+    {
+        "id": false,
+        "value": 'Inativo'
+    }
+];
+
+ScreenUpdateEditCoordinator.propTypes = {
+    fNomeIn: PropTypes.string.isRequired,
+    mNomeIn: PropTypes.string.isRequired,
+    lNomeIn: PropTypes.string.isRequired,
+    paisIn: PropTypes.string.isRequired,
+    graduacaoIn: PropTypes.array.isRequired, 
+    cpfIn: PropTypes.string.isRequired, 
+    sexoIn: PropTypes.string.isRequired,
+    racaIn: PropTypes.string.isRequired,
+    statusIn: PropTypes.bool.isRequired
+}

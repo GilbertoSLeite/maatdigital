@@ -13,17 +13,18 @@ export default function TableGraduation() {
     const [loading, setLoading] = React.useState(false);
 
     React.useEffect(() => {
-        setLoading(true)
-        const RetornarGraduacao = async () => setArrayGraduacao(await SearchGraduation());
-        RetornarGraduacao();
-        setLoading(false);
+        (async () => setLoading(true) || setArrayGraduacao(await SearchGraduation()) || setLoading(false))();
     },[]);
 
-    const handleFecharDialog = () => setAbrirDialog(false) || window.location.reload()
-    
-    const AtualizandoGraduacao = (dadosGraduacao) => setIdentificadorGraduacao(dadosGraduacao.id) || setNomeGraduacao(dadosGraduacao.nome_graduacao) || setSiglaGraduacao(dadosGraduacao.sigla_graduacao) || setAbrirDialog(true)
-   
+    const handleFecharDialog = () => setAbrirDialog(false) || window.location.reload();
 
+    const AtualizandoGraduacao = (dadosGraduacao) =>{
+        setIdentificadorGraduacao(dadosGraduacao.id)
+        setNomeGraduacao(dadosGraduacao.nome_graduacao)
+        setSiglaGraduacao(dadosGraduacao.sigla_graduacao)
+        setAbrirDialog(true)
+    };
+   
     return(
         <React.Fragment>
         <MaterialTable

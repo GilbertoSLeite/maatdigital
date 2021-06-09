@@ -4,7 +4,7 @@ import { Close, CloudUploadOutlined, Save } from "@material-ui/icons";
 import {DropzoneDialog} from "material-ui-dropzone";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { Autocomplete } from "@material-ui/lab";
-import SearchSubClasse from "../../../functions/searchData/DDC/returnsubclasse";
+import SearchSubClasse from "../../../functions/searchData/areaConhecimento/returnsubclasse";
 import SearchPublisher from "../../../functions/searchData/publisher/returnPublisher";
 import SearchOrganizer from "../../../functions/searchData/organizer/searchOrganizer";
 import SearchEditor from "../../../functions/searchData/editor/searchEditor";
@@ -570,8 +570,8 @@ export default function ScreenRegisterBook(){
                 open={open} 
                 close={CloseSnack} 
                 textSnack={textSnackBar} 
-                handleClose={<HandleClose />} 
                 alert={alertSnack}
+                handleClose={<HandleClose />} 
             />} 
         </React.Fragment>
     );

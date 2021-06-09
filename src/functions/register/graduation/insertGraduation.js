@@ -1,7 +1,5 @@
-import DataStatus from "../../dataStatus/dataStatus";
-
+import BooleanValidation from "../../booleanValidation/booleanValidation";
 let token = localStorage.getItem('@maatdigital/token');
-let situacao;
 export default async function InsertGraduation(graduacao, siglaGraduacao){
     try {
         let myHeaders = new Headers();
@@ -19,18 +17,11 @@ export default async function InsertGraduation(graduacao, siglaGraduacao){
             redirect: 'follow'
         };
         const response = await fetch('/maatdigital/graduacao', requestOptions);
-        const result = await response.json();
-        console.log(result)
-        if(result.status === true){
-            situacao = Boolean(true)
-        }else {
-            console.log(result);
-            const errorData = DataStatus(result);
-            console.error(errorData.getErrorMessage())
-            situacao = Boolean(false)
-        }
+        const result = await (response.ok && response.json());        
+        (!BooleanValidation[result.status] && console.log(result))
+        return BooleanValidation[result.status]
     } catch (error) {
         console.error('Ocorreu um erro em InsertGraduation: ' + error);
-    };
-    return situacao
+        return false
+    };    
 };

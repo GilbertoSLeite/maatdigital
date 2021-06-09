@@ -1,19 +1,7 @@
-import DataStatus from "../../dataStatus/dataStatus";
+import BooleanValidation from "../../booleanValidation/booleanValidation";
 import InsertGraduationCoordinator from "./insertGraudationCoordinator";
-
 let token = localStorage.getItem('@maatdigital/token');
-let situacao = Boolean(false);
-export default async function InsertCoordinator(
-    dataCadastro,
-    firstName,
-    middleName,
-    lastName,
-    paisCoordinator,
-    graduacaoCoordinator,
-    numCPF,
-    sexoCoordinator,
-    racaCoordinator,
-){
+export default async function InsertCoordinator(dataCadastro,firstName,middleName,lastName,paisCoordinator,graduacaoCoordinator,numCPF,sexoCoordinator,racaCoordinator){
     try {
         let myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
@@ -36,22 +24,14 @@ export default async function InsertCoordinator(
             redirect: 'follow'
         };
         const response = await fetch('/maatdigital/coordenadores', requestOptions);
-        const result = await response.json();
-        if(result.status){
-            for(let index = 0; index < graduacaoCoordinator.length;  index++){
-                const idGraduacao = graduacaoCoordinator[index].id;
-                const graduacao = await InsertGraduationCoordinator(result.identificador_coordenador, idGraduacao) 
-                !graduacao && (index = graduacaoCoordinator.length)
-            }
-            situacao = Boolean(true)
-        }else {
-            console.log(result);
-            const errorPost = DataStatus(result);
-            console.error(errorPost.getErrorMessage())
-            situacao = errorPost.getStatus()
+        const result = await (response.ok && response.json());        
+        (!BooleanValidation[result.status] && console.error(result))
+        for(const dados of graduacaoCoordinator){            
+            (BooleanValidation[result.status] && (async() => (await InsertGraduationCoordinator(result.identificador_coordenador, dados.id)))())
         }
+        return BooleanValidation[result.status] 
     } catch (error) {
         console.error('Ocorreu um erro em InsertCoordinator ' + error);
+        return false
     };
-    return situacao
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import MaterialTable from "material-table";
 import SearchBook from "../../../functions/searchData/book/searchBook";
-import SearchSubClasse from "../../../functions/searchData/DDC/returnsubclasse";
+import SearchSubClasse from "../../../functions/searchData/areaConhecimento/returnsubclasse";
 import DialogCadastro from "../../../components/dialog/dialogCadastro/dialogCadastro";
 import ScreenUpdateCoordinator from "../coordinator/screenUpdateCoordinator";
 

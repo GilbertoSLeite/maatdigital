@@ -10,7 +10,7 @@ export default async function SearchPaises() {
             redirect: 'follow',
         };   
         const response = await fetch('/maatdigital/paises', requestOptions);
-        return await (response.ok && await response.json()); 
+        return await (response.ok && response.json()); 
     } catch (error) {
         console.error('Error em SearchAreaConhecimento: ' + error);
     };
