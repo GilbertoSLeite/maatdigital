@@ -17,5 +17,5 @@ export default async function SearchDataOrigin(table) {
         return resultTratado
     } catch (error) {
         console.error('Error em SearchDataOrigin: ' + error);
-    };
-};
+    }
+}

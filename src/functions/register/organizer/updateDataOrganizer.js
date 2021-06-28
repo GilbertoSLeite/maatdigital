@@ -1,27 +1,16 @@
-import UpdateGraduationOrganizer from "./updateGraudationOrganizer";
 import DeleteGraduationOrganizer from "./deleteGraduationOrganizer";
+import BooleanValidation from "../../booleanValidation/booleanValidation";
+import InsertGraduationOrganizer from "./insertGraudationOrganizer";
 
-let token = localStorage.getItem('@maatdigital/token');
-let situacao = Boolean(false);
+const token = localStorage.getItem('@maatdigital/token');
 
-export default async function UpdateOrganizer(
-    identificador,
-    dataCadastro,
-    firstName,
-    middleName,
-    lastName,
-    paisOrganizer,
-    graduacaoOrganizer,
-    numCPF,
-    sexoOrganizer,
-    racaOrganizer,
-    statusOrganizer,
-){
+const UpdateOrganizer = async (identificador,dataCadastro,firstName,middleName,lastName,paisOrganizer,graduacaoOrganizer,numCPF,sexoOrganizer,racaOrganizer,statusOrganizer) => {
     try {
-        let myHeaders = new Headers();
+        const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("Authorization", token);
-        let raw = JSON.stringify({
+
+        const raw = JSON.stringify({
             "data_cadastro": dataCadastro,
             "primeiro_nome_pessoa": firstName,
             "segundo_nome_pessoa": middleName,
@@ -32,34 +21,30 @@ export default async function UpdateOrganizer(
             "raca_pessoas": racaOrganizer,
             "status":statusOrganizer,
         });
-        let requestOptions = {
+
+        const requestOptions = {
             method: 'PUT',
             headers: myHeaders,
             body: raw,
             redirect: 'follow'
         };
-        let url = '/maatdigital/organizadores/'+ identificador
+
+        const url = '/maatdigital/organizadores/'+ identificador;
         const response = await fetch(url, requestOptions);
-        const result = await response.json();
-        if(result.status === true){
-            if(graduacaoOrganizer.length > 0){
-            const isDelete = await DeleteGraduationOrganizer(identificador);
-            if(isDelete){
-                for(let index = 0; index < graduacaoOrganizer.length; index++){
-                    const idGraduacao = graduacaoOrganizer[index].id;
-                    const graduacao = await UpdateGraduationOrganizer(identificador, idGraduacao) 
-                    graduacao ? situacao =  Boolean(true) : situacao = Boolean(false)
-                }
-            }
-        } else {
-            situacao = Boolean(true)
-        }                  
-        }else {
-            console.log(result);
-            situacao = Boolean(false)
+        const result = await (response.ok && response.json());   
+
+        (!BooleanValidation[result.status] && console.log(result));
+
+        for (const dados of graduacaoOrganizer) {
+            const isDelete = (BooleanValidation[result.status] && await DeleteGraduationOrganizer(identificador));
+            (isDelete && (async() => (await InsertGraduationOrganizer(identificador, dados.id)))());
         }
+
+        return BooleanValidation[result.status]; 
     } catch (error) {
         console.error('Ocorreu um erro em UpdateOrganizer: ' + error);
-    };
-    return situacao
-};
+        return false;
+    }
+}
+
+export default UpdateOrganizer;

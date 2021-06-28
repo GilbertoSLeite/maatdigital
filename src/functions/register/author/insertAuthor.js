@@ -1,24 +1,15 @@
-import DataStatus from "../../dataStatus/dataStatus";
+import BooleanValidation from "../../booleanValidation/booleanValidation";
 import InsertGraduationAuthor from "./insertGraudationAuthor";
 
-let token = localStorage.getItem('@maatdigital/token');
-let situacao = Boolean(false);
-export default async function InsertAuthor(
-    dataCadastro,
-    firstName,
-    middleName,
-    lastName,
-    paisAutor,
-    graduacaoAutor,
-    numCPF,
-    sexoAutor,
-    racaAutor,
-){
+const token = localStorage.getItem('@maatdigital/token');
+
+const InsertAuthor = async (dataCadastro,firstName,middleName,lastName,paisAutor,graduacaoAutor,numCPF,sexoAutor,racaAutor) =>{
     try {
-        let myHeaders = new Headers();
+        const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("Authorization", token);
-        let raw = JSON.stringify({
+
+        const raw = JSON.stringify({
             "data_cadastro": dataCadastro,
             "primeiro_nome_pessoa": firstName,
             "segundo_nome_pessoa": middleName,
@@ -29,29 +20,28 @@ export default async function InsertAuthor(
             "raca_pessoas": racaAutor,
             "status": Boolean(true),
         });
-        let requestOptions = {
+
+        const requestOptions = {
             method: 'POST',
             headers: myHeaders,
             body: raw,
             redirect: 'follow'
         };
+
         const response = await fetch('/maatdigital/autores', requestOptions);
-        const result = await response.json();
-        if(result.status){
-            for(let index = 0; index < graduacaoAutor.length;  index++){
-                const idGraduacao = graduacaoAutor[index].id;
-                const graduacao = await InsertGraduationAuthor(result.identificador_autor, idGraduacao) 
-                !graduacao && (index = graduacaoAutor.length)
-            };
-            situacao = Boolean(true)
-        }else {
-            console.log(result);
-            const errorData = DataStatus(result);
-            console.error(errorData.getErrorMessage())
-            situacao = Boolean(false)
+        const result = await (response.ok && response.json());  
+
+        (!BooleanValidation[result.status] && console.error(result));
+
+        for(const dados of graduacaoAutor){            
+            (BooleanValidation[result.status] && (async() => (await InsertGraduationAuthor(result.identificador_autor, dados.id)))())
         }
+
+        return BooleanValidation[result.status];        
     } catch (error) {
         console.error('Ocorreu um erro em InsertAuthor: ' + error);
-    };
-    return situacao
-};
+        return false;
+    }
+}
+
+export default InsertAuthor;

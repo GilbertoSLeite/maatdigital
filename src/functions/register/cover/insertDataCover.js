@@ -1,24 +1,15 @@
-import DataStatus from "../../dataStatus/dataStatus";
+import BooleanValidation from "../../booleanValidation/booleanValidation";
 import InsertGraduationCover from "./insertGraudationCover";
 
-let token = localStorage.getItem('@maatdigital/token');
-let situacao = Boolean(false);
-export default async function InsertCover(
-    dataCadastro,
-    firstName,
-    middleName,
-    lastName,
-    paisCover,
-    graduacaoCover,
-    numCPF,
-    sexoCover,
-    racaCover,
-){
+const token = localStorage.getItem('@maatdigital/token');
+
+const InsertCover = async (dataCadastro,firstName,middleName,lastName,paisCover,graduacaoCover,numCPF,sexoCover,racaCover) => {
     try {
-        let myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            myHeaders.append("Authorization", token);
-        let raw = JSON.stringify({
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", token);
+
+        const raw = JSON.stringify({
             "data_cadastro": dataCadastro,
             "primeiro_nome_pessoa": firstName,
             "segundo_nome_pessoa": middleName,
@@ -29,29 +20,28 @@ export default async function InsertCover(
             "raca_pessoas": racaCover,
             "status": Boolean(true),
         });
-        let requestOptions = {
+
+        const requestOptions = {
             method: 'POST',
             headers: myHeaders,
             body: raw,
             redirect: 'follow'
         };
+
         const response = await fetch('/maatdigital/resp_capas', requestOptions);
         const result = (response.ok && await response.json());
-        if(result.status){
-            for(let index = 0; index < graduacaoCover.length;  index++){
-                const idGraduacao = graduacaoCover[index].id;
-                const graduacao = await InsertGraduationCover(result.identificador_capa, idGraduacao) 
-                !graduacao && (index = graduacaoCover.length)
-            }
-            situacao = Boolean(true)
-        }else {
-            console.log(result);
-            const errorData = DataStatus(result);
-            console.error(errorData.getErrorMessage())
-            situacao = Boolean(false)
+
+        (!BooleanValidation[result.status] && console.error(result))();
+
+        for(const dados of graduacaoCover){            
+            (BooleanValidation[result.status] && (async() => (await InsertGraduationCover(result.identificador_capa, dados.id)))());
         }
+
+        return BooleanValidation[result.status];
     } catch (error) {
         console.error('Ocorreu um erro em InsertCover ' + error);
-    };
-    return situacao
-};
+        return false;
+    }
+}
+
+export default InsertCover;

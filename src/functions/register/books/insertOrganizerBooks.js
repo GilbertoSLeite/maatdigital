@@ -1,15 +1,17 @@
-import BooleanValidation from "./booleanValidation";
-let token = localStorage.getItem('@maatdigital/token');
-export default async function InsertOrganizerBooks(idOrganizador,idLivro){
+import BooleanValidation from "../../booleanValidation/booleanValidation";
+
+const token = localStorage.getItem('@maatdigital/token');
+
+const InsertOrganizerBooks = async  (idOrganizador,idLivro) => {
     try {
-        let myHeaders = new Headers();
+        const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("Authorization", token);
-        let raw = JSON.stringify({
+        const raw = JSON.stringify({
             "organizador_id": idOrganizador,
             "livro_id": idLivro,
         });
-        let requestOptions = {
+        const requestOptions = {
             method: 'POST',
             headers: myHeaders,
             body: raw,
@@ -17,9 +19,12 @@ export default async function InsertOrganizerBooks(idOrganizador,idLivro){
         };
         const response = await fetch('/maatdigital/organizadores_livros', requestOptions);
         const result = await (response.ok && response.json());
-        console.log('Result InsertOrganizerBooks:', await result);
+        (!BooleanValidation[result.status] && console.error('Result InsertOrganizerBooks:', result))();
         return BooleanValidation[result.status]
     } catch (error) {
         console.error('Ocorreu um erro em InsertOrganizerBooks: ' + error);
-    };
-};
+        return false
+    }
+}
+
+export default InsertOrganizerBooks;

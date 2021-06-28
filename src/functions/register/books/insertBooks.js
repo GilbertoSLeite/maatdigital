@@ -1,8 +1,10 @@
 import actionsBookAfterInsert from "./actionsBookAfterInsert";
-let token = localStorage.getItem('@maatdigital/token');
-export default async function InsertBooks(dataInsert){
+
+const token = localStorage.getItem('@maatdigital/token');
+
+const InsertBooks = async (dataInsert) => {
     try {
-            let dataBooks = { 
+            const dataBooks = { 
                 "organizadorLivro": dataInsert.dataOrganizadorLivro,
                 "editorLivro": dataInsert.dataEditoresResp, 
                 "coordenadorLivro": dataInsert.dataCoordenadoresLivros,
@@ -10,10 +12,12 @@ export default async function InsertBooks(dataInsert){
                 "capaLivro": dataInsert.dataCapaLivro,  
                 "respCapaLivro": dataInsert.dataRespCapaLivro,                
             };
-            let myHeaders = new Headers();
+
+            const myHeaders = new Headers();
                 myHeaders.append("Content-Type", "application/json");
                 myHeaders.append("Authorization", token);
-            let raw = JSON.stringify({
+
+            const raw = JSON.stringify({
                 "titulo_livro":  dataInsert.dataTituloLivro,
                 "subtitulo_livro":  dataInsert.dataSubTituloLivro,
                 "classificacao_id":  dataInsert.dataClassLivro,
@@ -22,16 +26,24 @@ export default async function InsertBooks(dataInsert){
                 "link_livro":  dataInsert.dataLinkLivro,
                 "resumo_livro":  dataInsert.dataResumoLivro,
             });
-           let requestOptions = {
+
+           const requestOptions = {
                 method: 'POST',
                 headers: myHeaders,
                 body: raw,
                 redirect: 'follow'
             };
+
             const response = await fetch('/maatdigital/livros', requestOptions);
             const result = await (response.ok && response.json());
-        return (await actionsBookAfterInsert(dataBooks, result.status, result.identificador_livro))
+            
+            const insertData = (await actionsBookAfterInsert(dataBooks, result.status, result.identificador_livro));
+            
+        return insertData;
     } catch (error) {
         console.error('Ocorreu um erro em InsertBooks: ', error);
-    };
-};
+        return false;
+    }
+}
+
+export default InsertBooks;

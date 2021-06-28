@@ -1,24 +1,15 @@
-import DataStatus from "../../dataStatus/dataStatus";
+import BooleanValidation from "../../booleanValidation/booleanValidation";
 import InsertGraduationOrganizer from "./insertGraudationOrganizer";
 
-let token = localStorage.getItem('@maatdigital/token');
-let situacao = Boolean(false);
-export default async function InsertOrganizer(
-    dataCadastro,
-    firstName,
-    middleName,
-    lastName,
-    paisOrganizer,
-    graduacaoOrganizer,
-    numCPF,
-    sexoOrganizer,
-    racaOrganizer,
-){
+const token = localStorage.getItem('@maatdigital/token');
+
+const InsertOrganizer = async (dataCadastro,firstName,middleName,lastName,paisOrganizer,graduacaoOrganizer,numCPF,sexoOrganizer,racaOrganizer) => {
     try {
-        let myHeaders = new Headers();
+        const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("Authorization", token);
-        let raw = JSON.stringify({
+
+        const raw = JSON.stringify({
             "data_cadastro": dataCadastro,
             "primeiro_nome_pessoa": firstName,
             "segundo_nome_pessoa": middleName,
@@ -29,29 +20,28 @@ export default async function InsertOrganizer(
             "raca_pessoas": racaOrganizer,
             "status": Boolean(true),
         });
-        let requestOptions = {
+
+        const requestOptions = {
             method: 'POST',
             headers: myHeaders,
             body: raw,
             redirect: 'follow'
         };
+
         const response = await fetch('/maatdigital/organizadores', requestOptions);
-        const result = await response.json();
-        if(result.status){
-            for(let index = 0; index < graduacaoOrganizer.length;  index++){
-                const idGraduacao = graduacaoOrganizer[index].id;
-                const graduacao = await InsertGraduationOrganizer(result.identificador_organizador, idGraduacao) 
-                !graduacao && (index = graduacaoOrganizer.length)
-            }
-            situacao = Boolean(true)
-        }else {
-            console.log(result);
-            const errorData = DataStatus(result);
-            console.error(errorData.getErrorMessage())
-            situacao = Boolean(false)
+        const result = await (response.ok && response.json());    
+
+        (!BooleanValidation[result.status] && console.error(result));
+
+        for (const dados of graduacaoOrganizer) {
+            (BooleanValidation[result.status] && (async() => (await InsertGraduationOrganizer(result.identificador_organizador, dados.id)))())
         }
+
+        return BooleanValidation[result.status];
     } catch (error) {
         console.error('Ocorreu um erro em InsertOrganizer: ' + error);
-    };
-    return situacao
-};
+        return false
+    }
+}
+
+export default InsertOrganizer;

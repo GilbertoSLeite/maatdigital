@@ -1,27 +1,16 @@
-import UpdateGraduationDiagramming from "./updateGraudationDiagramming";
+import InsertGraduationDiagramming from "./insertGraudationDiagramming";
 import DeleteGraduationDiagramming from "./deleteGraduationDiagramming";
+import BooleanValidation from "../../booleanValidation/booleanValidation";
 
-let token = localStorage.getItem('@maatdigital/token');
-let situacao = Boolean(false);
+const token = localStorage.getItem('@maatdigital/token');
 
-export default async function UpdateDiagramming(
-    identificador,
-    dataCadastro,
-    firstName,
-    middleName,
-    lastName,
-    paisDiagramming,
-    graduacaoDiagramming,
-    numCPF,
-    sexoDiagramming,
-    racaDiagramming,
-    statusDiagramming,
-){
+const UpdateDiagramming = async (identificador,dataCadastro,firstName,middleName,lastName,paisDiagramming,graduacaoDiagramming,numCPF,sexoDiagramming,racaDiagramming,statusDiagramming) => {
     try {
-        let myHeaders = new Headers();
+        const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("Authorization", token);
-        let raw = JSON.stringify({
+
+        const raw = JSON.stringify({
             "data_cadastro": dataCadastro,
             "primeiro_nome_pessoa": firstName,
             "segundo_nome_pessoa": middleName,
@@ -32,34 +21,30 @@ export default async function UpdateDiagramming(
             "raca_pessoas": racaDiagramming,
             "status":statusDiagramming,
         });
-        let requestOptions = {
+
+        const requestOptions = {
             method: 'PUT',
             headers: myHeaders,
             body: raw,
             redirect: 'follow'
         };
-        let url = '/maatdigital/diagramadores/'+ identificador
-        const response = await fetch(url, requestOptions);
-        const result = await response.json();
-        if(result.status === true){
-            if(graduacaoDiagramming.length > 0){
-            const isDelete = await DeleteGraduationDiagramming(identificador);
-                if(isDelete){
-                    for(let index = 0; index < graduacaoDiagramming.length; index++){
-                        const idGraduacao = graduacaoDiagramming[index].id;
-                        const graduacao = await UpdateGraduationDiagramming(identificador, idGraduacao) 
-                        graduacao ? situacao =  Boolean(true) : situacao = Boolean(false)
-                    }
-                }
-            } else {
-                situacao = Boolean(true)
-            }                  
-        }else {
-            console.log(result);
-            situacao = Boolean(false)
+
+        const url = '/maatdigital/diagramadores/'+ identificador
+        const response = await fetch(url, requestOptions);        
+        const result = (response.ok && await response.json());
+
+        (!BooleanValidation[result.status] && console.error(result))();
+
+        for(const dados of graduacaoDiagramming){
+            const isDelete = (BooleanValidation[result.status] && await DeleteGraduationDiagramming(identificador));
+            (isDelete && (async() => (await InsertGraduationDiagramming(identificador, dados.id)))());
         }
+
+        return BooleanValidation[result.status];
     } catch (error) {
         console.error('Ocorreu um erro em UpdateDiagramming: ' + error);
-    };
-    return situacao
-};
+        return false;
+    }
+}
+
+export default UpdateDiagramming;

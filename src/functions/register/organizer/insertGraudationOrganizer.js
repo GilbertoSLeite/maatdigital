@@ -1,28 +1,35 @@
-let token = localStorage.getItem('@maatdigital/token');
-let situacao = Boolean(false);
-export default async function InsertGraduationOrganizer(    
-    idOrganizador,
-    idGraduacaoOrganizador,
-){
+import BooleanValidation from "../../booleanValidation/booleanValidation";
+
+const token = localStorage.getItem('@maatdigital/token');
+
+const InsertGraduationOrganizer = async (idOrganizador,idGraduacaoOrganizador) => {
     try {
-        let myHeaders = new Headers();
+        const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("Authorization", token);
-        let raw = JSON.stringify({
+
+        const raw = JSON.stringify({
             "organizador_id": idOrganizador,
             "graduacoes_id": idGraduacaoOrganizador,
         });
-        let requestOptions = {
+
+        const requestOptions = {
             method: 'POST',
             headers: myHeaders,
             body: raw,
             redirect: 'follow'
         };
+
         const response = await fetch('/maatdigital/graduacao_organizadores', requestOptions);
-        const result = await response.json();
-        (result.status ? (situacao = Boolean(true)) : (situacao = Boolean(false) || console.log(result)));
+        const result = await (response.ok && response.json());  
+
+        (!BooleanValidation[result.status] && console.log(result));
+
+        return BooleanValidation[result.status];
     } catch (error) {
         console.error('Ocorreu um erro em InsertGraduationOrganizer: ' + error);
-    };
-    return situacao
-};
+        return false
+    }
+}
+
+export default InsertGraduationOrganizer;

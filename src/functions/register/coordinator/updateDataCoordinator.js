@@ -1,13 +1,16 @@
 import DeleteGraduationCoordinator from "./deleteGraduationCoordinator";
 import BooleanValidation from "../../booleanValidation/booleanValidation";
 import InsertGraduationCoordinator from "./insertGraudationCoordinator";
-let token = localStorage.getItem('@maatdigital/token');
-export default async function UpdateCoordinator(identificador,dataCadastro,firstName,middleName,lastName,paisCoordinator,graduacaoCoordinator,numCPF,sexoCoordinator,racaCoordinator,statusCoordinator){
+
+const token = localStorage.getItem('@maatdigital/token');
+
+const UpdateCoordinator = async (identificador,dataCadastro,firstName,middleName,lastName,paisCoordinator,graduacaoCoordinator,numCPF,sexoCoordinator,racaCoordinator,statusCoordinator) => {
     try {
-        let myHeaders = new Headers();
+        const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("Authorization", token);
-        let raw = JSON.stringify({
+
+        const raw = JSON.stringify({
             "data_cadastro": dataCadastro,
             "primeiro_nome_pessoa": firstName,
             "segundo_nome_pessoa": middleName,
@@ -18,23 +21,30 @@ export default async function UpdateCoordinator(identificador,dataCadastro,first
             "raca_pessoas": racaCoordinator,
             "status":statusCoordinator,
         });
-        let requestOptions = {
+
+        const requestOptions = {
             method: 'PUT',
             headers: myHeaders,
             body: raw,
             redirect: 'follow'
         };
-        let url = '/maatdigital/coordenadores/'+ identificador
+
+        const url = '/maatdigital/coordenadores/'+ identificador
         const response = await fetch(url, requestOptions);
-        const result = await (response.ok && response.json());        
-        (!BooleanValidation[result.status] && console.error(result))
+        const result = await (response.ok && response.json()); 
+
+        (!BooleanValidation[result.status] && console.error(result));
+
         for(const dados of graduacaoCoordinator){
             const isDelete = (BooleanValidation[result.status] && await DeleteGraduationCoordinator(identificador));
-            (isDelete && (async() => (await InsertGraduationCoordinator(identificador, dados.id)))())
+            (isDelete && (async() => (await InsertGraduationCoordinator(identificador, dados.id)))());
         }
-        return BooleanValidation[result.status]
+
+        return BooleanValidation[result.status];
     } catch (error) {
         console.error('Ocorreu um erro em UpdateCoordinator: ' + error);
         return false
-    };
-};
+    }
+}
+
+export default UpdateCoordinator;

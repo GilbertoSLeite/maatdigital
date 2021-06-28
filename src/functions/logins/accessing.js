@@ -1,9 +1,7 @@
 import Authenticated from "../localstorage/authenticated";
-import TokenAuthenticated from "../localstorage/tokenAuthenticated";
-import UserAuthenticated from "../localstorage/userAuthenticated";
+import BooleanValidation from '../booleanValidation/booleanValidation';
 
-let acess;
-export default async function Acessing(user, password) {
+const Acessing = async (user, password) => {
     try {
         let myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
@@ -20,17 +18,21 @@ export default async function Acessing(user, password) {
             redirect: 'follow'
         };
         const response = await fetch('/maatdigital/login', requestOptions);
-        const result = await response.json();
-        if(result.status){
-            Authenticated(Boolean(true))
-            TokenAuthenticated(result.token)
-            UserAuthenticated(user)
-            acess = Boolean(true)
-        }else {
-            acess = Boolean(false)
-        }
+        const result = await (response.ok && response.json());
+        
+        const validate = {
+            "true": Authenticated(Boolean(true), result.token, user),
+            "false": console.error(result),
+            "undefined": console.error(result),
+        };
+
+        () => validate[result.status];
+         
+        return BooleanValidation[result.status];
     } catch (error) {
         console.error('Ocorreu um erro em Acessing: ' + error);
-    };
-    return acess
-};
+        return false
+    }
+}
+
+export default Acessing;

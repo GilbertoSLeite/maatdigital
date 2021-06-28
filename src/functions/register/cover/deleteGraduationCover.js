@@ -1,21 +1,30 @@
-let token = localStorage.getItem('@maatdigital/token');
-let situacao = Boolean(false);
-export default async function DeleteGraduationCover(idCover){
+import BooleanValidation from "../../booleanValidation/booleanValidation";
+
+const token = localStorage.getItem('@maatdigital/token');
+
+const DeleteGraduationCover = async (idCover) => {
     try {
-        let myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            myHeaders.append("Authorization", token);
-        let requestOptions = {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", token);
+
+        const requestOptions = {
             method: 'DELETE',
             headers: myHeaders,
             redirect: 'follow'
         };
+
         const url = '/maatdigital/resp_capas/' + idCover
         const response = await fetch(url, requestOptions);
         const result = (response.ok && await response.json());
-        (result.status ? (situacao = Boolean(true)) : (situacao = Boolean(false) || console.log(result)));
+        
+        (!BooleanValidation[result.status] && console.error(result))();
+
+        return [BooleanValidation[result.status]];
     } catch (error) {
         console.error('Ocorreu um erro em DeleteGraduationCover: ' + error);
-    };
-    return situacao
-};
+        return false;
+    }
+}
+
+export default  DeleteGraduationCover;

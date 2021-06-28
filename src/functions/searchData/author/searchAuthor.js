@@ -1,17 +1,25 @@
-let token = localStorage.getItem('@maatdigital/token');
-export default async function SearchAuthor() {
+const token = localStorage.getItem('@maatdigital/token');
+
+const SearchAuthor = async () => {
     try {
-        let myHeaders = new Headers();
+        const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("Authorization", token);
-        let requestOptions = {    
+
+        const requestOptions = {    
             headers: myHeaders,
             method: 'GET',
             redirect: 'follow',
         };   
+
         const response = await fetch('/maatdigital/autores', requestOptions);
-        return await (response.ok && response.json()); 
+        const result = await (response.ok && response.json()); 
+        
+        return result;
     } catch (error) {
         console.error('Error em SearchAuthor: ' + error);
-    };
-};
+        return false;
+    }
+}
+
+export default SearchAuthor;

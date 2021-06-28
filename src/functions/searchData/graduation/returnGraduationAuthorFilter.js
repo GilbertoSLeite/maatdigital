@@ -1,18 +1,26 @@
-let token = localStorage.getItem('@maatdigital/token');
-export default async function SearchGraduationAuthorFilter(idAutor) {
+const token = localStorage.getItem('@maatdigital/token');
+
+const SearchGraduationAuthorFilter = async (idAutor) => {
     try {
-        let myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            myHeaders.append("Authorization", token);
-        let requestOptions = {    
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", token);
+
+        const requestOptions = {    
             headers: myHeaders,
             method: 'GET',
             redirect: 'follow',
         };   
+
         const url = '/maatdigital/graduacao_autores/' + idAutor
         const response = await fetch(url, requestOptions);
-        return await (response.ok && await response.json()); 
+        const result = await (response.ok && response.json()); 
+        
+        return result;
     } catch (error) {
         console.error('Error em SearchGraduation: ' + error);
-    };
-};
+        return false;
+    }
+}
+
+export default SearchGraduationAuthorFilter;

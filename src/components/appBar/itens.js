@@ -1,0 +1,110 @@
+import {  
+  BrushOutlined, 
+  CollectionsBookmarkOutlined, 
+  DescriptionOutlined, 
+  EditAttributesOutlined, 
+  HomeWork, 
+  HowToRegOutlined, 
+  LibraryBooksOutlined, 
+  MenuBookOutlined, 
+  PublicOutlined, 
+  SchoolOutlined, 
+  SortByAlphaOutlined, 
+  VpnKeyOutlined 
+  } from "@material-ui/icons";
+
+const itens = [
+    {
+        path: '/maatdigital/acessar',
+        name: 'Login',
+        icon: VpnKeyOutlined,
+        private: false,
+        loginPage: true,
+    },
+    {
+        path: '/maatdigital/home',
+        name: 'Home',
+        icon: HomeWork,
+        private: true,
+        loginPage: false,
+    },
+    {
+        path: '/maatdigital/areaconhecimento',
+        name: 'Organização',
+        icon: CollectionsBookmarkOutlined,
+        private: true,
+        loginPage: false,
+    },
+    {
+        path: '/maatdigital/graduacao',
+        name: 'Graduação',
+        icon: SchoolOutlined,
+        private: true,
+        loginPage: false, 
+    },
+    {
+        path: '/maatdigital/paises',
+        name: 'País',
+        icon: PublicOutlined,
+        private: true,
+        loginPage: false,  
+    },
+    {
+        path: '/maatdigital/editora',
+        name: 'Editora',
+        icon: LibraryBooksOutlined,
+        private: true,
+        loginPage: false,   
+    },
+    {
+        path: '/maatdigital/coordenador',
+        name: 'Coordenador',
+        icon: HowToRegOutlined,
+        private: true,
+        loginPage: false,  
+    }, 
+    {
+        path: '/maatdigital/organizador',
+        name: 'Organizador',
+        icon: SortByAlphaOutlined,
+        private: true,
+        loginPage: false,  
+    }, 
+    {
+        path: '/maatdigital/editor',
+        name: 'Editor',
+        icon: EditAttributesOutlined,
+        private: true,
+        loginPage: false,  
+    },
+    {
+        path: '/maatdigital/respcapa',
+        name: 'Resp. pela Capa',
+        icon: CollectionsBookmarkOutlined,
+        private: true,
+        loginPage: false,  
+    },
+    {
+        path: '/maatdigital/diagramador',
+        name: 'Diagramador',
+        icon: BrushOutlined,
+        private: true,
+        loginPage: false,  
+    },
+    {
+        path: '/maatdigital/autor',
+        name: 'Autor',
+        icon: DescriptionOutlined,
+        private: true,
+        loginPage: false,  
+    },
+    {
+        path: '/maatdigital/livros',
+        name: 'Livros',
+        icon: MenuBookOutlined,
+        private: true,
+        loginPage: false,  
+    },
+];
+
+export default itens;

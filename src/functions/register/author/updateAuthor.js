@@ -1,27 +1,15 @@
-import UpdateGraduationAuthor from "./updateGraduationAuthor";
+import BooleanValidation from "../../booleanValidation/booleanValidation";
 import DeleteGraduationAuthor from "./deleteGraduationAuthor";
+import InsertGraduationAuthor from "./insertGraudationAuthor";
 
-let token = localStorage.getItem('@maatdigital/token');
-let situacao = Boolean(false);
+const token = localStorage.getItem('@maatdigital/token');
 
-export default async function UpdateAuthor(
-    identificador,
-    dataCadastro,
-    firstName,
-    middleName,
-    lastName,
-    paisAutor,
-    graduacaoAutor,
-    numCPF,
-    sexoAutor,
-    racaAutor,
-    statusAutor,
-){
+const UpdateAuthor = async (identificador,dataCadastro,firstName,middleName,lastName,paisAutor,graduacaoAutor,numCPF,sexoAutor,racaAutor,statusAutor) => {
     try {
-        let myHeaders = new Headers();
+        const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("Authorization", token);
-        let raw = JSON.stringify({
+        const raw = JSON.stringify({
             "data_cadastro": dataCadastro,
             "primeiro_nome_pessoa": firstName,
             "segundo_nome_pessoa": middleName,
@@ -32,35 +20,25 @@ export default async function UpdateAuthor(
             "raca_pessoas": racaAutor,
             "status":statusAutor,
         });
-        let requestOptions = {
+        const requestOptions = {
             method: 'PUT',
             headers: myHeaders,
             body: raw,
             redirect: 'follow'
         };
-        let url = '/maatdigital/autores/'+ identificador
+        const url = '/maatdigital/autores/'+ identificador
         const response = await fetch(url, requestOptions);
-        const result = await response.json();
-        if(result.status === true){
-            console.log(graduacaoAutor.length)
-            if(graduacaoAutor.length > 0){
-            const isDelete = await DeleteGraduationAuthor(identificador);
-            if(isDelete){
-                for(let index = 0; index < graduacaoAutor.length; index++){
-                    const idGraduacao = graduacaoAutor[index].id;
-                    const graduacao = await UpdateGraduationAuthor(identificador, idGraduacao) 
-                    graduacao ? situacao =  Boolean(true) : situacao = Boolean(false)
-                }
-            }
-        } else {
-            situacao = Boolean(true)
-        }                  
-        }else {
-            console.log(result);
-            situacao = Boolean(false)
+        const result = await (response.ok && response.json());        
+        (!BooleanValidation[result.status] && console.error(result));
+        for(const dados of graduacaoAutor){
+            const isDelete = (BooleanValidation[result.status] && await DeleteGraduationAuthor(identificador));
+            (isDelete && (async() => (await InsertGraduationAuthor(identificador, dados.id)))());
         }
+        return BooleanValidation[result.status];
     } catch (error) {
         console.error('Ocorreu um erro em UpdateAuthor: ' + error);
-    };
-    return situacao
-};
+        return false;
+    }
+}
+
+export default UpdateAuthor;
