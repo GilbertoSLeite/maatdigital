@@ -62,7 +62,9 @@ const Login = () => {
     const [password, setPassword] = React.useState('');
     const [viewPass, setViewPass] = React.useState(false);
     const [snackOpen, setSnackOpen] = React.useState(false);
+    const [buttonDisable, setDisableButton] = React.useState(false);
     const [returnTextSnack, setReturnTextSnack] = React.useState('');
+    const [alertSnack, setAlertSnack] = React.useState(null);
 
     const viewPassWord = () => {
         setViewPass(true);
@@ -76,7 +78,7 @@ const Login = () => {
         setSnackOpen(false)
     };
 
-    function HandleClose() {
+    const HandleClose = () => {
         return (<IconButton
             aria-label="close"
             color="inherit"
@@ -88,7 +90,24 @@ const Login = () => {
         );
     }
 
-    const accessingSystem = async () => await Acessing(user, password) ? window.location.href = '/maatdigital/home' : setReturnTextSnack('Senha ou Usuário Errado!')
+    const trueAcessing = () => {
+        setSnackOpen(true);
+        setAlertSnack('success');
+        setReturnTextSnack('Acessando o Sistema!');
+        setDisableButton(false);
+        setTimeout(() => {
+            window.location.href = '/maatdigital/home';
+        }, 1500);
+    }
+
+    const falseAcessing = () => {
+        setSnackOpen(true);
+        setAlertSnack('error');
+        setReturnTextSnack('Senha ou Usuário Errado!');
+        setDisableButton(false);
+    }
+
+    const accessingSystem = async () => await Acessing(user, password) ? trueAcessing() : falseAcessing()
 
     return (
         <React.Fragment>
@@ -169,6 +188,7 @@ const Login = () => {
                                     fullWidth variant='outlined'
                                     className={classes.submit}
                                     onClick={accessingSystem}
+                                    disabled={buttonDisable}
                                 >
                                     ACESSAR
                                 </Button>
@@ -177,13 +197,14 @@ const Login = () => {
                     </Grid>
                 </Grid>
             </div>
-            {snackOpen ?
+            {snackOpen &&
                 <SnackMAAT
                     open={snackOpen}
                     close={handleCloseSnack}
                     handleClose={<HandleClose />}
                     textSnack={returnTextSnack}
-                /> : null}
+                    alert={alertSnack}
+                />}
         </React.Fragment>
     );
 }

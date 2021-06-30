@@ -103,9 +103,8 @@ const TableDiagramming = () => {
                     {
                         title: 'Diagramador do Livro',
                         field: 'primeiro_nome_pessoa',
-                        render: rowData => function () {
-                            <div>{rowData.primeiro_nome_pessoa + ' ' + rowData.segundo_nome_pessoa + ' ' + rowData.ultimo_nome_pessoa}</div>
-                        },
+                        // eslint-disable-next-line react/display-name
+                        render: rowData => <div>{rowData.primeiro_nome_pessoa + ' ' + rowData.segundo_nome_pessoa + ' ' + rowData.ultimo_nome_pessoa}</div>,
                         tooltip: 'Nome do Diagramador.',
                         align: 'center',
                         filtering: true,
@@ -122,9 +121,8 @@ const TableDiagramming = () => {
                     },
                     {
                         title: 'Nacionalidade',
-                        render: rowData => function () {
-                            <div>{RetornarNomePais(rowData.pais_diagramador_id)}</div>
-                        },
+                        // eslint-disable-next-line react/display-name
+                        render: rowData => <div>{RetornarNomePais(rowData.pais_diagramador_id)}</div>,
                         field: 'pais_diagramador_id',
                         tooltip: 'Informação referente ao País de Nacionalidade do Diagramador',
                         align: 'center',

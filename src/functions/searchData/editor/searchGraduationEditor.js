@@ -1,3 +1,5 @@
+import BooleanValidation from "../../booleanValidation/booleanValidation";
+
 const token = localStorage.getItem('@maatdigital/token');
 
 const SearchGraduationEditor = async () => {
@@ -13,9 +15,11 @@ const SearchGraduationEditor = async () => {
         };
 
         const response = await fetch('/maatdigital/graduacao_editores', requestOptions);
-        const result = await (response.ok && response.json()); 
+        const result = await response.json(); 
+
+        (!BooleanValidation[result.status] && console.error(JSON.stringify(result)));
         
-        return result;
+        return result.fullData;
     } catch (error) {
         console.error('Error em SearchGraduationEditor: ' + error);
         return false;

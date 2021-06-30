@@ -1,3 +1,5 @@
+import BooleanValidation from "../../booleanValidation/booleanValidation";
+
 const token = localStorage.getItem('@maatdigital/token');
 
 const SearchBookCoordinators = async () => {
@@ -13,9 +15,11 @@ const SearchBookCoordinators = async () => {
         };
 
         const response = await fetch('/maatdigital/coordenadores_livros', requestOptions);
-        const result = await (response.ok && response.json()); 
-        
-        return result;
+        const result = await response.json(); 
+
+        (!BooleanValidation[result.status] && console.error(JSON.stringify(result)));
+
+        return result.fullData;
     } catch (error) {
         console.error('Error em SearchBookCoordinators: ' + error);
     }

@@ -137,9 +137,8 @@ const TableBooks = () => {
                     {
                         field: 'classificacao_id',
                         type: 'numeric',
-                        render: rowData => function () {
-                            <div>{RetornarClassificacao(rowData.classificacao_id)}</div>
-                        },
+                        // eslint-disable-next-line react/display-name
+                        render: rowData => <div>{RetornarClassificacao(rowData.classificacao_id)}</div>,
                         title: 'Classificação',
                         tooltip: 'Informação do Tipo de Classificação Bibliográfica do Livro',
                         align: 'center',

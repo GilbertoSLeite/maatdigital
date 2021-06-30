@@ -1,3 +1,5 @@
+import BooleanValidation from "../../booleanValidation/booleanValidation";
+
 const token = localStorage.getItem('@maatdigital/token');
 
 const SearchBookResponsibleEditors = async () => {
@@ -13,9 +15,11 @@ const SearchBookResponsibleEditors = async () => {
         };   
 
         const response = await fetch('/maatdigital/editores_responsaveis_livros', requestOptions);
-        const result = await (response.ok && response.json()); 
+        const result = await response.json(); 
+
+        (!BooleanValidation[result.status] && console.error(JSON.stringify(result)));
         
-        return result;
+        return result.fullData;
     } catch (error) {
         console.error('Error em SearchBookResponsibleEditors: ' + error);
         return false;

@@ -16,15 +16,15 @@ const AreaConhecimento = () => {
         (async () => setLoading(true) || setArrayAreaConhecimento(await SearchAreaConhecimento()) || setLoading(false))();
     }, []);
 
-    function RetornarCodigoAC(identificado) {
+    const RetornarCodigoAC = (identificado) => {
         const codAreaConhecimento = arrayAreaConhecimento.find(dataAreaConhecimento => (dataAreaConhecimento.id === identificado))
         return ((codAreaConhecimento !== undefined) && codAreaConhecimento.codigo_classes)
-    }
+    };
 
-    function RetornarAC(identificado) {
+    const RetornarAC = (identificado) => {
         const codAreaConhecimento = arrayAreaConhecimento.find(dataAreaConhecimento => (dataAreaConhecimento.id === identificado))
         return ((codAreaConhecimento !== undefined) && codAreaConhecimento.tipo_classes)
-    }
+    };
 
     return (
         <MaterialTable
@@ -77,9 +77,8 @@ const AreaConhecimento = () => {
                 },
                 {
                     title: 'Cód. Área de Conhecimento',
-                    render: rowData => function () {
-                        <div>{RetornarCodigoAC(rowData.area_conhecimento_id)}</div>
-                    },
+                    // eslint-disable-next-line react/display-name
+                    render: rowData => <div>{RetornarCodigoAC(rowData.area_conhecimento_id)}</div>,
                     field: 'area_conhecimento_id',
                     tooltip: 'Código Área de Conhecimento',
                     align: 'center',
@@ -97,9 +96,8 @@ const AreaConhecimento = () => {
                 },
                 {
                     title: 'Área de Conhecimento',
-                    render: rowData => function () {
-                        <div>{RetornarAC(rowData.area_conhecimento_id)}</div>
-                    },
+                    // eslint-disable-next-line react/display-name
+                    render: rowData => <div>{RetornarAC(rowData.area_conhecimento_id)}</div>,
                     field: 'area_conhecimento_id',
                     tooltip: 'Área de Conhecimento',
                     align: 'center',

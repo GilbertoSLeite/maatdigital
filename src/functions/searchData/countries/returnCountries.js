@@ -1,3 +1,5 @@
+import BooleanValidation from "../../booleanValidation/booleanValidation";
+
 const token = localStorage.getItem('@maatdigital/token');
 
 const SearchPaises = async () => {
@@ -13,9 +15,11 @@ const SearchPaises = async () => {
         };   
 
         const response = await fetch('/maatdigital/paises', requestOptions);
-        const result = await (response.ok && response.json()); 
+        const result = await response.json();
         
-        return result;
+        (!BooleanValidation[(result !== undefined && result.status)] && console.error(JSON.stringify(result)));
+        
+        return result.fullData;
     } catch (error) {
         console.error('Error em SearchAreaConhecimento: ' + error);
         return false;

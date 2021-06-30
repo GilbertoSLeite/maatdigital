@@ -37,11 +37,13 @@ const InsertBooks = async (dataInsert) => {
             const response = await fetch('/maatdigital/livros', requestOptions);
             const result = await (response.ok && response.json());
             
-            const insertData = (await actionsBookAfterInsert(dataBooks, result.status, result.identificador_livro));
+            const insertData = (await actionsBookAfterInsert(dataBooks, result.status, result.identificadorLivro));
             
         return insertData;
     } catch (error) {
         console.error('Ocorreu um erro em InsertBooks: ', error);
+        console.error('Error Detalhe em InsertBooks: ', error.errorDetalhe);
+        console.error('Error completo em InsertBooks: ', error.errorFull);
         return false;
     }
 }

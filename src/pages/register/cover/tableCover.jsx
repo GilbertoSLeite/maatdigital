@@ -103,9 +103,8 @@ const TableCover = () => {
                     {
                         title: 'Resp. da Capa do Livro',
                         field: 'primeiro_nome_pessoa',
-                        render: rowData => function () {
-                            <div>{rowData.primeiro_nome_pessoa + ' ' + rowData.segundo_nome_pessoa + ' ' + rowData.ultimo_nome_pessoa}</div>
-                        },
+                        // eslint-disable-next-line react/display-name
+                        render: rowData => <div>{rowData.primeiro_nome_pessoa + ' ' + rowData.segundo_nome_pessoa + ' ' + rowData.ultimo_nome_pessoa}</div>,
                         tooltip: 'Nome do Responsável pela Capa.',
                         align: 'center',
                         filtering: true,
@@ -122,9 +121,8 @@ const TableCover = () => {
                     },
                     {
                         title: 'Nacionalidade',
-                        render: rowData => function () {
-                            <div>{RetornarNomePais(rowData.pais_capa_id)}</div>
-                        },
+                        // eslint-disable-next-line react/display-name
+                        render: rowData => <div>{RetornarNomePais(rowData.pais_capa_id)}</div>,
                         field: 'pais_capa_id',
                         tooltip: 'Informação referente ao País de Nacionalidade do Responsável pela Capa',
                         align: 'center',

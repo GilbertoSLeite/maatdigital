@@ -148,9 +148,8 @@ const TablePuslisher = () => {
                     },
                     {
                         title: 'Nome do País',
-                        render: rowData => function () {
-                            <div>{RetornarNomePais(rowData.pais_sede_id)}</div>
-                        },
+                        // eslint-disable-next-line react/display-name
+                        render: rowData => <div>{RetornarNomePais(rowData.pais_sede_id)}</div>,
                         field: 'pais_sede_id',
                         tooltip: 'Informação referente ao País da Fundação da Editora',
                         align: 'center',
@@ -167,13 +166,12 @@ const TablePuslisher = () => {
                     },
                     {
                         title: 'Website da Fundação',
-                        render: rowData => function () {
-                            <div>
-                                <Link to={rowData.website_editora} onClick={() => window.open(rowData.website_editora, 'blank_')}>
-                                    {rowData.website_editora}
-                                </Link>
-                            </div>
-                        },
+                        // eslint-disable-next-line react/display-name
+                        render: rowData => <div>
+                            <Link to={rowData.website_editora} onClick={() => window.open(rowData.website_editora, 'blank_')}>
+                                {rowData.website_editora}
+                            </Link>
+                        </div>,
                         field: 'website_editora',
                         tooltip: 'Informação referente ao Website da Fundação da Editora',
                         align: 'center',

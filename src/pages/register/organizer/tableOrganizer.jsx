@@ -116,9 +116,8 @@ const TableOrganizer = () => {
                     {
                         title: 'Autor do Livro',
                         field: 'primeiro_nome_pessoa',
-                        render: function () {
-                            rowData => <div>{rowData.primeiro_nome_pessoa + ' ' + rowData.segundo_nome_pessoa + ' ' + rowData.ultimo_nome_pessoa}</div>
-                        },
+                        // eslint-disable-next-line react/display-name
+                        render: rowData => <div>{rowData.primeiro_nome_pessoa + ' ' + rowData.segundo_nome_pessoa + ' ' + rowData.ultimo_nome_pessoa}</div>,
                         tooltip: 'Nome do Organizador.',
                         align: 'center',
                         filtering: true,
@@ -135,9 +134,8 @@ const TableOrganizer = () => {
                     },
                     {
                         title: 'Nacionalidade',
-                        render: rowData => function () {
-                            <div>{RetornarNomePais(rowData.pais_organizador_id)}</div>
-                        },
+                        // eslint-disable-next-line react/display-name
+                        render: rowData => <div>{RetornarNomePais(rowData.pais_organizador_id)}</div>,
                         field: 'pais_organizador_id',
                         tooltip: 'Informação referente ao País de Nacionalidade do Organizador',
                         align: 'center',
